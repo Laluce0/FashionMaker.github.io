@@ -1,0 +1,18 @@
+body {
+  /* Removed max-width, margin, and padding to allow full window coverage */
+  /* Added min-height to ensure the body covers at least the viewport height */
+  /* Removed text-align: center; as it's not needed for the root element */
+  margin: 0;
+  /* display: flex;
+  place-items: center; */
+  min-width: 100vw;
+  min-height: 100vh;
+}
+
+/* Add styles for the root element */
+#root {
+  min-height: 100vh;
+  width: 100vw;
+  display: flex; /* Use flexbox for the root element if needed for layout */
+  flex-direction: column; /* Ensure root takes full height */
+}
