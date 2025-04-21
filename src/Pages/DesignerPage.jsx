@@ -1,20 +1,19 @@
-import React, { useRef } from 'react'; // Import useRef
-import { Layout } from 'antd'; // Removed Upload as it's handled differently now
-import DesignerMenuBar from '../Components/DesignerMenuBar'; // Import the menu bar
-import ThreeDViewPanel from '../Components/ThreeDViewPanel'; // Import the 3D view panel
-import PatternPanel from '../Components/PatternPanel'; // Import the pattern panel
+import React, { useRef } from 'react';
+import { Layout } from 'antd';
+import Splitter from 'antd/es/splitter';
+import DesignerMenuBar from '../Components/DesignerMenuBar';
+import ThreeDViewPanel from '../Components/ThreeDViewPanel';
+import PatternPanel from '../Components/PatternPanel';
 
-const { Header, Content, Sider } = Layout;
+const { Header } = Layout;
 
 const DesignerPage = () => {
-  const fileInputRef = useRef(null); // Create a ref for the file input
+  const fileInputRef = useRef(null);
 
-  // Function to trigger the file input click
   const handleImportModel = () => {
-    fileInputRef.current?.click(); // Programmatically click the hidden input
+    fileInputRef.current?.click();
   };
 
-  // Handler for file selection
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -23,24 +22,24 @@ const DesignerPage = () => {
     }
   };
   return (
-    <Layout style={{ height: 'calc(100vh - 64px)' }}> {/* Adjust height considering the main header */}
-      {/* Pass the import handler to the menu bar */}
+    <Layout style={{ height: 'calc(100vh - 64px)' }}>
       <DesignerMenuBar onImportModel={handleImportModel} />
-      {/* Hidden file input */}
       <input
         type="file"
         ref={fileInputRef}
         style={{ display: 'none' }}
         onChange={handleFileChange}
-        accept=".gltf,.glb,.obj" // Example: Accept common 3D model formats
+        accept=".gltf,.glb,.obj"
       />
-      <Layout style={{ height: 'calc(100% - 48px)' }}> {/* Ensure inner layout fills remaining space */}
-        <Content style={{ padding: '0', margin: 0, display: 'flex', flexDirection: 'row', height: '100%' }}>
-          {/* Left Panel: 3D View */}
-          <ThreeDViewPanel />
-          {/* Right Panel: Pattern Info */}
-          <PatternPanel />
-        </Content>
+      <Layout style={{ height: 'calc(100% - 48px)' }}>
+        <Splitter style={{ height: '100%' }} direction="horizontal" min={200} max={800} defaultValue={300}>
+          <div style={{ height: '100%', background: '#fff' }}>
+            <ThreeDViewPanel />
+          </div>
+          <div style={{ height: '100%' }}>
+            <PatternPanel />
+          </div>
+        </Splitter>
       </Layout>
     </Layout>
   );

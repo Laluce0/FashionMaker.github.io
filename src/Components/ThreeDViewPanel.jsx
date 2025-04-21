@@ -4,7 +4,7 @@ import { GlobalOutlined, BgColorsOutlined, EyeOutlined } from '@ant-design/icons
 
 const ThreeDViewPanel = () => {
   return (
-    <div style={{ flex: 3, backgroundColor: '#e0e0e0', display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'relative', height: '100%' }}>
+    <div style={{ flex: 3, backgroundColor: '#e0e0e0', display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'relative', height: '100%', width: '100%' }}>
       <span>3D View Panel Placeholder</span>
       {/* Placeholder for render mode icons - moved from DesignerMenuBar */}
       <div style={{ position: 'absolute', top: '10px', right: '10px', backgroundColor: 'rgba(0,0,0,0.5)', padding: '5px 8px', borderRadius: '4px' }}>

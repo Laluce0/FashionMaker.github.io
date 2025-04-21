@@ -21,7 +21,7 @@ const DesignerMenuBar = ({ onImportModel }) => {
       <IconButtonGroup />
 
       {/* Middle Section: Breadcrumb */}
-      <div style={{ flex: 1, textAlign: 'center', color: '#fff' }}>
+      <div style={{ flex: 1, display: 'flex', justifyContent: 'center', color: '#fff' }}>
         <Breadcrumb style={{ color: '#fff !important' }}>
             {/* Add Breadcrumb.Item dynamically based on file path */}
             <Breadcrumb.Item style={{ color: '#fff' }}>Folder</Breadcrumb.Item>
