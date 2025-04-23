@@ -9,13 +9,13 @@ import PenButton from './MenuButtons/PenButton';
 import LabelButton from './MenuButtons/LabelButton';
 import CommentButton from './MenuButtons/CommentButton';
 
-const IconButtonGroup = () => {
+const IconButtonGroup = ({ onClothSelect }) => {
   return (
     <Space size="small">
       <DragDotButton />
       <FileSelectorButton />
       <AvatarButton />
-      <ClothSelectorButton />
+      <ClothSelectorButton onClick={onClothSelect} />
       <TextureButton />
       <PenButton />
       <LabelButton />

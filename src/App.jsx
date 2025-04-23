@@ -32,11 +32,21 @@ const App = () => {
           mode="horizontal"
           selectedKeys={getSelectedKeys()}
           style={{ flex: 1, minWidth: 0, borderBottom: 'none' }} // Remove default border
-        >
-          <Menu.Item key="home"><Link to="/">Home</Link></Menu.Item>
-          <Menu.Item key="designer"><Link to="/designer">Designer</Link></Menu.Item>
-          <Menu.Item key="builder"><Link to="/builder">Builder</Link></Menu.Item>
-        </Menu>
+          items={[
+            {
+              key: 'home',
+              label: <Link to="/">Home</Link>
+            },
+            {
+              key: 'designer',
+              label: <Link to="/designer">Designer</Link>
+            },
+            {
+              key: 'builder',
+              label: <Link to="/builder">Builder</Link>
+            }
+          ]}
+        />
         {/* Placeholder for Search Bar if needed */}
         {/* <Input.Search placeholder="Search" style={{ width: 200, marginLeft: 'auto' }} /> */}
       </Header>

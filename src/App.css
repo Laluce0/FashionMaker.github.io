@@ -26,3 +26,7 @@
 .layout-basic-demo .arco-layout-content {
   background-color: rgb(var(--arcoblue-6));
 }
+
+.ant-breadcrumb, .ant-breadcrumb a, .ant-breadcrumb span {
+  color: #fff;
+}
