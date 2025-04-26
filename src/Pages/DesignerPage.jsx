@@ -31,7 +31,7 @@ const DesignerPage = () => {
       <DesignerMenuBar onClothSelect={handleClothSelect} />
       <Layout style={{ height: 'calc(100% - 48px)' }}>
         <Splitter style={{ height: '100%' }} direction="horizontal" min={200} max={800} defaultValue={300}>
-          <Splitter.Panel defaultSize="40%" min="20%" max="70%" style={{background: '#fff' }}>
+          <Splitter.Panel defaultSize="60%" min="20%" max="70%" style={{background: '#fff' }}>
             <ThreeDViewPanel ref={threeDViewRef} />
           </Splitter.Panel>
           <Splitter.Panel style={{ height: '100%' }}>

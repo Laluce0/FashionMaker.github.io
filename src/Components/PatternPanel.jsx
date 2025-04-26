@@ -1,4 +1,5 @@
 import React, { useState, useRef, useCallback } from 'react';
+import { Button, Spin } from 'antd';
 
 // 板片数据结构：包含唯一编号、顶点数组、边数组
 function createNewPanel(id) {
@@ -28,6 +29,9 @@ const PatternPanel = ({ onPanelSelect }) => {
   const [dragVertex, setDragVertex] = useState(null); // {panelId, vertexIdx}
   const svgRef = useRef(null);
   const [panelIdCounter, setPanelIdCounter] = useState(2);
+  // 加载条相关状态
+  const [spinning, setSpinning] = useState(false);
+  const [percent, setPercent] = useState(0);
 
   // 选中板片并通知3D视图
   const handlePanelClick = (panelId) => {
@@ -69,6 +73,21 @@ const PatternPanel = ({ onPanelSelect }) => {
     if (panels.length <= 1) return;
     setPanels(prev => prev.filter(p => p.id !== selectedPanelId));
     setSelectedPanelId(panels[0].id);
+  };
+
+  // 生成板片按钮点击事件
+  const handleGeneratePanel = () => {
+    setSpinning(true);
+    let ptg = -10;
+    const interval = setInterval(() => {
+      ptg += 5;
+      setPercent(ptg);
+      if (ptg > 120) {
+        clearInterval(interval);
+        setSpinning(false);
+        setPercent(0);
+      }
+    }, 100);
   };
 
   // 渲染板片
@@ -132,19 +151,21 @@ const PatternPanel = ({ onPanelSelect }) => {
   return (
     <div style={{
       flex: 1,
-      /* maxWidth: '30%', */ // 去掉最大宽度限制
-      width: '100%',         // 让其占满父容器
+      width: '100%',
       background: '#fff',
       borderLeft: '1px solid #f0f0f0',
       padding: '10px',
       overflowY: 'auto',
       height: '100%'
     }}>
-      <h4>Pattern Panel</h4>
-      <div style={{ marginBottom: 8 }}>
-        <button onClick={handleAddPanel} style={{ marginRight: 8 }}>添加板片</button>
-        <button onClick={handleDeletePanel} disabled={panels.length <= 1}>删除板片</button>
+      {/* 顶部标题和按钮区 */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
+        <h4 style={{ margin: 0 }}>Pattern Panel Making</h4>
+        <Button type="primary" onClick={handleGeneratePanel}>Generate Panel</Button>
       </div>
+      {/* 加载条特效 */}
+      <Spin spinning={spinning} percent={percent} fullscreen />
+      {/* 板片编辑区 */}
       <svg ref={svgRef} width="100%" height="400" style={{ border: '1px solid #eee', background: '#fafafa', width: '100%', height: 400, cursor: dragVertex ? 'grabbing' : 'default' }}>
         {renderPanels()}
       </svg>

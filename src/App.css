@@ -30,3 +30,36 @@
 .ant-breadcrumb, .ant-breadcrumb a, .ant-breadcrumb span {
   color: #fff;
 }
+
+/* Custom styles for Header Menu */
+.ant-menu-horizontal > .ant-menu-item {
+  padding-top: 12px !important;      /* Add top padding */
+  padding-bottom: 12px !important;   /* Add bottom padding */
+  margin-top: 0 !important;         /* Reset default margin if needed */
+  margin-bottom: 0 !important;      /* Reset default margin if needed */
+  height: auto !important;          /* Adjust height automatically */
+  line-height: normal !important;   /* Adjust line-height */
+}
+
+.ant-menu-horizontal > .ant-menu-item-selected {
+  background-color: #000000 !important; /* Black background for selected item */
+  border-radius: 24px !important;        /* Increased rounded corners */
+}
+
+/* Remove the blue underline for selected horizontal menu item */
+.ant-menu-horizontal > .ant-menu-item-selected::after {
+  border-bottom: none !important;
+}
+
+.ant-menu-horizontal > .ant-menu-item-selected a {
+  color: #ffffff !important;           /* White text color for the link inside selected item */
+}
+
+.ant-menu-horizontal > .ant-menu-item-selected:hover a {
+  color: #ffffff !important; /* Keep text white on hover for selected item */
+}
+
+/* Remove transition animation for menu items */
+.ant-menu-item {
+  transition: none !important;
+}

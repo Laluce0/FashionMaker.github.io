@@ -26,12 +26,12 @@ const App = () => {
     <Layout style={{ minHeight: '100vh' }}> {/* Ensure layout takes full height */}
       <Header style={{ display: 'flex', alignItems: 'center', padding: '0 20px', backgroundColor: '#fff', borderBottom: '1px solid #f0f0f0' }}>
         {/* Simple Logo/Title Placeholder */}
-        <div style={{ fontSize: '20px', fontWeight: 'bold', marginRight: '50px' }}>FashionMaker</div>
+        <div style={{ fontSize: '20px', fontWeight: 'bold', marginRight: '30px' }}>FashionMaker</div>
         <Menu
           theme="light" // Use light theme for the top bar
           mode="horizontal"
           selectedKeys={getSelectedKeys()}
-          style={{ flex: 1, minWidth: 0, borderBottom: 'none' }} // Remove default border
+          style={{ flex: 1, minWidth: 0, borderBottom: 'none'}} // Remove default border
           items={[
             {
               key: 'home',
