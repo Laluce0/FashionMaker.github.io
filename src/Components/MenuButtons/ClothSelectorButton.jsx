@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Dropdown, Menu } from 'antd';
+import { Button, Dropdown } from 'antd';
 import ClothSelectorIcon from '../../assets/04_clothSelector.svg'; // Adjust path as needed
 import './MenuButtonStyles.css';
 
@@ -8,32 +8,49 @@ const ClothSelectorButton = ({ onClick }) => {
   // For now, the Dropdown trigger button itself won't trigger the original onClick.
   // Menu item clicks can be handled via the Menu's onClick prop if needed.
   const handleMenuClick = ({ key }) => {
-    if (key === "import-clo3d" && onClick) {
-      onClick();
+    if (key === 'import-clo3d' && onClick) {
+      onClick(); // Call the passed onClick handler for the specific item
     }
+    // Handle other menu item clicks if needed
+    console.log(`Clicked on item with key: ${key}`);
   };
-  const menu = (
-    <Menu onClick={handleMenuClick}>
-      <Menu.ItemGroup title="import">
-        <Menu.Item key="import-2d">2D Pattern</Menu.Item>
-        <Menu.Item key="import-clo3d">3D Cloth</Menu.Item>
-      </Menu.ItemGroup>
-      <Menu.Divider />
-      <Menu.ItemGroup title="construction">
-        <Menu.Item key="construction-mesh">Mesh</Menu.Item>
-        <Menu.Item key="construction-pointcloud">Point Cloud</Menu.Item>
-        <Menu.Item key="construction-images">Images</Menu.Item>
-      </Menu.ItemGroup>
-      <Menu.Divider />
-      <Menu.ItemGroup title="export">
-        <Menu.Item key="export-2d">2D Pattern</Menu.Item>
-        <Menu.Item key="export-clo3d">CLO 3D Cloth</Menu.Item>
-        <Menu.Item key="export-mesh">Mesh</Menu.Item>
-      </Menu.ItemGroup>
-    </Menu>
-  );
+
+  const items = [
+    {
+      key: 'import-group',
+      label: 'import',
+      type: 'group',
+      children: [
+        { key: 'import-2d', label: '2D Pattern' },
+        { key: 'import-clo3d', label: '3D Cloth' },
+      ],
+    },
+    { type: 'divider' }, // Divider
+    {
+      key: 'construction-group',
+      label: 'construction',
+      type: 'group',
+      children: [
+        { key: 'construction-mesh', label: 'Mesh' },
+        { key: 'construction-pointcloud', label: 'Point Cloud' },
+        { key: 'construction-images', label: 'Images' },
+      ],
+    },
+    { type: 'divider' }, // Divider
+    {
+      key: 'export-group',
+      label: 'export',
+      type: 'group',
+      children: [
+        { key: 'export-2d', label: '2D Pattern' },
+        { key: 'export-clo3d', label: 'CLO 3D Cloth' },
+        { key: 'export-mesh', label: 'Mesh' },
+      ],
+    },
+  ];
+
   return (
-    <Dropdown menu={menu} trigger={['click']}>
+    <Dropdown menu={{ items, onClick: handleMenuClick }} trigger={['click']}>
       <Button 
         type="text" 
         icon={<img src={ClothSelectorIcon} alt="Cloth Selector" />} 

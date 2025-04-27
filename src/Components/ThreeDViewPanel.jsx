@@ -1,11 +1,12 @@
 import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, Edges } from '@react-three/drei';
-import { Space, Button, Upload, Slider, Popover, message } from 'antd';
-import { GlobalOutlined, BgColorsOutlined, EyeOutlined, UploadOutlined } from '@ant-design/icons';
+import { Space, Button, Slider, Popover, message } from 'antd'; // Removed Upload and UploadOutlined
+import { GlobalOutlined, BgColorsOutlined, EyeOutlined } from '@ant-design/icons'; // Removed UploadOutlined
 import * as THREE from 'three';
-import { GLTFLoader } from 'three-stdlib';
-import { OBJLoader } from 'three-stdlib';
+// Remove unused loaders, handled in App.jsx
+// import { GLTFLoader } from 'three-stdlib';
+// import { OBJLoader } from 'three-stdlib';
 
 // 顶点色分组高亮辅助组件
 function HighlightEdges({ geometry, color, visible }) {
@@ -36,70 +37,35 @@ function Model({ geometry, vertexColors, highlightGroup, highlightColor }) {
 
 const defaultBrushColor = '#ff0000';
 
-const ThreeDViewPanel = forwardRef((props, ref) => {
-  const [geometry, setGeometry] = useState(null);
-  const [vertexColors, setVertexColors] = useState([]); // [[r,g,b], ...]
-  const [colorGroups, setColorGroups] = useState([]); // [{color, indices:[]}, ...]
-  const [highlightGroup, setHighlightGroup] = useState(null);
-  const [highlightColor, setHighlightColor] = useState('#00ff00');
-  const [brushColor, setBrushColor] = useState(defaultBrushColor);
-  const [brushSize, setBrushSize] = useState(10);
-  const fileInputRef = useRef();
+// Receive props from DesignerPage
+const ThreeDViewPanel = forwardRef(({ geometry, onModelLoad }, ref) => {
+  // Remove local geometry state, use props instead
+  // const [geometry, setGeometry] = useState(null);
+  const [vertexColors, setVertexColors] = useState([]); // Keep local UI state
+  const [colorGroups, setColorGroups] = useState([]); // Keep local UI state
+  const [highlightGroup, setHighlightGroup] = useState(null); // Keep local UI state
+  const [highlightColor, setHighlightColor] = useState('#00ff00'); // Keep local UI state
+  const [brushColor, setBrushColor] = useState(defaultBrushColor); // Keep local UI state
+  const [brushSize, setBrushSize] = useState(10); // Keep local UI state
+  const fileInputRef = useRef(null); // Ref for the hidden file input
 
-  // 暴露方法给父组件
+  // Expose a function to trigger the hidden file input click
   useImperativeHandle(ref, () => ({
-    triggerModelImport: () => {
-      if (fileInputRef.current) fileInputRef.current.click();
+    triggerUpload: () => {
+      fileInputRef.current?.click();
     }
   }));
 
-  // 处理模型文件上传
-  const handleModelUpload = (e) => {
-    let file;
-    if (e.target && e.target.files) {
-      file = e.target.files[0];
-    } else if (e.file && e.file.originFileObj) {
-      file = e.file.originFileObj;
+  // Handler for the hidden file input's change event
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      onModelLoad(file); // Call the handler passed from App/DesignerPage
     }
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (ev) => {
-      const filename = file.name.toLowerCase();
-      if (filename.endsWith('.gltf') || filename.endsWith('.glb')) {
-        const loader = new GLTFLoader();
-        loader.parse(ev.target.result, '', (gltf) => {
-          let mesh = null;
-          gltf.scene.traverse((child) => {
-            if (child.isMesh && !mesh) mesh = child;
-          });
-          if (mesh) {
-            setGeometry(mesh.geometry);
-            message.success('GLTF模型加载成功');
-          } else {
-            message.error('未找到可用Mesh');
-          }
-        }, (err) => {
-          message.error('GLTF解析失败: ' + err.message);
-        });
-      } else if (filename.endsWith('.obj')) {
-        const loader = new OBJLoader();
-        const text = new TextDecoder().decode(ev.target.result);
-        const obj = loader.parse(text);
-        let mesh = null;
-        obj.traverse((child) => {
-          if (child.isMesh && !mesh) mesh = child;
-        });
-        if (mesh) {
-          setGeometry(mesh.geometry);
-          message.success('OBJ模型加载成功');
-        } else {
-          message.error('未找到可用Mesh');
-        }
-      } else {
-        message.error('仅支持OBJ/GLTF/GLB格式');
-      }
-    };
-    reader.readAsArrayBuffer(file);
+    // Reset the input value to allow uploading the same file again
+    if (event.target) {
+      event.target.value = null;
+    }
   };
 
   // 顶点色分组与高亮逻辑（示例，需结合实际模型数据）
@@ -127,10 +93,17 @@ const ThreeDViewPanel = forwardRef((props, ref) => {
   // 侧边交互面板
   const renderControlPanel = () => (
     <div style={{ position: 'absolute', left: 10, top: 10, background: 'rgba(255,255,255,0.9)', padding: 12, borderRadius: 8, zIndex: 2 }}>
-      <Upload accept=".obj,.gltf,.glb" showUploadList={false} beforeUpload={() => false} onChange={handleModelUpload}>
-        <Button icon={<UploadOutlined />}>上传3D模型</Button>
-      </Upload>
-      <input ref={fileInputRef} type="file" accept=".obj,.gltf,.glb" style={{ display: 'none' }} onChange={handleModelUpload} />
+      {/* Hidden file input for model upload */}
+      <input 
+        ref={fileInputRef} 
+        type="file" 
+        accept=".obj,.gltf,.glb" 
+        style={{ display: 'none' }} 
+        onChange={handleFileChange} 
+      />
+      {/* Button to trigger the hidden input (optional, as triggering is done via ref) */}
+      {/* <Button onClick={() => fileInputRef.current?.click()}>上传3D模型</Button> */}
+      
       <div style={{ marginTop: 16 }}>
         <span>笔刷颜色：</span>
         <input type="color" value={brushColor} onChange={handleBrushColorChange} style={{ width: 32, height: 32, border: 'none', background: 'none' }} />

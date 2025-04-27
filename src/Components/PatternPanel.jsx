@@ -1,37 +1,40 @@
 import React, { useState, useRef, useCallback } from 'react';
 import { Button, Spin } from 'antd';
 
-// 板片数据结构：包含唯一编号、顶点数组、边数组
-function createNewPanel(id) {
-  // 默认正方形
-  return {
-    id,
-    vertices: [
-      { x: 80, y: 80 },
-      { x: 180, y: 80 },
-      { x: 180, y: 180 },
-      { x: 80, y: 180 }
-    ],
-    edges: [
-      [0, 1],
-      [1, 2],
-      [2, 3],
-      [3, 0]
-    ]
-  };
-}
+// Remove local createNewPanel function, it's passed via props now
+// function createNewPanel(id) { ... }
 
 const PANEL_COLORS = ['#6ec1e4', '#f7b267', '#b5e48c', '#f28482', '#b5838d'];
 
-const PatternPanel = ({ onPanelSelect }) => {
-  const [panels, setPanels] = useState([createNewPanel(1)]);
-  const [selectedPanelId, setSelectedPanelId] = useState(1);
+// Receive props from DesignerPage
+const PatternPanel = ({ 
+  panels, 
+  onPanelsChange, 
+  onPanelSelect, 
+  panelIdCounter, 
+  setPanelIdCounter,
+  createNewPanel // Receive helper function
+}) => {
+  // Remove local panels state, use props instead
+  // const [panels, setPanels] = useState([createNewPanel(1)]);
+  const [selectedPanelId, setSelectedPanelId] = useState(panels.length > 0 ? panels[0].id : null); // Initialize based on props
   const [dragVertex, setDragVertex] = useState(null); // {panelId, vertexIdx}
   const svgRef = useRef(null);
-  const [panelIdCounter, setPanelIdCounter] = useState(2);
-  // 加载条相关状态
+  // Remove local panelIdCounter state, use props instead
+  // const [panelIdCounter, setPanelIdCounter] = useState(2);
+  // 加载条相关状态 (Keep local UI state)
   const [spinning, setSpinning] = useState(false);
   const [percent, setPercent] = useState(0);
+
+  // Update selectedPanelId if the selected panel is removed
+  React.useEffect(() => {
+    if (!panels.find(p => p.id === selectedPanelId) && panels.length > 0) {
+      setSelectedPanelId(panels[0].id);
+    }
+    if (panels.length === 0) {
+      setSelectedPanelId(null);
+    }
+  }, [panels, selectedPanelId]);
 
   // 选中板片并通知3D视图
   const handlePanelClick = (panelId) => {
@@ -50,12 +53,14 @@ const PatternPanel = ({ onPanelSelect }) => {
     const svgRect = svgRef.current.getBoundingClientRect();
     const x = e.clientX - svgRect.left;
     const y = e.clientY - svgRect.top;
-    setPanels((prev) => prev.map(panel => {
+    // Use onPanelsChange to update state in App.jsx
+    const updatedPanels = panels.map(panel => {
       if (panel.id !== dragVertex.panelId) return panel;
       const newVertices = panel.vertices.map((v, idx) => idx === dragVertex.vertexIdx ? { x, y } : v);
       return { ...panel, vertices: newVertices };
-    }));
-  }, [dragVertex]);
+    });
+    onPanelsChange(updatedPanels);
+  }, [dragVertex, panels, onPanelsChange]); // Add dependencies
 
   const handleMouseUp = () => {
     setDragVertex(null);
@@ -63,16 +68,18 @@ const PatternPanel = ({ onPanelSelect }) => {
 
   // 添加新板片
   const handleAddPanel = () => {
-    setPanels(prev => [...prev, createNewPanel(panelIdCounter)]);
+    const newPanel = createNewPanel(panelIdCounter); // Use passed function and counter
+    onPanelsChange([...panels, newPanel]); // Update state in App.jsx
     setSelectedPanelId(panelIdCounter);
-    setPanelIdCounter(prev => prev + 1);
+    setPanelIdCounter(prev => prev + 1); // Update counter in App.jsx
   };
 
   // 删除当前板片
   const handleDeletePanel = () => {
-    if (panels.length <= 1) return;
-    setPanels(prev => prev.filter(p => p.id !== selectedPanelId));
-    setSelectedPanelId(panels[0].id);
+    if (panels.length <= 1 || selectedPanelId === null) return;
+    const newPanels = panels.filter(p => p.id !== selectedPanelId);
+    onPanelsChange(newPanels); // Update state in App.jsx
+    // selectedPanelId will be updated by useEffect
   };
 
   // 生成板片按钮点击事件
@@ -165,15 +172,39 @@ const PatternPanel = ({ onPanelSelect }) => {
       </div>
       {/* 加载条特效 */}
       <Spin spinning={spinning} percent={percent} fullscreen />
-      {/* 板片编辑区 */}
-      <svg ref={svgRef} width="100%" height="400" style={{ border: '1px solid #eee', background: '#fafafa', width: '100%', height: 400, cursor: dragVertex ? 'grabbing' : 'default' }}>
+      {/* 板片编辑区 */} 
+      <svg 
+        ref={svgRef} 
+        width="100%" 
+        height="400" 
+        style={{ 
+          border: '1px solid #eee', 
+          background: '#fafafa', 
+          width: '100%', 
+          height: 400, 
+          cursor: dragVertex ? 'grabbing' : 'default' 
+        }}
+        // Add mouse move/up listeners here if not using window listeners
+        // onMouseMove={handleMouseMove} 
+        // onMouseUp={handleMouseUp}
+        // onMouseLeave={handleMouseUp} // Handle leaving SVG area
+      >
         {renderPanels()}
       </svg>
       <div style={{ marginTop: 12 }}>
         <b>板片列表：</b>
         <ul style={{ listStyle: 'none', padding: 0 }}>
           {panels.map(panel => (
-            <li key={panel.id} style={{ padding: '4px 0', cursor: 'pointer', color: panel.id === selectedPanelId ? '#1976d2' : '#333', fontWeight: panel.id === selectedPanelId ? 'bold' : 'normal' }} onClick={() => handlePanelClick(panel.id)}>
+            <li 
+              key={panel.id} 
+              style={{ 
+                padding: '4px 0', 
+                cursor: 'pointer', 
+                color: panel.id === selectedPanelId ? '#1976d2' : '#333', 
+                fontWeight: panel.id === selectedPanelId ? 'bold' : 'normal' 
+              }} 
+              onClick={() => handlePanelClick(panel.id)}
+            >
               板片 #{panel.id}
             </li>
           ))}
