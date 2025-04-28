@@ -49,13 +49,14 @@ const DesignerPage = ({
             <ThreeDViewPanel ref={threeDViewRef} geometry={geometry} onModelLoad={onModelLoad} />
           </Splitter.Panel>
           <Splitter.Panel style={{ height: '100%' }}>
-            {/* Pass panels state and handlers to PatternPanel */}
+            {/* Pass panels state, handlers, and threeDViewRef to PatternPanel */}
             <PatternPanel 
               panels={panels} 
               onPanelsChange={onPanelsChange} 
               panelIdCounter={panelIdCounter}
               setPanelIdCounter={setPanelIdCounter}
               createNewPanel={createNewPanel}
+              threeDViewRef={threeDViewRef} // Pass the ref here
             />
           </Splitter.Panel>
         </Splitter>

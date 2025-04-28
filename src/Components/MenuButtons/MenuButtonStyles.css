@@ -13,3 +13,79 @@
   width: 40px;
   height: 48px;
 }
+
+/* Wireframe Button Styles */
+.wireframe-button {
+  display: flex;
+  width: 30px;
+  height: 30px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 6px 0px 0px 6px;
+  border: 1px solid #3D3D3D;
+  background: var(--Button, #545454);
+  box-shadow: 0px 1px 0px 0px rgba(0, 0, 0, 0.16);
+  padding: 0; /* Override if needed */
+}
+
+.wireframe-button img {
+  width: 30px; /* Adjust if icon size needs control */
+  height: 30px; /* Adjust if icon size needs control */
+  padding-top: 4px;
+}
+
+.wireframe-button.active {
+  background: var(--Active, #4772B3); /* Active background */
+}
+
+/* White Model Button Styles */
+.white-model-button {
+  display: flex;
+  width: 30px;
+  height: 30px;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #3D3D3D;
+  background: var(--Button, #545454); /* Default background */
+  box-shadow: 0px 1px 0px 0px rgba(0, 0, 0, 0.16);
+  padding: 0; /* Override if needed */
+  border-radius: 0; /* No border radius */
+}
+
+.white-model-button.active {
+  background: var(--Active, #4772B3); /* Active background */
+}
+
+.white-model-button img {
+  width: auto; /* Adjust if icon size needs control */
+  height: auto; /* Adjust if icon size needs control */
+  padding-top: 4px;
+}
+
+.wireframe-button.active {
+  background: var(--Active, #4772B3); /* Active background */
+}
+
+/* Vertex Color Button Styles */
+.vertex-color-button {
+  display: flex;
+  height: 30px;
+  /* width is likely determined by content or container */
+  align-items: center;
+  border-radius: 0px 6px 6px 0px;
+  border: 1px solid #3D3D3D;
+  background: var(--Button, #545454);
+  box-shadow: 0px 1px 0px 0px rgba(0, 0, 0, 0.16);
+  padding: 0 8px; /* Add some padding for text */
+}
+
+.vertex-color-button img {
+  width: auto; /* Adjust if icon size needs control */
+  height: auto; /* Adjust if icon size needs control */
+  margin-right: 0px; /* Space between icon and text if needed */
+  padding-top: 4px;
+}
+
+.vertex-color-button.active {
+  background: var(--Active, #4772B3); /* Active background */
+}

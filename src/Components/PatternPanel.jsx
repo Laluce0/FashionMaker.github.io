@@ -1,55 +1,77 @@
 import React, { useState, useRef, useCallback } from 'react';
-import { Button, Spin } from 'antd';
+import { Button, Spin, Space, message } from 'antd'; // 新增 message
 
 // Remove local createNewPanel function, it's passed via props now
 // function createNewPanel(id) { ... }
 
 const PANEL_COLORS = ['#6ec1e4', '#f7b267', '#b5e48c', '#f28482', '#b5838d'];
 
+// Helper function to generate SVG path data from points and lines
+const generatePathData = (points, lines) => {
+  if (!points || points.length < 2 || !lines) return '';
+  let path = `M ${points[0].Point.positionX} ${-points[0].Point.positionY}`;
+  for (let i = 1; i < lines.length; i++) {
+    const lineInfo = lines[i];
+    const endPointIndex = lineInfo.Line.index; // Assuming Line index corresponds to the end point index
+    const endPoint = points.find(p => p.Point.index === endPointIndex + 1); // Find the next point
+    if (endPoint) {
+      // Simple straight line for now, ignoring Line type
+      path += ` L ${endPoint.Point.positionX} ${-endPoint.Point.positionY}`;
+    }
+  }
+  // Check if the path should be closed (connect last point to first)
+  // This logic might need refinement based on actual data structure
+  if (points.length > 2) { // Basic check for closed shape
+     path += ' Z';
+  }
+  return path;
+};
+
 // Receive props from DesignerPage
 const PatternPanel = ({ 
-  panels, 
+  panels, // Keep existing panels prop for potential future use or remove if fully replaced
   onPanelsChange, 
   onPanelSelect, 
   panelIdCounter, 
   setPanelIdCounter,
-  createNewPanel // Receive helper function
+  createNewPanel, // Receive helper function
+  threeDViewRef // Receive ref for ThreeDViewPanel
 }) => {
   // Remove local panels state, use props instead
   // const [panels, setPanels] = useState([createNewPanel(1)]);
-  const [selectedPanelId, setSelectedPanelId] = useState(panels.length > 0 ? panels[0].id : null); // Initialize based on props
-  const [dragVertex, setDragVertex] = useState(null); // {panelId, vertexIdx}
+  const [selectedPanelId, setSelectedPanelId] = useState(null); // Updated logic below
+  const [dragVertex, setDragVertex] = useState(null); // {panelId, vertexIdx} - Keep for potential future interaction
   const svgRef = useRef(null);
   // Remove local panelIdCounter state, use props instead
   // const [panelIdCounter, setPanelIdCounter] = useState(2);
   // 加载条相关状态 (Keep local UI state)
-  const [spinning, setSpinning] = useState(false);
-  const [percent, setPercent] = useState(0);
+  const [spinningGenerate, setSpinningGenerate] = useState(false);
+  const [percentGenerate, setPercentGenerate] = useState(0);
+  const [isDividing, setIsDividing] = useState(false); // Loading state for Divide button
+  const [percentDivide, setPercentDivide] = useState(0); // Progress for Divide button
+  const [isGeneratePanelEnabled, setIsGeneratePanelEnabled] = useState(false); // Control Generate Panel button state
+  const [drawnPatterns, setDrawnPatterns] = useState([]); // State to hold parsed pattern data for SVG
+  const [svgViewBox, setSvgViewBox] = useState("0 0 500 400"); // Default viewBox
 
-  // Update selectedPanelId if the selected panel is removed
+  // Update selectedPanelId based on drawnPatterns
   React.useEffect(() => {
-    if (!panels.find(p => p.id === selectedPanelId) && panels.length > 0) {
-      setSelectedPanelId(panels[0].id);
+    if (!drawnPatterns.find(p => p.id === selectedPanelId) && drawnPatterns.length > 0) {
+      setSelectedPanelId(drawnPatterns[0].id);
     }
-    if (panels.length === 0) {
+    if (drawnPatterns.length === 0) {
       setSelectedPanelId(null);
     }
-  }, [panels, selectedPanelId]);
+  }, [drawnPatterns, selectedPanelId]);
 
-  // 选中板片并通知3D视图
+  // 选中板片并通知3D视图 (Update to use drawn pattern ID)
   const handlePanelClick = (panelId) => {
     setSelectedPanelId(panelId);
-    if (onPanelSelect) onPanelSelect(panelId);
+    if (onPanelSelect) onPanelSelect(panelId); // Notify 3D view if needed
   };
-
-  // 拖动顶点
-  const handleVertexMouseDown = (panelId, vertexIdx, e) => {
-    e.stopPropagation();
-    setDragVertex({ panelId, vertexIdx });
-  };
-
+  
   const handleMouseMove = useCallback((e) => {
-    if (!dragVertex) return;
+    // Disabled for generated panels
+    // if (!dragVertex) return;
     const svgRect = svgRef.current.getBoundingClientRect();
     const x = e.clientX - svgRect.left;
     const y = e.clientY - svgRect.top;
@@ -66,84 +88,164 @@ const PatternPanel = ({
     setDragVertex(null);
   };
 
-  // 添加新板片
-  const handleAddPanel = () => {
-    const newPanel = createNewPanel(panelIdCounter); // Use passed function and counter
-    onPanelsChange([...panels, newPanel]); // Update state in App.jsx
-    setSelectedPanelId(panelIdCounter);
-    setPanelIdCounter(prev => prev + 1); // Update counter in App.jsx
-  };
-
-  // 删除当前板片
-  const handleDeletePanel = () => {
-    if (panels.length <= 1 || selectedPanelId === null) return;
-    const newPanels = panels.filter(p => p.id !== selectedPanelId);
-    onPanelsChange(newPanels); // Update state in App.jsx
-    // selectedPanelId will be updated by useEffect
-  };
-
-  // 生成板片按钮点击事件
-  const handleGeneratePanel = () => {
-    setSpinning(true);
+  // Divide 按钮点击事件
+  const handleDivideClick = () => {
+    setIsDividing(true);
     let ptg = -10;
     const interval = setInterval(() => {
       ptg += 5;
-      setPercent(ptg);
+      setPercentDivide(ptg);
       if (ptg > 120) {
         clearInterval(interval);
-        setSpinning(false);
-        setPercent(0);
+        setIsDividing(false);
+        setPercentDivide(0);
+        // Enable vertex color mode in 3D view and enable Generate Panel button
+        threeDViewRef.current?.enableVertexColorMode();
+        setIsGeneratePanelEnabled(true);
       }
     }, 100);
   };
 
-  // 渲染板片
-  const renderPanels = () => (
-    panels.map((panel, idx) => {
+  // 生成板片按钮点击事件
+  const handleGeneratePanel = async () => {
+    setSpinningGenerate(true);
+    let ptg = -10;
+    const interval = setInterval(() => {
+      ptg += 5;
+      setPercentGenerate(ptg);
+      if (ptg > 120) {
+        clearInterval(interval);
+        setSpinningGenerate(false);
+        setPercentGenerate(0);
+        // 新增：查找并解析SVG文件
+        try {
+          const modelName = 'Jacket'; // TODO: 替换为动态获取模型名
+          const svgFilePath = `/${modelName}.svg`;
+          console.log('[调试] SVG文件路径:', svgFilePath);
+          // 读取SVG文件内容
+          fetch(svgFilePath)
+            .then(res => {
+              console.log('[调试] fetch响应:', res);
+              if (!res.ok) throw new Error('SVG文件未找到');
+              return res.text();
+            })
+            .then(svgText => {
+              console.log('[调试] SVG文件内容长度:', svgText.length);
+              if (!svgText || svgText.trim().length === 0) {
+                message.error('SVG文件内容为空，无法解析');
+                return;
+              }
+              // 解析SVG内容
+              const parser = new window.DOMParser();
+              const svgDoc = parser.parseFromString(svgText, 'image/svg+xml');
+              const pathNodes = Array.from(svgDoc.querySelectorAll('path'));
+              if (pathNodes.length === 0) {
+                message.error('SVG中未找到path元素');
+                return;
+              }
+              // 提取path数据
+              const parsedPatterns = pathNodes.map((pathNode, idx) => {
+                const d = pathNode.getAttribute('d');
+                const fill = pathNode.getAttribute('fill') || 'none';
+                const stroke = pathNode.getAttribute('stroke') || '#000';
+                return {
+                  id: pathNode.id || `svg-${idx}`,
+                  path: d,
+                  children: [],
+                  originalPoints: [], // 可后续扩展解析点
+                  fill,
+                  stroke
+                };
+              });
+              // 计算viewBox
+              let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+              parsedPatterns.forEach(p => {
+                // 简单解析d属性中的点（仅支持M/L命令，复杂曲线可后续扩展）
+                const regex = /[ML]\s*(-?\d+(?:\.\d+)?)[, ]+(-?\d+(?:\.\d+)?)/gi;
+                let match;
+                while ((match = regex.exec(p.path)) !== null) {
+                  const x = parseFloat(match[1]);
+                  const y = parseFloat(match[2]);
+                  if (x < minX) minX = x;
+                  if (y < minY) minY = y;
+                  if (x > maxX) maxX = x;
+                  if (y > maxY) maxY = y;
+                }
+              });
+              const padding = 50;
+              const width = maxX - minX + 2 * padding;
+              const height = maxY - minY + 2 * padding;
+              if (width > 0 && height > 0) {
+                setSvgViewBox(`${minX - padding} ${minY - padding} ${width} ${height}`);
+              }
+              setDrawnPatterns(parsedPatterns);
+              if (parsedPatterns.length > 0) {
+                setSelectedPanelId(parsedPatterns[0].id);
+              }
+              message.success('SVG板片生成成功');
+            })
+            .catch(err => {
+              console.error('[调试] SVG文件读取或解析异常:', err);
+              message.error('SVG文件读取失败: ' + err.message);
+            });
+        } catch (error) {
+          console.error('[调试] 外层异常:', error);
+        }
+      }
+    }, 100);
+  };
+
+  // 渲染生成的板片
+  const renderGeneratedPanels = () => (
+    drawnPatterns.map((pattern, idx) => {
       const color = PANEL_COLORS[idx % PANEL_COLORS.length];
-      // 边
-      const edges = panel.edges.map(([from, to], i) => (
-        <line
-          key={i}
-          x1={panel.vertices[from].x}
-          y1={panel.vertices[from].y}
-          x2={panel.vertices[to].x}
-          y2={panel.vertices[to].y}
-          stroke={panel.id === selectedPanelId ? '#1976d2' : color}
-          strokeWidth={panel.id === selectedPanelId ? 3 : 2}
-          style={{ cursor: 'pointer' }}
-          onClick={() => handlePanelClick(panel.id)}
-        />
-      ));
-      // 顶点
-      const vertices = panel.vertices.map((v, i) => (
-        <circle
-          key={i}
-          cx={v.x}
-          cy={v.y}
-          r={7}
-          fill={panel.id === selectedPanelId ? '#1976d2' : color}
-          stroke="#fff"
-          strokeWidth={2}
-          style={{ cursor: 'pointer' }}
-          onMouseDown={(e) => handleVertexMouseDown(panel.id, i, e)}
-        />
-      ));
-      // 板片编号
-      const center = panel.vertices.reduce((acc, v) => ({ x: acc.x + v.x, y: acc.y + v.y }), { x: 0, y: 0 });
-      center.x /= panel.vertices.length;
-      center.y /= panel.vertices.length;
+      const isSelected = pattern.id === selectedPanelId;
       return (
-        <g key={panel.id}>
-          {edges}
-          {vertices}
-          <text x={center.x} y={center.y} fontSize="18" fill="#333" textAnchor="middle" alignmentBaseline="middle" style={{ pointerEvents: 'none', fontWeight: 'bold' }}>{panel.id}</text>
+        <g key={pattern.id} onClick={() => handlePanelClick(pattern.id)} style={{ cursor: 'pointer' }}>
+          {/* Main Outline */}
+          <path 
+            d={pattern.path}
+            fill={isSelected ? `${color}40` : `${color}20`} // Lighter fill, slightly darker if selected
+            stroke={isSelected ? '#1976d2' : color}
+            strokeWidth={isSelected ? 2 : 1.5}
+            // fillRule="evenodd" // Use if holes are part of the main path
+          />
+          {/* Children Shapes (Inner, Hole, Base) */}
+          {pattern.children.map((child, childIdx) => {
+            let strokeColor = isSelected ? '#1976d2' : color;
+            let strokeWidth = isSelected ? 1.5 : 1;
+            let fill = 'none';
+            let strokeDasharray = 'none';
+
+            if (child.type === "Hole Shape") {
+              fill = '#fafafa'; // Match background to simulate hole
+              strokeColor = isSelected ? '#1976d2' : color;
+            } else if (child.type === "Base Line") {
+              strokeColor = isSelected ? '#1976d2' : '#aaa'; // Grey for base lines
+              strokeDasharray = "5,5";
+            } else if (child.type === "InnerShape") {
+               strokeColor = isSelected ? '#1976d2' : color;
+            }
+
+            return (
+              <path
+                key={`${pattern.id}-child-${childIdx}`}
+                d={child.path}
+                fill={fill}
+                stroke={strokeColor}
+                strokeWidth={strokeWidth}
+                strokeDasharray={strokeDasharray}
+              />
+            );
+          })}
+          {/* Add ID text if needed */}
+           {/* <text x={center.x} y={center.y} ... /> */}
         </g>
       );
     })
   );
 
-  // 监听全局鼠标事件
+  // 监听全局鼠标事件 (Keep as is, but functionality is disabled)
   React.useEffect(() => {
     if (dragVertex) {
       window.addEventListener('mousemove', handleMouseMove);
@@ -168,48 +270,42 @@ const PatternPanel = ({
       {/* 顶部标题和按钮区 */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
         <h4 style={{ margin: 0 }}>Pattern Panel Making</h4>
-        <Button type="primary" onClick={handleGeneratePanel}>Generate Panel</Button>
+        <Space>
+          <Button type="default" onClick={handleDivideClick} loading={isDividing}>
+            Divide
+          </Button>
+          <Button 
+            type="primary" 
+            onClick={handleGeneratePanel} 
+            disabled={!isGeneratePanelEnabled} // Disable based on state
+            loading={spinningGenerate}
+          >
+            Generate Panel
+          </Button>
+        </Space>
       </div>
       {/* 加载条特效 */}
-      <Spin spinning={spinning} percent={percent} fullscreen />
+      <Spin spinning={isDividing} percent={percentDivide} fullscreen tip="Dividing..." />
+      <Spin spinning={spinningGenerate} percent={percentGenerate} fullscreen tip="Generating Panel..." />
       {/* 板片编辑区 */} 
       <svg 
         ref={svgRef} 
         width="100%" 
-        height="400" 
+        //height="400" // 设置固定高度
+        viewBox={svgViewBox} // Use dynamic viewBox
+        preserveAspectRatio="xMidYMid meet" // Adjust aspect ratio handling
         style={{ 
-          border: '1px solid #eee', 
+          border: '3px solid #ccc', 
           background: '#fafafa', 
           width: '100%', 
-          height: 400, 
-          cursor: dragVertex ? 'grabbing' : 'default' 
+          height: '92%', // Remove fixed height
+          // maxHeight: '100%', // 移除maxHeight，防止受容器影响
+          cursor: 'default' // Changed from grabbing
         }}
-        // Add mouse move/up listeners here if not using window listeners
-        // onMouseMove={handleMouseMove} 
-        // onMouseUp={handleMouseUp}
-        // onMouseLeave={handleMouseUp} // Handle leaving SVG area
       >
-        {renderPanels()}
+        {renderGeneratedPanels()} {/* Render generated panels */}
+        {/* {renderPanels()} */}{/* Keep or remove original renderPanels based on needs */}
       </svg>
-      <div style={{ marginTop: 12 }}>
-        <b>板片列表：</b>
-        <ul style={{ listStyle: 'none', padding: 0 }}>
-          {panels.map(panel => (
-            <li 
-              key={panel.id} 
-              style={{ 
-                padding: '4px 0', 
-                cursor: 'pointer', 
-                color: panel.id === selectedPanelId ? '#1976d2' : '#333', 
-                fontWeight: panel.id === selectedPanelId ? 'bold' : 'normal' 
-              }} 
-              onClick={() => handlePanelClick(panel.id)}
-            >
-              板片 #{panel.id}
-            </li>
-          ))}
-        </ul>
-      </div>
     </div>
   );
 };

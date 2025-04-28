@@ -1,0 +1,3097 @@
+[{
+"Pattern InputInformation" : [ {
+"Children Information" : [ {
+"Children shape count" : "3"
+}, {
+"LineList" : [ {
+"Line count" : "4"
+}, {
+"Line index" : "0",
+"Line length" : 236.107,
+"Line type" : "Straight type"
+}, {
+"Line index" : "1",
+"Line length" : 29.1338,
+"Line type" : ""
+}, {
+"Line index" : "2",
+"Line length" : 236.107,
+"Line type" : "Straight type"
+}, {
+"Line index" : "3",
+"Line length" : 29.1337,
+"Line type" : ""
+} ],
+"PointList" : [ {
+"Point count" : "4"
+}, {
+"Point index" : "0",
+"Point positionX" : -206.621,
+"Point positionY" : 1140.97
+}, {
+"Point index" : "1",
+"Point positionX" : -187.181,
+"Point positionY" : 1136.27
+}, {
+"Point index" : "2",
+"Point positionX" : -131.704,
+"Point positionY" : 1365.77
+}, {
+"Point index" : "3",
+"Point positionX" : -151.144,
+"Point positionY" : 1370.47
+} ],
+"Shape index" : "0",
+"Shape name" : "Pattern_4025560",
+"Shape type" : "InnerShape"
+}, {
+"LineList" : [ {
+"Line count" : "1"
+}, {
+"Line index" : "0",
+"Line length" : 242.754,
+"Line type" : "Straight type"
+} ],
+"PointList" : [ {
+"Point count" : "2"
+}, {
+"Point index" : "0",
+"Point positionX" : -270.053,
+"Point positionY" : 952.24
+}, {
+"Point index" : "1",
+"Point positionX" : -27.2989,
+"Point positionY" : 952.24
+} ],
+"Shape index" : "1",
+"Shape name" : "Pattern_4025560",
+"Shape type" : "InnerShape"
+}, {
+"LineList" : [ {
+"Line count" : "4"
+}, {
+"Line index" : "0",
+"Line length" : 3.88227,
+"Line type" : ""
+}, {
+"Line index" : "1",
+"Line length" : 3.88227,
+"Line type" : ""
+}, {
+"Line index" : "2",
+"Line length" : 3.88227,
+"Line type" : ""
+}, {
+"Line index" : "3",
+"Line length" : 3.88227,
+"Line type" : ""
+} ],
+"PointList" : [ {
+"Point count" : "4"
+}, {
+"Point index" : "0",
+"Point positionX" : -32.7243,
+"Point positionY" : 944.992
+}, {
+"Point index" : "1",
+"Point positionX" : -35.2243,
+"Point positionY" : 947.492
+}, {
+"Point index" : "2",
+"Point positionX" : -32.7243,
+"Point positionY" : 949.992
+}, {
+"Point index" : "3",
+"Point positionX" : -30.2243,
+"Point positionY" : 947.492
+} ],
+"Shape index" : "2",
+"Shape name" : "Pattern_4025560",
+"Shape type" : "Hole Shape"
+} ],
+"LineList" : [ {
+"Line count" : "5"
+}, {
+"Line index" : "0",
+"Line length" : 234.724,
+"Line type" : ""
+}, {
+"Line index" : "1",
+"Line length" : 433.022,
+"Line type" : "Straight type"
+}, {
+"Line index" : "2",
+"Line length" : 242.754,
+"Line type" : "Straight type"
+}, {
+"Line index" : "3",
+"Line length" : 554.524,
+"Line type" : "Straight type"
+}, {
+"Line index" : "4",
+"Line length" : 67.2212,
+"Line type" : "Straight type"
+} ],
+"Pattern index" : "0",
+"Pattern name" : "Pattern_4025560",
+"PointList" : [ {
+"Point count" : "5"
+}, {
+"Point index" : "0",
+"Point positionX" : -94.52,
+"Point positionY" : 1496.76
+}, {
+"Point index" : "1",
+"Point positionX" : -270.053,
+"Point positionY" : 1375.26
+}, {
+"Point index" : "2",
+"Point positionX" : -270.053,
+"Point positionY" : 942.24
+}, {
+"Point index" : "3",
+"Point positionX" : -27.2989,
+"Point positionY" : 942.24
+}, {
+"Point index" : "4",
+"Point positionX" : -27.2988,
+"Point positionY" : 1496.76
+} ]
+} ]
+},
+{
+"Pattern InputInformation" : [ {
+"Children Information" : [ {
+"Children shape count" : "3"
+}, {
+"LineList" : [ {
+"Line count" : "4"
+}, {
+"Line index" : "0",
+"Line length" : 236.107,
+"Line type" : "Straight type"
+}, {
+"Line index" : "1",
+"Line length" : 29.1338,
+"Line type" : ""
+}, {
+"Line index" : "2",
+"Line length" : 236.107,
+"Line type" : "Straight type"
+}, {
+"Line index" : "3",
+"Line length" : 29.1337,
+"Line type" : ""
+} ],
+"PointList" : [ {
+"Point count" : "4"
+}, {
+"Point index" : "0",
+"Point positionX" : 212.367,
+"Point positionY" : 1130.41
+}, {
+"Point index" : "1",
+"Point positionX" : 192.927,
+"Point positionY" : 1125.72
+}, {
+"Point index" : "2",
+"Point positionX" : 137.45,
+"Point positionY" : 1355.21
+}, {
+"Point index" : "3",
+"Point positionX" : 156.89,
+"Point positionY" : 1359.91
+} ],
+"Shape index" : "0",
+"Shape name" : "Pattern_4025566",
+"Shape type" : "InnerShape"
+}, {
+"LineList" : [ {
+"Line count" : "1"
+}, {
+"Line index" : "0",
+"Line length" : 242.754,
+"Line type" : "Straight type"
+} ],
+"PointList" : [ {
+"Point count" : "2"
+}, {
+"Point index" : "0",
+"Point positionX" : 275.799,
+"Point positionY" : 941.681
+}, {
+"Point index" : "1",
+"Point positionX" : 33.045,
+"Point positionY" : 941.681
+} ],
+"Shape index" : "1",
+"Shape name" : "Pattern_4025566",
+"Shape type" : "InnerShape"
+}, {
+"LineList" : [ {
+"Line count" : "4"
+}, {
+"Line index" : "0",
+"Line length" : 3.88227,
+"Line type" : ""
+}, {
+"Line index" : "1",
+"Line length" : 3.88227,
+"Line type" : ""
+}, {
+"Line index" : "2",
+"Line length" : 3.88227,
+"Line type" : ""
+}, {
+"Line index" : "3",
+"Line length" : 3.88227,
+"Line type" : ""
+} ],
+"PointList" : [ {
+"Point count" : "4"
+}, {
+"Point index" : "0",
+"Point positionX" : 38.4705,
+"Point positionY" : 934.433
+}, {
+"Point index" : "1",
+"Point positionX" : 40.9705,
+"Point positionY" : 936.933
+}, {
+"Point index" : "2",
+"Point positionX" : 38.4705,
+"Point positionY" : 939.433
+}, {
+"Point index" : "3",
+"Point positionX" : 35.9705,
+"Point positionY" : 936.933
+} ],
+"Shape index" : "2",
+"Shape name" : "Pattern_4025566",
+"Shape type" : "Hole Shape"
+} ],
+"LineList" : [ {
+"Line count" : "5"
+}, {
+"Line index" : "0",
+"Line length" : 234.724,
+"Line type" : ""
+}, {
+"Line index" : "1",
+"Line length" : 433.022,
+"Line type" : "Straight type"
+}, {
+"Line index" : "2",
+"Line length" : 242.754,
+"Line type" : "Straight type"
+}, {
+"Line index" : "3",
+"Line length" : 554.524,
+"Line type" : "Straight type"
+}, {
+"Line index" : "4",
+"Line length" : 67.2212,
+"Line type" : "Straight type"
+} ],
+"Pattern index" : "0",
+"Pattern name" : "Pattern_4025566",
+"PointList" : [ {
+"Point count" : "5"
+}, {
+"Point index" : "0",
+"Point positionX" : 100.266,
+"Point positionY" : 1486.21
+}, {
+"Point index" : "1",
+"Point positionX" : 275.799,
+"Point positionY" : 1364.7
+}, {
+"Point index" : "2",
+"Point positionX" : 275.799,
+"Point positionY" : 931.681
+}, {
+"Point index" : "3",
+"Point positionX" : 33.045,
+"Point positionY" : 931.681
+}, {
+"Point index" : "4",
+"Point positionX" : 33.045,
+"Point positionY" : 1486.21
+} ]
+} ]
+},
+{
+"Pattern InputInformation" : [ {
+"Children Information" : [ {
+"Children shape count" : "7"
+}, {
+"LineList" : [ {
+"Line count" : "1"
+}, {
+"Line index" : "0",
+"Line length" : 271.805,
+"Line type" : "Straight type"
+} ],
+"PointList" : [ {
+"Point count" : "2"
+}, {
+"Point index" : "0",
+"Point positionX" : -1131.67,
+"Point positionY" : 1812.53
+}, {
+"Point index" : "1",
+"Point positionX" : -859.864,
+"Point positionY" : 1812.53
+} ],
+"Shape index" : "0",
+"Shape name" : "Pattern_4621378",
+"Shape type" : "InnerShape"
+}, {
+"LineList" : [ {
+"Line count" : "4"
+}, {
+"Line index" : "0",
+"Line length" : 245.71,
+"Line type" : "Straight type"
+}, {
+"Line index" : "1",
+"Line length" : 184.321,
+"Line type" : "Straight type"
+}, {
+"Line index" : "2",
+"Line length" : 190.141,
+"Line type" : "Straight type"
+}, {
+"Line index" : "3",
+"Line length" : 189.29,
+"Line type" : "Straight type"
+} ],
+"PointList" : [ {
+"Point count" : "4"
+}, {
+"Point index" : "0",
+"Point positionX" : -847.616,
+"Point positionY" : 2354.41
+}, {
+"Point index" : "1",
+"Point positionX" : -1093.32,
+"Point positionY" : 2356.6
+}, {
+"Point index" : "2",
+"Point positionX" : -1089.48,
+"Point positionY" : 2172.32
+}, {
+"Point index" : "3",
+"Point positionX" : -899.337,
+"Point positionY" : 2172.32
+} ],
+"Shape index" : "1",
+"Shape name" : "Pattern_4621378",
+"Shape type" : "InnerShape"
+}, {
+"LineList" : [ {
+"Line count" : "1"
+}, {
+"Line index" : "0",
+"Line length" : 189.338,
+"Line type" : "Straight type"
+} ],
+"PointList" : [ {
+"Point count" : "2"
+}, {
+"Point index" : "0",
+"Point positionX" : -904.534,
+"Point positionY" : 2172.32
+}, {
+"Point index" : "1",
+"Point positionX" : -852.8,
+"Point positionY" : 2354.45
+} ],
+"Shape index" : "2",
+"Shape name" : "Pattern_4621378",
+"Shape type" : "InnerShape"
+}, {
+"LineList" : [ {
+"Line count" : "1"
+}, {
+"Line index" : "0",
+"Line length" : 276.683,
+"Line type" : ""
+} ],
+"PointList" : [ {
+"Point count" : "2"
+}, {
+"Point index" : "0",
+"Point positionX" : -997.716,
+"Point positionY" : 2431.68
+}, {
+"Point index" : "1",
+"Point positionX" : -1237.19,
+"Point positionY" : 2307.74
+} ],
+"Shape index" : "3",
+"Shape name" : "Pattern_4621378",
+"Shape type" : "Base Line"
+}, {
+"LineList" : [ {
+"Line count" : "1"
+}, {
+"Line index" : "0",
+"Line length" : 303.092,
+"Line type" : ""
+} ],
+"PointList" : [ {
+"Point count" : "2"
+}, {
+"Point index" : "0",
+"Point positionX" : -1237.19,
+"Point positionY" : 2307.74
+}, {
+"Point index" : "1",
+"Point positionX" : -997.716,
+"Point positionY" : 2431.68
+} ],
+"Shape index" : "4",
+"Shape name" : "Pattern_4621378",
+"Shape type" : "Base Line"
+}, {
+"LineList" : [ {
+"Line count" : "1"
+}, {
+"Line index" : "0",
+"Line length" : 279.925,
+"Line type" : ""
+} ],
+"PointList" : [ {
+"Point count" : "2"
+}, {
+"Point index" : "0",
+"Point positionX" : -754.342,
+"Point positionY" : 2307.74
+}, {
+"Point index" : "1",
+"Point positionX" : -997.716,
+"Point positionY" : 2431.68
+} ],
+"Shape index" : "5",
+"Shape name" : "Pattern_4621378",
+"Shape type" : "Base Line"
+}, {
+"LineList" : [ {
+"Line count" : "1"
+}, {
+"Line index" : "0",
+"Line length" : 308.742,
+"Line type" : ""
+} ],
+"PointList" : [ {
+"Point count" : "2"
+}, {
+"Point index" : "0",
+"Point positionX" : -997.716,
+"Point positionY" : 2431.68
+}, {
+"Point index" : "1",
+"Point positionX" : -754.342,
+"Point positionY" : 2307.74
+} ],
+"Shape index" : "6",
+"Shape name" : "Pattern_4621378",
+"Shape type" : "Base Line"
+} ],
+"LineList" : [ {
+"Line count" : "8"
+}, {
+"Line index" : "0",
+"Line length" : 333.567,
+"Line type" : ""
+}, {
+"Line index" : "1",
+"Line length" : 517.173,
+"Line type" : ""
+}, {
+"Line index" : "2",
+"Line length" : 271.805,
+"Line type" : "Straight type"
+}, {
+"Line index" : "3",
+"Line length" : 517.16,
+"Line type" : ""
+}, {
+"Line index" : "4",
+"Line length" : 241.071,
+"Line type" : ""
+}, {
+"Line index" : "5",
+"Line length" : 67.2213,
+"Line type" : "Straight type"
+}, {
+"Line index" : "6",
+"Line length" : 83.4991,
+"Line type" : "Straight type"
+}, {
+"Line index" : "7",
+"Line length" : 184.657,
+"Line type" : ""
+} ],
+"Pattern index" : "0",
+"Pattern name" : "Pattern_4621378",
+"PointList" : [ {
+"Point count" : "8"
+}, {
+"Point index" : "0",
+"Point positionX" : -1030.75,
+"Point positionY" : 2563.08
+}, {
+"Point index" : "1",
+"Point positionX" : -1237.19,
+"Point positionY" : 2307.74
+}, {
+"Point index" : "2",
+"Point positionX" : -1131.67,
+"Point positionY" : 1802.53
+}, {
+"Point index" : "3",
+"Point positionX" : -859.864,
+"Point positionY" : 1802.53
+}, {
+"Point index" : "4",
+"Point positionX" : -754.342,
+"Point positionY" : 2307.74
+}, {
+"Point index" : "5",
+"Point positionX" : -827.376,
+"Point positionY" : 2520.45
+}, {
+"Point index" : "6",
+"Point positionX" : -805.73,
+"Point positionY" : 2584.09
+}, {
+"Point index" : "7",
+"Point positionX" : -884.781,
+"Point positionY" : 2610.98
+} ]
+} ]
+},
+{
+"Pattern InputInformation" : [ {
+"Children Information" : [ {
+"Children shape count" : "7"
+}, {
+"LineList" : [ {
+"Line count" : "1"
+}, {
+"Line index" : "0",
+"Line length" : 271.805,
+"Line type" : "Straight type"
+} ],
+"PointList" : [ {
+"Point count" : "2"
+}, {
+"Point index" : "0",
+"Point positionX" : 1130.07,
+"Point positionY" : 1812.53
+}, {
+"Point index" : "1",
+"Point positionX" : 858.267,
+"Point positionY" : 1812.53
+} ],
+"Shape index" : "0",
+"Shape name" : "Pattern_4621379",
+"Shape type" : "InnerShape"
+}, {
+"LineList" : [ {
+"Line count" : "4"
+}, {
+"Line index" : "0",
+"Line length" : 245.71,
+"Line type" : "Straight type"
+}, {
+"Line index" : "1",
+"Line length" : 184.321,
+"Line type" : "Straight type"
+}, {
+"Line index" : "2",
+"Line length" : 190.141,
+"Line type" : "Straight type"
+}, {
+"Line index" : "3",
+"Line length" : 189.29,
+"Line type" : "Straight type"
+} ],
+"PointList" : [ {
+"Point count" : "4"
+}, {
+"Point index" : "0",
+"Point positionX" : 846.019,
+"Point positionY" : 2354.41
+}, {
+"Point index" : "1",
+"Point positionX" : 1091.72,
+"Point positionY" : 2356.6
+}, {
+"Point index" : "2",
+"Point positionX" : 1087.88,
+"Point positionY" : 2172.32
+}, {
+"Point index" : "3",
+"Point positionX" : 897.74,
+"Point positionY" : 2172.32
+} ],
+"Shape index" : "1",
+"Shape name" : "Pattern_4621379",
+"Shape type" : "InnerShape"
+}, {
+"LineList" : [ {
+"Line count" : "1"
+}, {
+"Line index" : "0",
+"Line length" : 189.338,
+"Line type" : "Straight type"
+} ],
+"PointList" : [ {
+"Point count" : "2"
+}, {
+"Point index" : "0",
+"Point positionX" : 902.938,
+"Point positionY" : 2172.32
+}, {
+"Point index" : "1",
+"Point positionX" : 851.204,
+"Point positionY" : 2354.45
+} ],
+"Shape index" : "2",
+"Shape name" : "Pattern_4621379",
+"Shape type" : "InnerShape"
+}, {
+"LineList" : [ {
+"Line count" : "1"
+}, {
+"Line index" : "0",
+"Line length" : 276.683,
+"Line type" : ""
+} ],
+"PointList" : [ {
+"Point count" : "2"
+}, {
+"Point index" : "0",
+"Point positionX" : 996.12,
+"Point positionY" : 2431.68
+}, {
+"Point index" : "1",
+"Point positionX" : 1235.59,
+"Point positionY" : 2307.74
+} ],
+"Shape index" : "3",
+"Shape name" : "Pattern_4621379",
+"Shape type" : "Base Line"
+}, {
+"LineList" : [ {
+"Line count" : "1"
+}, {
+"Line index" : "0",
+"Line length" : 303.092,
+"Line type" : ""
+} ],
+"PointList" : [ {
+"Point count" : "2"
+}, {
+"Point index" : "0",
+"Point positionX" : 1235.59,
+"Point positionY" : 2307.74
+}, {
+"Point index" : "1",
+"Point positionX" : 996.12,
+"Point positionY" : 2431.68
+} ],
+"Shape index" : "4",
+"Shape name" : "Pattern_4621379",
+"Shape type" : "Base Line"
+}, {
+"LineList" : [ {
+"Line count" : "1"
+}, {
+"Line index" : "0",
+"Line length" : 279.925,
+"Line type" : ""
+} ],
+"PointList" : [ {
+"Point count" : "2"
+}, {
+"Point index" : "0",
+"Point positionX" : 752.745,
+"Point positionY" : 2307.74
+}, {
+"Point index" : "1",
+"Point positionX" : 996.12,
+"Point positionY" : 2431.68
+} ],
+"Shape index" : "5",
+"Shape name" : "Pattern_4621379",
+"Shape type" : "Base Line"
+}, {
+"LineList" : [ {
+"Line count" : "1"
+}, {
+"Line index" : "0",
+"Line length" : 308.742,
+"Line type" : ""
+} ],
+"PointList" : [ {
+"Point count" : "2"
+}, {
+"Point index" : "0",
+"Point positionX" : 996.12,
+"Point positionY" : 2431.68
+}, {
+"Point index" : "1",
+"Point positionX" : 752.745,
+"Point positionY" : 2307.74
+} ],
+"Shape index" : "6",
+"Shape name" : "Pattern_4621379",
+"Shape type" : "Base Line"
+} ],
+"LineList" : [ {
+"Line count" : "8"
+}, {
+"Line index" : "0",
+"Line length" : 333.567,
+"Line type" : ""
+}, {
+"Line index" : "1",
+"Line length" : 517.173,
+"Line type" : ""
+}, {
+"Line index" : "2",
+"Line length" : 271.805,
+"Line type" : "Straight type"
+}, {
+"Line index" : "3",
+"Line length" : 517.16,
+"Line type" : ""
+}, {
+"Line index" : "4",
+"Line length" : 241.071,
+"Line type" : ""
+}, {
+"Line index" : "5",
+"Line length" : 67.2213,
+"Line type" : "Straight type"
+}, {
+"Line index" : "6",
+"Line length" : 83.4991,
+"Line type" : "Straight type"
+}, {
+"Line index" : "7",
+"Line length" : 184.657,
+"Line type" : ""
+} ],
+"Pattern index" : "0",
+"Pattern name" : "Pattern_4621379",
+"PointList" : [ {
+"Point count" : "8"
+}, {
+"Point index" : "0",
+"Point positionX" : 1029.15,
+"Point positionY" : 2563.08
+}, {
+"Point index" : "1",
+"Point positionX" : 1235.59,
+"Point positionY" : 2307.74
+}, {
+"Point index" : "2",
+"Point positionX" : 1130.07,
+"Point positionY" : 1802.53
+}, {
+"Point index" : "3",
+"Point positionX" : 858.267,
+"Point positionY" : 1802.53
+}, {
+"Point index" : "4",
+"Point positionX" : 752.745,
+"Point positionY" : 2307.74
+}, {
+"Point index" : "5",
+"Point positionX" : 825.78,
+"Point positionY" : 2520.45
+}, {
+"Point index" : "6",
+"Point positionX" : 804.133,
+"Point positionY" : 2584.09
+}, {
+"Point index" : "7",
+"Point positionX" : 883.185,
+"Point positionY" : 2610.98
+} ]
+} ]
+},
+{
+"Pattern InputInformation" : [ {
+"Children Information" : [ {
+"Children shape count" : "5"
+}, {
+"LineList" : [ {
+"Line count" : "2"
+}, {
+"Line index" : "0",
+"Line length" : 119.623,
+"Line type" : ""
+}, {
+"Line index" : "1",
+"Line length" : 184.07,
+"Line type" : ""
+} ],
+"PointList" : [ {
+"Point count" : "3"
+}, {
+"Point index" : "0",
+"Point positionX" : -102.896,
+"Point positionY" : 1797.8
+}, {
+"Point index" : "1",
+"Point positionX" : -200.273,
+"Point positionY" : 1857.25
+}, {
+"Point index" : "2",
+"Point positionX" : -167.779,
+"Point positionY" : 2036.57
+} ],
+"Shape index" : "0",
+"Shape name" : "Pattern_6774331",
+"Shape type" : "InnerShape"
+}, {
+"LineList" : [ {
+"Line count" : "4"
+}, {
+"Line index" : "0",
+"Line length" : 6.24289,
+"Line type" : ""
+}, {
+"Line index" : "1",
+"Line length" : 6.24289,
+"Line type" : ""
+}, {
+"Line index" : "2",
+"Line length" : 6.2429,
+"Line type" : ""
+}, {
+"Line index" : "3",
+"Line length" : 6.2429,
+"Line type" : ""
+} ],
+"PointList" : [ {
+"Point count" : "4"
+}, {
+"Point index" : "0",
+"Point positionX" : -110.769,
+"Point positionY" : 1801.11
+}, {
+"Point index" : "1",
+"Point positionX" : -114.769,
+"Point positionY" : 1805.11
+}, {
+"Point index" : "2",
+"Point positionX" : -110.769,
+"Point positionY" : 1809.11
+}, {
+"Point index" : "3",
+"Point positionX" : -106.769,
+"Point positionY" : 1805.11
+} ],
+"Shape index" : "1",
+"Shape name" : "Pattern_6774331",
+"Shape type" : "InnerShape"
+}, {
+"LineList" : [ {
+"Line count" : "2"
+}, {
+"Line index" : "0",
+"Line length" : 4.27432,
+"Line type" : "Straight type"
+}, {
+"Line index" : "1",
+"Line length" : 3.9838,
+"Line type" : "Straight type"
+} ],
+"PointList" : [ {
+"Point count" : "3"
+}, {
+"Point index" : "0",
+"Point positionX" : -113.023,
+"Point positionY" : 1806.53
+}, {
+"Point index" : "1",
+"Point positionX" : -110.769,
+"Point positionY" : 1802.9
+}, {
+"Point index" : "2",
+"Point positionX" : -109.133,
+"Point positionY" : 1806.53
+} ],
+"Shape index" : "2",
+"Shape name" : "Pattern_6774331",
+"Shape type" : "InnerShape"
+}, {
+"LineList" : [ {
+"Line count" : "1"
+}, {
+"Line index" : "0",
+"Line length" : 212.021,
+"Line type" : ""
+} ],
+"PointList" : [ {
+"Point count" : "2"
+}, {
+"Point index" : "0",
+"Point positionX" : -190.728,
+"Point positionY" : 1860.55
+}, {
+"Point index" : "1",
+"Point positionX" : -196.007,
+"Point positionY" : 1650.01
+} ],
+"Shape index" : "3",
+"Shape name" : "Pattern_6774331",
+"Shape type" : "Base Line"
+}, {
+"LineList" : [ {
+"Line count" : "1"
+}, {
+"Line index" : "0",
+"Line length" : 210.633,
+"Line type" : ""
+} ],
+"PointList" : [ {
+"Point count" : "2"
+}, {
+"Point index" : "0",
+"Point positionX" : -196.007,
+"Point positionY" : 1650.01
+}, {
+"Point index" : "1",
+"Point positionX" : -190.728,
+"Point positionY" : 1860.55
+} ],
+"Shape index" : "4",
+"Shape name" : "Pattern_6774331",
+"Shape type" : "Base Line"
+} ],
+"LineList" : [ {
+"Line count" : "6"
+}, {
+"Line index" : "0",
+"Line length" : 51.0441,
+"Line type" : ""
+}, {
+"Line index" : "1",
+"Line length" : 161.038,
+"Line type" : ""
+}, {
+"Line index" : "2",
+"Line length" : 108.437,
+"Line type" : ""
+}, {
+"Line index" : "3",
+"Line length" : 180.001,
+"Line type" : ""
+}, {
+"Line index" : "4",
+"Line length" : 535.298,
+"Line type" : ""
+}, {
+"Line index" : "5",
+"Line length" : 204.933,
+"Line type" : ""
+} ],
+"Pattern index" : "0",
+"Pattern name" : "Pattern_6774331",
+"PointList" : [ {
+"Point count" : "6"
+}, {
+"Point index" : "0",
+"Point positionX" : -196.007,
+"Point positionY" : 1650.01
+}, {
+"Point index" : "1",
+"Point positionX" : -145.147,
+"Point positionY" : 1654.13
+}, {
+"Point index" : "2",
+"Point positionX" : -101.687,
+"Point positionY" : 1807.83
+}, {
+"Point index" : "3",
+"Point positionX" : -190.728,
+"Point positionY" : 1860.55
+}, {
+"Point index" : "4",
+"Point positionX" : -157.805,
+"Point positionY" : 2035.84
+}, {
+"Point index" : "5",
+"Point positionX" : -391.582,
+"Point positionY" : 1692.64
+} ]
+} ]
+},
+{
+"Pattern InputInformation" : [ {
+"Children Information" : [ {
+"Children shape count" : "5"
+}, {
+"LineList" : [ {
+"Line count" : "2"
+}, {
+"Line index" : "0",
+"Line length" : 119.623,
+"Line type" : ""
+}, {
+"Line index" : "1",
+"Line length" : 184.07,
+"Line type" : ""
+} ],
+"PointList" : [ {
+"Point count" : "3"
+}, {
+"Point index" : "0",
+"Point positionX" : 54.9057,
+"Point positionY" : 1779.18
+}, {
+"Point index" : "1",
+"Point positionX" : 152.282,
+"Point positionY" : 1838.63
+}, {
+"Point index" : "2",
+"Point positionX" : 119.788,
+"Point positionY" : 2017.95
+} ],
+"Shape index" : "0",
+"Shape name" : "Pattern_6774333",
+"Shape type" : "InnerShape"
+}, {
+"LineList" : [ {
+"Line count" : "4"
+}, {
+"Line index" : "0",
+"Line length" : 6.24289,
+"Line type" : ""
+}, {
+"Line index" : "1",
+"Line length" : 6.24289,
+"Line type" : ""
+}, {
+"Line index" : "2",
+"Line length" : 6.2429,
+"Line type" : ""
+}, {
+"Line index" : "3",
+"Line length" : 6.2429,
+"Line type" : ""
+} ],
+"PointList" : [ {
+"Point count" : "4"
+}, {
+"Point index" : "0",
+"Point positionX" : 62.7787,
+"Point positionY" : 1782.49
+}, {
+"Point index" : "1",
+"Point positionX" : 66.7787,
+"Point positionY" : 1786.49
+}, {
+"Point index" : "2",
+"Point positionX" : 62.7787,
+"Point positionY" : 1790.49
+}, {
+"Point index" : "3",
+"Point positionX" : 58.7787,
+"Point positionY" : 1786.49
+} ],
+"Shape index" : "1",
+"Shape name" : "Pattern_6774333",
+"Shape type" : "InnerShape"
+}, {
+"LineList" : [ {
+"Line count" : "2"
+}, {
+"Line index" : "0",
+"Line length" : 4.27432,
+"Line type" : "Straight type"
+}, {
+"Line index" : "1",
+"Line length" : 3.9838,
+"Line type" : "Straight type"
+} ],
+"PointList" : [ {
+"Point count" : "3"
+}, {
+"Point index" : "0",
+"Point positionX" : 65.0319,
+"Point positionY" : 1787.91
+}, {
+"Point index" : "1",
+"Point positionX" : 62.7787,
+"Point positionY" : 1784.28
+}, {
+"Point index" : "2",
+"Point positionX" : 61.1423,
+"Point positionY" : 1787.91
+} ],
+"Shape index" : "2",
+"Shape name" : "Pattern_6774333",
+"Shape type" : "InnerShape"
+}, {
+"LineList" : [ {
+"Line count" : "1"
+}, {
+"Line index" : "0",
+"Line length" : 212.021,
+"Line type" : ""
+} ],
+"PointList" : [ {
+"Point count" : "2"
+}, {
+"Point index" : "0",
+"Point positionX" : 142.738,
+"Point positionY" : 1841.93
+}, {
+"Point index" : "1",
+"Point positionX" : 148.016,
+"Point positionY" : 1631.39
+} ],
+"Shape index" : "3",
+"Shape name" : "Pattern_6774333",
+"Shape type" : "Base Line"
+}, {
+"LineList" : [ {
+"Line count" : "1"
+}, {
+"Line index" : "0",
+"Line length" : 210.633,
+"Line type" : ""
+} ],
+"PointList" : [ {
+"Point count" : "2"
+}, {
+"Point index" : "0",
+"Point positionX" : 148.016,
+"Point positionY" : 1631.39
+}, {
+"Point index" : "1",
+"Point positionX" : 142.738,
+"Point positionY" : 1841.93
+} ],
+"Shape index" : "4",
+"Shape name" : "Pattern_6774333",
+"Shape type" : "Base Line"
+} ],
+"LineList" : [ {
+"Line count" : "6"
+}, {
+"Line index" : "0",
+"Line length" : 51.0441,
+"Line type" : ""
+}, {
+"Line index" : "1",
+"Line length" : 161.038,
+"Line type" : ""
+}, {
+"Line index" : "2",
+"Line length" : 108.437,
+"Line type" : ""
+}, {
+"Line index" : "3",
+"Line length" : 180.001,
+"Line type" : ""
+}, {
+"Line index" : "4",
+"Line length" : 535.298,
+"Line type" : ""
+}, {
+"Line index" : "5",
+"Line length" : 204.933,
+"Line type" : ""
+} ],
+"Pattern index" : "0",
+"Pattern name" : "Pattern_6774333",
+"PointList" : [ {
+"Point count" : "6"
+}, {
+"Point index" : "0",
+"Point positionX" : 148.016,
+"Point positionY" : 1631.39
+}, {
+"Point index" : "1",
+"Point positionX" : 97.1564,
+"Point positionY" : 1635.51
+}, {
+"Point index" : "2",
+"Point positionX" : 53.6959,
+"Point positionY" : 1789.21
+}, {
+"Point index" : "3",
+"Point positionX" : 142.738,
+"Point positionY" : 1841.93
+}, {
+"Point index" : "4",
+"Point positionX" : 109.814,
+"Point positionY" : 2017.22
+}, {
+"Point index" : "5",
+"Point positionX" : 343.592,
+"Point positionY" : 1674.02
+} ]
+} ]
+},
+{
+"Pattern InputInformation" : [ {
+"Children Information" : [ {
+"Children shape count" : "4"
+}, {
+"LineList" : [ {
+"Line count" : "1"
+}, {
+"Line index" : "0",
+"Line length" : 242.754,
+"Line type" : "Straight type"
+} ],
+"PointList" : [ {
+"Point count" : "2"
+}, {
+"Point index" : "0",
+"Point positionX" : -661.536,
+"Point positionY" : 946.708
+}, {
+"Point index" : "1",
+"Point positionX" : -418.782,
+"Point positionY" : 946.708
+} ],
+"Shape index" : "0",
+"Shape name" : "Pattern_4025563",
+"Shape type" : "InnerShape"
+}, {
+"LineList" : [ {
+"Line count" : "1"
+}, {
+"Line index" : "0",
+"Line length" : 242.754,
+"Line type" : "Straight type"
+} ],
+"PointList" : [ {
+"Point count" : "2"
+}, {
+"Point index" : "0",
+"Point positionX" : -661.536,
+"Point positionY" : 946.708
+}, {
+"Point index" : "1",
+"Point positionX" : -904.29,
+"Point positionY" : 946.708
+} ],
+"Shape index" : "1",
+"Shape name" : "Pattern_4025563",
+"Shape type" : "InnerShape"
+}, {
+"LineList" : [ {
+"Line count" : "1"
+}, {
+"Line index" : "0",
+"Line length" : 695.261,
+"Line type" : "Straight type"
+} ],
+"PointList" : [ {
+"Point count" : "2"
+}, {
+"Point index" : "0",
+"Point positionX" : -661.536,
+"Point positionY" : 1631.97
+}, {
+"Point index" : "1",
+"Point positionX" : -661.536,
+"Point positionY" : 936.708
+} ],
+"Shape index" : "2",
+"Shape name" : "Pattern_4025563",
+"Shape type" : "Base Line"
+}, {
+"LineList" : [ {
+"Line count" : "1"
+}, {
+"Line index" : "0",
+"Line length" : 695.261,
+"Line type" : "Straight type"
+} ],
+"PointList" : [ {
+"Point count" : "2"
+}, {
+"Point index" : "0",
+"Point positionX" : -661.536,
+"Point positionY" : 1631.97
+}, {
+"Point index" : "1",
+"Point positionX" : -661.536,
+"Point positionY" : 936.708
+} ],
+"Shape index" : "3",
+"Shape name" : "Pattern_4025563",
+"Shape type" : "Base Line"
+} ],
+"LineList" : [ {
+"Line count" : "8"
+}, {
+"Line index" : "0",
+"Line length" : 242.754,
+"Line type" : "Straight type"
+}, {
+"Line index" : "1",
+"Line length" : 433.022,
+"Line type" : "Straight type"
+}, {
+"Line index" : "2",
+"Line length" : 338.967,
+"Line type" : ""
+}, {
+"Line index" : "3",
+"Line length" : 71.5326,
+"Line type" : ""
+}, {
+"Line index" : "4",
+"Line length" : 71.5329,
+"Line type" : ""
+}, {
+"Line index" : "5",
+"Line length" : 338.967,
+"Line type" : ""
+}, {
+"Line index" : "6",
+"Line length" : 433.022,
+"Line type" : "Straight type"
+}, {
+"Line index" : "7",
+"Line length" : 242.754,
+"Line type" : "Straight type"
+} ],
+"Pattern index" : "0",
+"Pattern name" : "Pattern_4025563",
+"PointList" : [ {
+"Point count" : "8"
+}, {
+"Point index" : "0",
+"Point positionX" : -661.536,
+"Point positionY" : 936.708
+}, {
+"Point index" : "1",
+"Point positionX" : -418.782,
+"Point positionY" : 936.708
+}, {
+"Point index" : "2",
+"Point positionX" : -418.782,
+"Point positionY" : 1369.73
+}, {
+"Point index" : "3",
+"Point positionX" : -590.139,
+"Point positionY" : 1634.12
+}, {
+"Point index" : "4",
+"Point positionX" : -661.536,
+"Point positionY" : 1631.97
+}, {
+"Point index" : "5",
+"Point positionX" : -732.933,
+"Point positionY" : 1634.12
+}, {
+"Point index" : "6",
+"Point positionX" : -904.29,
+"Point positionY" : 1369.73
+}, {
+"Point index" : "7",
+"Point positionX" : -904.29,
+"Point positionY" : 936.708
+} ]
+} ]
+},
+{
+"Pattern InputInformation" : [ {
+"LineList" : [ {
+"Line count" : "4"
+}, {
+"Line index" : "0",
+"Line length" : 236.107,
+"Line type" : "Straight type"
+}, {
+"Line index" : "1",
+"Line length" : 29.1337,
+"Line type" : ""
+}, {
+"Line index" : "2",
+"Line length" : 236.107,
+"Line type" : "Straight type"
+}, {
+"Line index" : "3",
+"Line length" : 29.1337,
+"Line type" : ""
+} ],
+"Pattern index" : "0",
+"Pattern name" : "Pattern_10325800",
+"PointList" : [ {
+"Point count" : "4"
+}, {
+"Point index" : "0",
+"Point positionX" : 355.609,
+"Point positionY" : 1191.31
+}, {
+"Point index" : "1",
+"Point positionX" : 355.609,
+"Point positionY" : 1427.41
+}, {
+"Point index" : "2",
+"Point positionX" : 335.609,
+"Point positionY" : 1427.41
+}, {
+"Point index" : "3",
+"Point positionX" : 335.609,
+"Point positionY" : 1191.31
+} ]
+} ]
+},
+{
+"Pattern InputInformation" : [ {
+"LineList" : [ {
+"Line count" : "4"
+}, {
+"Line index" : "0",
+"Line length" : 236.107,
+"Line type" : "Straight type"
+}, {
+"Line index" : "1",
+"Line length" : 29.1337,
+"Line type" : ""
+}, {
+"Line index" : "2",
+"Line length" : 236.107,
+"Line type" : "Straight type"
+}, {
+"Line index" : "3",
+"Line length" : 29.1337,
+"Line type" : ""
+} ],
+"Pattern index" : "0",
+"Pattern name" : "Pattern_10325801",
+"PointList" : [ {
+"Point count" : "4"
+}, {
+"Point index" : "0",
+"Point positionX" : -331.45,
+"Point positionY" : 1204.21
+}, {
+"Point index" : "1",
+"Point positionX" : -331.45,
+"Point positionY" : 1440.32
+}, {
+"Point index" : "2",
+"Point positionX" : -311.45,
+"Point positionY" : 1440.32
+}, {
+"Point index" : "3",
+"Point positionX" : -311.45,
+"Point positionY" : 1204.21
+} ]
+} ]
+},
+{
+"Pattern InputInformation" : [ {
+"Children Information" : [ {
+"Children shape count" : "5"
+}, {
+"LineList" : [ {
+"Line count" : "2"
+}, {
+"Line index" : "0",
+"Line length" : 119.623,
+"Line type" : ""
+}, {
+"Line index" : "1",
+"Line length" : 184.07,
+"Line type" : ""
+} ],
+"PointList" : [ {
+"Point count" : "3"
+}, {
+"Point index" : "0",
+"Point positionX" : 2364.79,
+"Point positionY" : 1088.3
+}, {
+"Point index" : "1",
+"Point positionX" : 2267.41,
+"Point positionY" : 1147.75
+}, {
+"Point index" : "2",
+"Point positionX" : 2299.9,
+"Point positionY" : 1327.07
+} ],
+"Shape index" : "0",
+"Shape name" : "Pattern_6774332",
+"Shape type" : "InnerShape"
+}, {
+"LineList" : [ {
+"Line count" : "4"
+}, {
+"Line index" : "0",
+"Line length" : 6.24289,
+"Line type" : ""
+}, {
+"Line index" : "1",
+"Line length" : 6.24289,
+"Line type" : ""
+}, {
+"Line index" : "2",
+"Line length" : 6.24289,
+"Line type" : ""
+}, {
+"Line index" : "3",
+"Line length" : 6.24289,
+"Line type" : ""
+} ],
+"PointList" : [ {
+"Point count" : "4"
+}, {
+"Point index" : "0",
+"Point positionX" : 2356.91,
+"Point positionY" : 1091.61
+}, {
+"Point index" : "1",
+"Point positionX" : 2352.91,
+"Point positionY" : 1095.61
+}, {
+"Point index" : "2",
+"Point positionX" : 2356.91,
+"Point positionY" : 1099.61
+}, {
+"Point index" : "3",
+"Point positionX" : 2360.91,
+"Point positionY" : 1095.61
+} ],
+"Shape index" : "1",
+"Shape name" : "Pattern_6774332",
+"Shape type" : "InnerShape"
+}, {
+"LineList" : [ {
+"Line count" : "2"
+}, {
+"Line index" : "0",
+"Line length" : 4.2743,
+"Line type" : "Straight type"
+}, {
+"Line index" : "1",
+"Line length" : 3.98383,
+"Line type" : "Straight type"
+} ],
+"PointList" : [ {
+"Point count" : "3"
+}, {
+"Point index" : "0",
+"Point positionX" : 2354.66,
+"Point positionY" : 1097.03
+}, {
+"Point index" : "1",
+"Point positionX" : 2356.91,
+"Point positionY" : 1093.4
+}, {
+"Point index" : "2",
+"Point positionX" : 2358.55,
+"Point positionY" : 1097.03
+} ],
+"Shape index" : "2",
+"Shape name" : "Pattern_6774332",
+"Shape type" : "InnerShape"
+}, {
+"LineList" : [ {
+"Line count" : "1"
+}, {
+"Line index" : "0",
+"Line length" : 212.021,
+"Line type" : ""
+} ],
+"PointList" : [ {
+"Point count" : "2"
+}, {
+"Point index" : "0",
+"Point positionX" : 2276.95,
+"Point positionY" : 1151.05
+}, {
+"Point index" : "1",
+"Point positionX" : 2271.68,
+"Point positionY" : 940.514
+} ],
+"Shape index" : "3",
+"Shape name" : "Pattern_6774332",
+"Shape type" : "Base Line"
+}, {
+"LineList" : [ {
+"Line count" : "1"
+}, {
+"Line index" : "0",
+"Line length" : 210.633,
+"Line type" : ""
+} ],
+"PointList" : [ {
+"Point count" : "2"
+}, {
+"Point index" : "0",
+"Point positionX" : 2271.68,
+"Point positionY" : 940.514
+}, {
+"Point index" : "1",
+"Point positionX" : 2276.95,
+"Point positionY" : 1151.05
+} ],
+"Shape index" : "4",
+"Shape name" : "Pattern_6774332",
+"Shape type" : "Base Line"
+} ],
+"LineList" : [ {
+"Line count" : "6"
+}, {
+"Line index" : "0",
+"Line length" : 51.044,
+"Line type" : ""
+}, {
+"Line index" : "1",
+"Line length" : 161.038,
+"Line type" : ""
+}, {
+"Line index" : "2",
+"Line length" : 108.437,
+"Line type" : ""
+}, {
+"Line index" : "3",
+"Line length" : 180.001,
+"Line type" : ""
+}, {
+"Line index" : "4",
+"Line length" : 535.297,
+"Line type" : ""
+}, {
+"Line index" : "5",
+"Line length" : 204.933,
+"Line type" : ""
+} ],
+"Pattern index" : "0",
+"Pattern name" : "Pattern_6774332",
+"PointList" : [ {
+"Point count" : "6"
+}, {
+"Point index" : "0",
+"Point positionX" : 2271.68,
+"Point positionY" : 940.514
+}, {
+"Point index" : "1",
+"Point positionX" : 2322.54,
+"Point positionY" : 944.629
+}, {
+"Point index" : "2",
+"Point positionX" : 2366,
+"Point positionY" : 1098.33
+}, {
+"Point index" : "3",
+"Point positionX" : 2276.95,
+"Point positionY" : 1151.05
+}, {
+"Point index" : "4",
+"Point positionX" : 2309.88,
+"Point positionY" : 1326.34
+}, {
+"Point index" : "5",
+"Point positionX" : 2076.1,
+"Point positionY" : 983.142
+} ]
+} ]
+},
+{
+"Pattern InputInformation" : [ {
+"Children Information" : [ {
+"Children shape count" : "5"
+}, {
+"LineList" : [ {
+"Line count" : "2"
+}, {
+"Line index" : "0",
+"Line length" : 119.623,
+"Line type" : ""
+}, {
+"Line index" : "1",
+"Line length" : 184.07,
+"Line type" : ""
+} ],
+"PointList" : [ {
+"Point count" : "3"
+}, {
+"Point index" : "0",
+"Point positionX" : 2522.59,
+"Point positionY" : 1069.68
+}, {
+"Point index" : "1",
+"Point positionX" : 2619.96,
+"Point positionY" : 1129.13
+}, {
+"Point index" : "2",
+"Point positionX" : 2587.47,
+"Point positionY" : 1308.45
+} ],
+"Shape index" : "0",
+"Shape name" : "Pattern_6774334",
+"Shape type" : "InnerShape"
+}, {
+"LineList" : [ {
+"Line count" : "4"
+}, {
+"Line index" : "0",
+"Line length" : 6.24289,
+"Line type" : ""
+}, {
+"Line index" : "1",
+"Line length" : 6.24289,
+"Line type" : ""
+}, {
+"Line index" : "2",
+"Line length" : 6.24289,
+"Line type" : ""
+}, {
+"Line index" : "3",
+"Line length" : 6.24289,
+"Line type" : ""
+} ],
+"PointList" : [ {
+"Point count" : "4"
+}, {
+"Point index" : "0",
+"Point positionX" : 2530.46,
+"Point positionY" : 1072.99
+}, {
+"Point index" : "1",
+"Point positionX" : 2534.46,
+"Point positionY" : 1076.99
+}, {
+"Point index" : "2",
+"Point positionX" : 2530.46,
+"Point positionY" : 1080.99
+}, {
+"Point index" : "3",
+"Point positionX" : 2526.46,
+"Point positionY" : 1076.99
+} ],
+"Shape index" : "1",
+"Shape name" : "Pattern_6774334",
+"Shape type" : "InnerShape"
+}, {
+"LineList" : [ {
+"Line count" : "2"
+}, {
+"Line index" : "0",
+"Line length" : 4.2743,
+"Line type" : "Straight type"
+}, {
+"Line index" : "1",
+"Line length" : 3.98383,
+"Line type" : "Straight type"
+} ],
+"PointList" : [ {
+"Point count" : "3"
+}, {
+"Point index" : "0",
+"Point positionX" : 2532.71,
+"Point positionY" : 1078.41
+}, {
+"Point index" : "1",
+"Point positionX" : 2530.46,
+"Point positionY" : 1074.78
+}, {
+"Point index" : "2",
+"Point positionX" : 2528.82,
+"Point positionY" : 1078.41
+} ],
+"Shape index" : "2",
+"Shape name" : "Pattern_6774334",
+"Shape type" : "InnerShape"
+}, {
+"LineList" : [ {
+"Line count" : "1"
+}, {
+"Line index" : "0",
+"Line length" : 212.021,
+"Line type" : ""
+} ],
+"PointList" : [ {
+"Point count" : "2"
+}, {
+"Point index" : "0",
+"Point positionX" : 2610.42,
+"Point positionY" : 1132.43
+}, {
+"Point index" : "1",
+"Point positionX" : 2615.7,
+"Point positionY" : 921.893
+} ],
+"Shape index" : "3",
+"Shape name" : "Pattern_6774334",
+"Shape type" : "Base Line"
+}, {
+"LineList" : [ {
+"Line count" : "1"
+}, {
+"Line index" : "0",
+"Line length" : 210.633,
+"Line type" : ""
+} ],
+"PointList" : [ {
+"Point count" : "2"
+}, {
+"Point index" : "0",
+"Point positionX" : 2615.7,
+"Point positionY" : 921.893
+}, {
+"Point index" : "1",
+"Point positionX" : 2610.42,
+"Point positionY" : 1132.43
+} ],
+"Shape index" : "4",
+"Shape name" : "Pattern_6774334",
+"Shape type" : "Base Line"
+} ],
+"LineList" : [ {
+"Line count" : "6"
+}, {
+"Line index" : "0",
+"Line length" : 51.044,
+"Line type" : ""
+}, {
+"Line index" : "1",
+"Line length" : 161.038,
+"Line type" : ""
+}, {
+"Line index" : "2",
+"Line length" : 108.437,
+"Line type" : ""
+}, {
+"Line index" : "3",
+"Line length" : 180.001,
+"Line type" : ""
+}, {
+"Line index" : "4",
+"Line length" : 535.297,
+"Line type" : ""
+}, {
+"Line index" : "5",
+"Line length" : 204.933,
+"Line type" : ""
+} ],
+"Pattern index" : "0",
+"Pattern name" : "Pattern_6774334",
+"PointList" : [ {
+"Point count" : "6"
+}, {
+"Point index" : "0",
+"Point positionX" : 2615.7,
+"Point positionY" : 921.893
+}, {
+"Point index" : "1",
+"Point positionX" : 2564.84,
+"Point positionY" : 926.008
+}, {
+"Point index" : "2",
+"Point positionX" : 2521.38,
+"Point positionY" : 1079.71
+}, {
+"Point index" : "3",
+"Point positionX" : 2610.42,
+"Point positionY" : 1132.43
+}, {
+"Point index" : "4",
+"Point positionX" : 2577.5,
+"Point positionY" : 1307.72
+}, {
+"Point index" : "5",
+"Point positionX" : 2811.27,
+"Point positionY" : 964.522
+} ]
+} ]
+},
+{
+"Pattern InputInformation" : [ {
+"Children Information" : [ {
+"Children shape count" : "1"
+}, {
+"LineList" : [ {
+"Line count" : "1"
+}, {
+"Line index" : "0",
+"Line length" : 189.338,
+"Line type" : "Straight type"
+} ],
+"PointList" : [ {
+"Point count" : "2"
+}, {
+"Point index" : "0",
+"Point positionX" : 1356.33,
+"Point positionY" : 2397.74
+}, {
+"Point index" : "1",
+"Point positionX" : 1408.06,
+"Point positionY" : 2215.6
+} ],
+"Shape index" : "0",
+"Shape name" : "Pattern_10975115",
+"Shape type" : "InnerShape"
+} ],
+"LineList" : [ {
+"Line count" : "4"
+}, {
+"Line index" : "0",
+"Line length" : 189.29,
+"Line type" : "Straight type"
+}, {
+"Line index" : "1",
+"Line length" : 190.141,
+"Line type" : "Straight type"
+}, {
+"Line index" : "2",
+"Line length" : 184.321,
+"Line type" : "Straight type"
+}, {
+"Line index" : "3",
+"Line length" : 245.71,
+"Line type" : "Straight type"
+} ],
+"Pattern index" : "0",
+"Pattern name" : "Pattern_10975115",
+"PointList" : [ {
+"Point count" : "4"
+}, {
+"Point index" : "0",
+"Point positionX" : 1351.14,
+"Point positionY" : 2397.69
+}, {
+"Point index" : "1",
+"Point positionX" : 1402.86,
+"Point positionY" : 2215.6
+}, {
+"Point index" : "2",
+"Point positionX" : 1593,
+"Point positionY" : 2215.6
+}, {
+"Point index" : "3",
+"Point positionX" : 1596.84,
+"Point positionY" : 2399.88
+} ]
+} ]
+},
+{
+"Pattern InputInformation" : [ {
+"Children Information" : [ {
+"Children shape count" : "1"
+}, {
+"LineList" : [ {
+"Line count" : "1"
+}, {
+"Line index" : "0",
+"Line length" : 189.338,
+"Line type" : "Straight type"
+} ],
+"PointList" : [ {
+"Point count" : "2"
+}, {
+"Point index" : "0",
+"Point positionX" : 1377.43,
+"Point positionY" : 2183.51
+}, {
+"Point index" : "1",
+"Point positionX" : 1429.16,
+"Point positionY" : 2001.37
+} ],
+"Shape index" : "0",
+"Shape name" : "Pattern_10975116",
+"Shape type" : "InnerShape"
+} ],
+"LineList" : [ {
+"Line count" : "4"
+}, {
+"Line index" : "0",
+"Line length" : 189.29,
+"Line type" : "Straight type"
+}, {
+"Line index" : "1",
+"Line length" : 190.141,
+"Line type" : "Straight type"
+}, {
+"Line index" : "2",
+"Line length" : 184.321,
+"Line type" : "Straight type"
+}, {
+"Line index" : "3",
+"Line length" : 245.71,
+"Line type" : "Straight type"
+} ],
+"Pattern index" : "0",
+"Pattern name" : "Pattern_10975116",
+"PointList" : [ {
+"Point count" : "4"
+}, {
+"Point index" : "0",
+"Point positionX" : 1372.24,
+"Point positionY" : 2183.46
+}, {
+"Point index" : "1",
+"Point positionX" : 1423.96,
+"Point positionY" : 2001.37
+}, {
+"Point index" : "2",
+"Point positionX" : 1614.1,
+"Point positionY" : 2001.37
+}, {
+"Point index" : "3",
+"Point positionX" : 1617.94,
+"Point positionY" : 2185.65
+} ]
+} ]
+},
+{
+"Pattern InputInformation" : [ {
+"Children Information" : [ {
+"Children shape count" : "4"
+}, {
+"LineList" : [ {
+"Line count" : "4"
+}, {
+"Line index" : "0",
+"Line length" : 236.107,
+"Line type" : "Straight type"
+}, {
+"Line index" : "1",
+"Line length" : 29.1337,
+"Line type" : ""
+}, {
+"Line index" : "2",
+"Line length" : 236.107,
+"Line type" : "Straight type"
+}, {
+"Line index" : "3",
+"Line length" : 29.1336,
+"Line type" : ""
+} ],
+"PointList" : [ {
+"Point count" : "4"
+}, {
+"Point index" : "0",
+"Point positionX" : 2842.63,
+"Point positionY" : 321.821
+}, {
+"Point index" : "1",
+"Point positionX" : 2823.19,
+"Point positionY" : 317.122
+}, {
+"Point index" : "2",
+"Point positionX" : 2767.72,
+"Point positionY" : 546.618
+}, {
+"Point index" : "3",
+"Point positionX" : 2787.16,
+"Point positionY" : 551.318
+} ],
+"Shape index" : "0",
+"Shape name" : "Pattern_4025567",
+"Shape type" : "InnerShape"
+}, {
+"LineList" : [ {
+"Line count" : "1"
+}, {
+"Line index" : "0",
+"Line length" : 242.754,
+"Line type" : "Straight type"
+} ],
+"PointList" : [ {
+"Point count" : "2"
+}, {
+"Point index" : "0",
+"Point positionX" : 2906.06,
+"Point positionY" : 133.088
+}, {
+"Point index" : "1",
+"Point positionX" : 2663.31,
+"Point positionY" : 133.088
+} ],
+"Shape index" : "1",
+"Shape name" : "Pattern_4025567",
+"Shape type" : "InnerShape"
+}, {
+"LineList" : [ {
+"Line count" : "1"
+}, {
+"Line index" : "0",
+"Line length" : 0.737061,
+"Line type" : "Straight type"
+} ],
+"PointList" : [ {
+"Point count" : "2"
+}, {
+"Point index" : "0",
+"Point positionX" : 2669.11,
+"Point positionY" : 129.755
+}, {
+"Point index" : "1",
+"Point positionX" : 2668.37,
+"Point positionY" : 129.755
+} ],
+"Shape index" : "2",
+"Shape name" : "Pattern_4025567",
+"Shape type" : "InnerShape"
+}, {
+"LineList" : [ {
+"Line count" : "4"
+}, {
+"Line index" : "0",
+"Line length" : 3.88226,
+"Line type" : ""
+}, {
+"Line index" : "1",
+"Line length" : 3.88226,
+"Line type" : ""
+}, {
+"Line index" : "2",
+"Line length" : 3.88226,
+"Line type" : ""
+}, {
+"Line index" : "3",
+"Line length" : 3.88226,
+"Line type" : ""
+} ],
+"PointList" : [ {
+"Point count" : "4"
+}, {
+"Point index" : "0",
+"Point positionX" : 2668.74,
+"Point positionY" : 125.839
+}, {
+"Point index" : "1",
+"Point positionX" : 2671.24,
+"Point positionY" : 128.339
+}, {
+"Point index" : "2",
+"Point positionX" : 2668.74,
+"Point positionY" : 130.839
+}, {
+"Point index" : "3",
+"Point positionX" : 2666.24,
+"Point positionY" : 128.339
+} ],
+"Shape index" : "3",
+"Shape name" : "Pattern_4025567",
+"Shape type" : "InnerShape"
+} ],
+"LineList" : [ {
+"Line count" : "5"
+}, {
+"Line index" : "0",
+"Line length" : 234.724,
+"Line type" : ""
+}, {
+"Line index" : "1",
+"Line length" : 433.022,
+"Line type" : "Straight type"
+}, {
+"Line index" : "2",
+"Line length" : 242.754,
+"Line type" : "Straight type"
+}, {
+"Line index" : "3",
+"Line length" : 554.524,
+"Line type" : "Straight type"
+}, {
+"Line index" : "4",
+"Line length" : 67.2212,
+"Line type" : "Straight type"
+} ],
+"Pattern index" : "0",
+"Pattern name" : "Pattern_4025567",
+"PointList" : [ {
+"Point count" : "5"
+}, {
+"Point index" : "0",
+"Point positionX" : 2730.53,
+"Point positionY" : 677.611
+}, {
+"Point index" : "1",
+"Point positionX" : 2906.06,
+"Point positionY" : 556.11
+}, {
+"Point index" : "2",
+"Point positionX" : 2906.06,
+"Point positionY" : 123.088
+}, {
+"Point index" : "3",
+"Point positionX" : 2663.31,
+"Point positionY" : 123.088
+}, {
+"Point index" : "4",
+"Point positionX" : 2663.31,
+"Point positionY" : 677.611
+} ]
+} ]
+},
+{
+"Pattern InputInformation" : [ {
+"Children Information" : [ {
+"Children shape count" : "7"
+}, {
+"LineList" : [ {
+"Line count" : "1"
+}, {
+"Line index" : "0",
+"Line length" : 271.805,
+"Line type" : "Straight type"
+} ],
+"PointList" : [ {
+"Point count" : "2"
+}, {
+"Point index" : "0",
+"Point positionX" : 1184.27,
+"Point positionY" : 24.9258
+}, {
+"Point index" : "1",
+"Point positionX" : 1456.07,
+"Point positionY" : 24.9258
+} ],
+"Shape index" : "0",
+"Shape name" : "Pattern_4621380",
+"Shape type" : "InnerShape"
+}, {
+"LineList" : [ {
+"Line count" : "4"
+}, {
+"Line index" : "0",
+"Line length" : 245.71,
+"Line type" : "Straight type"
+}, {
+"Line index" : "1",
+"Line length" : 184.321,
+"Line type" : "Straight type"
+}, {
+"Line index" : "2",
+"Line length" : 190.141,
+"Line type" : "Straight type"
+}, {
+"Line index" : "3",
+"Line length" : 189.29,
+"Line type" : "Straight type"
+} ],
+"PointList" : [ {
+"Point count" : "4"
+}, {
+"Point index" : "0",
+"Point positionX" : 1468.32,
+"Point positionY" : 566.804
+}, {
+"Point index" : "1",
+"Point positionX" : 1222.62,
+"Point positionY" : 568.998
+}, {
+"Point index" : "2",
+"Point positionX" : 1226.46,
+"Point positionY" : 384.717
+}, {
+"Point index" : "3",
+"Point positionX" : 1416.6,
+"Point positionY" : 384.717
+} ],
+"Shape index" : "1",
+"Shape name" : "Pattern_4621380",
+"Shape type" : "InnerShape"
+}, {
+"LineList" : [ {
+"Line count" : "1"
+}, {
+"Line index" : "0",
+"Line length" : 189.338,
+"Line type" : "Straight type"
+} ],
+"PointList" : [ {
+"Point count" : "2"
+}, {
+"Point index" : "0",
+"Point positionX" : 1411.4,
+"Point positionY" : 384.717
+}, {
+"Point index" : "1",
+"Point positionX" : 1463.14,
+"Point positionY" : 566.85
+} ],
+"Shape index" : "2",
+"Shape name" : "Pattern_4621380",
+"Shape type" : "InnerShape"
+}, {
+"LineList" : [ {
+"Line count" : "1"
+}, {
+"Line index" : "0",
+"Line length" : 276.683,
+"Line type" : ""
+} ],
+"PointList" : [ {
+"Point count" : "2"
+}, {
+"Point index" : "0",
+"Point positionX" : 1318.22,
+"Point positionY" : 644.08
+}, {
+"Point index" : "1",
+"Point positionX" : 1078.75,
+"Point positionY" : 520.139
+} ],
+"Shape index" : "3",
+"Shape name" : "Pattern_4621380",
+"Shape type" : "Base Line"
+}, {
+"LineList" : [ {
+"Line count" : "1"
+}, {
+"Line index" : "0",
+"Line length" : 303.091,
+"Line type" : ""
+} ],
+"PointList" : [ {
+"Point count" : "2"
+}, {
+"Point index" : "0",
+"Point positionX" : 1078.75,
+"Point positionY" : 520.139
+}, {
+"Point index" : "1",
+"Point positionX" : 1318.22,
+"Point positionY" : 644.081
+} ],
+"Shape index" : "4",
+"Shape name" : "Pattern_4621380",
+"Shape type" : "Base Line"
+}, {
+"LineList" : [ {
+"Line count" : "1"
+}, {
+"Line index" : "0",
+"Line length" : 279.925,
+"Line type" : ""
+} ],
+"PointList" : [ {
+"Point count" : "2"
+}, {
+"Point index" : "0",
+"Point positionX" : 1561.59,
+"Point positionY" : 520.139
+}, {
+"Point index" : "1",
+"Point positionX" : 1318.22,
+"Point positionY" : 644.081
+} ],
+"Shape index" : "5",
+"Shape name" : "Pattern_4621380",
+"Shape type" : "Base Line"
+}, {
+"LineList" : [ {
+"Line count" : "1"
+}, {
+"Line index" : "0",
+"Line length" : 308.742,
+"Line type" : ""
+} ],
+"PointList" : [ {
+"Point count" : "2"
+}, {
+"Point index" : "0",
+"Point positionX" : 1318.22,
+"Point positionY" : 644.081
+}, {
+"Point index" : "1",
+"Point positionX" : 1561.59,
+"Point positionY" : 520.139
+} ],
+"Shape index" : "6",
+"Shape name" : "Pattern_4621380",
+"Shape type" : "Base Line"
+} ],
+"LineList" : [ {
+"Line count" : "8"
+}, {
+"Line index" : "0",
+"Line length" : 333.567,
+"Line type" : ""
+}, {
+"Line index" : "1",
+"Line length" : 517.173,
+"Line type" : ""
+}, {
+"Line index" : "2",
+"Line length" : 271.805,
+"Line type" : "Straight type"
+}, {
+"Line index" : "3",
+"Line length" : 517.16,
+"Line type" : ""
+}, {
+"Line index" : "4",
+"Line length" : 241.071,
+"Line type" : ""
+}, {
+"Line index" : "5",
+"Line length" : 67.2211,
+"Line type" : "Straight type"
+}, {
+"Line index" : "6",
+"Line length" : 83.4992,
+"Line type" : "Straight type"
+}, {
+"Line index" : "7",
+"Line length" : 184.657,
+"Line type" : ""
+} ],
+"Pattern index" : "0",
+"Pattern name" : "Pattern_4621380",
+"PointList" : [ {
+"Point count" : "8"
+}, {
+"Point index" : "0",
+"Point positionX" : 1285.19,
+"Point positionY" : 775.48
+}, {
+"Point index" : "1",
+"Point positionX" : 1078.75,
+"Point positionY" : 520.139
+}, {
+"Point index" : "2",
+"Point positionX" : 1184.27,
+"Point positionY" : 14.9258
+}, {
+"Point index" : "3",
+"Point positionX" : 1456.07,
+"Point positionY" : 14.9258
+}, {
+"Point index" : "4",
+"Point positionX" : 1561.59,
+"Point positionY" : 520.139
+}, {
+"Point index" : "5",
+"Point positionX" : 1488.56,
+"Point positionY" : 732.847
+}, {
+"Point index" : "6",
+"Point positionX" : 1510.21,
+"Point positionY" : 796.487
+}, {
+"Point index" : "7",
+"Point positionX" : 1431.15,
+"Point positionY" : 823.375
+} ]
+} ]
+},
+{
+"Pattern InputInformation" : [ {
+"Children Information" : [ {
+"Children shape count" : "7"
+}, {
+"LineList" : [ {
+"Line count" : "1"
+}, {
+"Line index" : "0",
+"Line length" : 271.805,
+"Line type" : "Straight type"
+} ],
+"PointList" : [ {
+"Point count" : "2"
+}, {
+"Point index" : "0",
+"Point positionX" : 3446.01,
+"Point positionY" : 24.9258
+}, {
+"Point index" : "1",
+"Point positionX" : 3174.2,
+"Point positionY" : 24.9258
+} ],
+"Shape index" : "0",
+"Shape name" : "Pattern_4621381",
+"Shape type" : "InnerShape"
+}, {
+"LineList" : [ {
+"Line count" : "4"
+}, {
+"Line index" : "0",
+"Line length" : 245.71,
+"Line type" : "Straight type"
+}, {
+"Line index" : "1",
+"Line length" : 184.321,
+"Line type" : "Straight type"
+}, {
+"Line index" : "2",
+"Line length" : 190.141,
+"Line type" : "Straight type"
+}, {
+"Line index" : "3",
+"Line length" : 189.29,
+"Line type" : "Straight type"
+} ],
+"PointList" : [ {
+"Point count" : "4"
+}, {
+"Point index" : "0",
+"Point positionX" : 3161.96,
+"Point positionY" : 566.804
+}, {
+"Point index" : "1",
+"Point positionX" : 3407.66,
+"Point positionY" : 568.998
+}, {
+"Point index" : "2",
+"Point positionX" : 3403.82,
+"Point positionY" : 384.717
+}, {
+"Point index" : "3",
+"Point positionX" : 3213.68,
+"Point positionY" : 384.717
+} ],
+"Shape index" : "1",
+"Shape name" : "Pattern_4621381",
+"Shape type" : "InnerShape"
+}, {
+"LineList" : [ {
+"Line count" : "1"
+}, {
+"Line index" : "0",
+"Line length" : 189.338,
+"Line type" : "Straight type"
+} ],
+"PointList" : [ {
+"Point count" : "2"
+}, {
+"Point index" : "0",
+"Point positionX" : 3218.87,
+"Point positionY" : 384.717
+}, {
+"Point index" : "1",
+"Point positionX" : 3167.14,
+"Point positionY" : 566.85
+} ],
+"Shape index" : "2",
+"Shape name" : "Pattern_4621381",
+"Shape type" : "InnerShape"
+}, {
+"LineList" : [ {
+"Line count" : "1"
+}, {
+"Line index" : "0",
+"Line length" : 276.683,
+"Line type" : ""
+} ],
+"PointList" : [ {
+"Point count" : "2"
+}, {
+"Point index" : "0",
+"Point positionX" : 3312.06,
+"Point positionY" : 644.08
+}, {
+"Point index" : "1",
+"Point positionX" : 3551.53,
+"Point positionY" : 520.139
+} ],
+"Shape index" : "3",
+"Shape name" : "Pattern_4621381",
+"Shape type" : "Base Line"
+}, {
+"LineList" : [ {
+"Line count" : "1"
+}, {
+"Line index" : "0",
+"Line length" : 303.091,
+"Line type" : ""
+} ],
+"PointList" : [ {
+"Point count" : "2"
+}, {
+"Point index" : "0",
+"Point positionX" : 3551.53,
+"Point positionY" : 520.139
+}, {
+"Point index" : "1",
+"Point positionX" : 3312.06,
+"Point positionY" : 644.081
+} ],
+"Shape index" : "4",
+"Shape name" : "Pattern_4621381",
+"Shape type" : "Base Line"
+}, {
+"LineList" : [ {
+"Line count" : "1"
+}, {
+"Line index" : "0",
+"Line length" : 279.925,
+"Line type" : ""
+} ],
+"PointList" : [ {
+"Point count" : "2"
+}, {
+"Point index" : "0",
+"Point positionX" : 3068.68,
+"Point positionY" : 520.139
+}, {
+"Point index" : "1",
+"Point positionX" : 3312.06,
+"Point positionY" : 644.081
+} ],
+"Shape index" : "5",
+"Shape name" : "Pattern_4621381",
+"Shape type" : "Base Line"
+}, {
+"LineList" : [ {
+"Line count" : "1"
+}, {
+"Line index" : "0",
+"Line length" : 308.742,
+"Line type" : ""
+} ],
+"PointList" : [ {
+"Point count" : "2"
+}, {
+"Point index" : "0",
+"Point positionX" : 3312.06,
+"Point positionY" : 644.081
+}, {
+"Point index" : "1",
+"Point positionX" : 3068.68,
+"Point positionY" : 520.139
+} ],
+"Shape index" : "6",
+"Shape name" : "Pattern_4621381",
+"Shape type" : "Base Line"
+} ],
+"LineList" : [ {
+"Line count" : "8"
+}, {
+"Line index" : "0",
+"Line length" : 333.567,
+"Line type" : ""
+}, {
+"Line index" : "1",
+"Line length" : 517.173,
+"Line type" : ""
+}, {
+"Line index" : "2",
+"Line length" : 271.805,
+"Line type" : "Straight type"
+}, {
+"Line index" : "3",
+"Line length" : 517.16,
+"Line type" : ""
+}, {
+"Line index" : "4",
+"Line length" : 241.071,
+"Line type" : ""
+}, {
+"Line index" : "5",
+"Line length" : 67.2212,
+"Line type" : "Straight type"
+}, {
+"Line index" : "6",
+"Line length" : 83.4992,
+"Line type" : "Straight type"
+}, {
+"Line index" : "7",
+"Line length" : 184.656,
+"Line type" : ""
+} ],
+"Pattern index" : "0",
+"Pattern name" : "Pattern_4621381",
+"PointList" : [ {
+"Point count" : "8"
+}, {
+"Point index" : "0",
+"Point positionX" : 3345.09,
+"Point positionY" : 775.48
+}, {
+"Point index" : "1",
+"Point positionX" : 3551.53,
+"Point positionY" : 520.139
+}, {
+"Point index" : "2",
+"Point positionX" : 3446.01,
+"Point positionY" : 14.9258
+}, {
+"Point index" : "3",
+"Point positionX" : 3174.2,
+"Point positionY" : 14.9258
+}, {
+"Point index" : "4",
+"Point positionX" : 3068.68,
+"Point positionY" : 520.139
+}, {
+"Point index" : "5",
+"Point positionX" : 3141.72,
+"Point positionY" : 732.847
+}, {
+"Point index" : "6",
+"Point positionX" : 3120.07,
+"Point positionY" : 796.487
+}, {
+"Point index" : "7",
+"Point positionX" : 3199.12,
+"Point positionY" : 823.375
+} ]
+} ]
+},
+{
+"Pattern InputInformation" : [ {
+"Children Information" : [ {
+"Children shape count" : "4"
+}, {
+"LineList" : [ {
+"Line count" : "4"
+}, {
+"Line index" : "0",
+"Line length" : 236.107,
+"Line type" : "Straight type"
+}, {
+"Line index" : "1",
+"Line length" : 29.1337,
+"Line type" : ""
+}, {
+"Line index" : "2",
+"Line length" : 236.107,
+"Line type" : "Straight type"
+}, {
+"Line index" : "3",
+"Line length" : 29.1336,
+"Line type" : ""
+} ],
+"PointList" : [ {
+"Point count" : "4"
+}, {
+"Point index" : "0",
+"Point positionX" : 2392.91,
+"Point positionY" : 321.821
+}, {
+"Point index" : "1",
+"Point positionX" : 2412.35,
+"Point positionY" : 317.122
+}, {
+"Point index" : "2",
+"Point positionX" : 2467.83,
+"Point positionY" : 546.618
+}, {
+"Point index" : "3",
+"Point positionX" : 2448.39,
+"Point positionY" : 551.318
+} ],
+"Shape index" : "0",
+"Shape name" : "Pattern_4025568",
+"Shape type" : "InnerShape"
+}, {
+"LineList" : [ {
+"Line count" : "1"
+}, {
+"Line index" : "0",
+"Line length" : 242.754,
+"Line type" : "Straight type"
+} ],
+"PointList" : [ {
+"Point count" : "2"
+}, {
+"Point index" : "0",
+"Point positionX" : 2329.48,
+"Point positionY" : 133.088
+}, {
+"Point index" : "1",
+"Point positionX" : 2572.24,
+"Point positionY" : 133.088
+} ],
+"Shape index" : "1",
+"Shape name" : "Pattern_4025568",
+"Shape type" : "InnerShape"
+}, {
+"LineList" : [ {
+"Line count" : "1"
+}, {
+"Line index" : "0",
+"Line length" : 0.737061,
+"Line type" : "Straight type"
+} ],
+"PointList" : [ {
+"Point count" : "2"
+}, {
+"Point index" : "0",
+"Point positionX" : 2566.44,
+"Point positionY" : 129.418
+}, {
+"Point index" : "1",
+"Point positionX" : 2567.18,
+"Point positionY" : 129.418
+} ],
+"Shape index" : "2",
+"Shape name" : "Pattern_4025568",
+"Shape type" : "InnerShape"
+}, {
+"LineList" : [ {
+"Line count" : "4"
+}, {
+"Line index" : "0",
+"Line length" : 3.88226,
+"Line type" : ""
+}, {
+"Line index" : "1",
+"Line length" : 3.88226,
+"Line type" : ""
+}, {
+"Line index" : "2",
+"Line length" : 3.88226,
+"Line type" : ""
+}, {
+"Line index" : "3",
+"Line length" : 3.88226,
+"Line type" : ""
+} ],
+"PointList" : [ {
+"Point count" : "4"
+}, {
+"Point index" : "0",
+"Point positionX" : 2566.81,
+"Point positionY" : 125.839
+}, {
+"Point index" : "1",
+"Point positionX" : 2564.31,
+"Point positionY" : 128.339
+}, {
+"Point index" : "2",
+"Point positionX" : 2566.81,
+"Point positionY" : 130.839
+}, {
+"Point index" : "3",
+"Point positionX" : 2569.31,
+"Point positionY" : 128.339
+} ],
+"Shape index" : "3",
+"Shape name" : "Pattern_4025568",
+"Shape type" : "InnerShape"
+} ],
+"LineList" : [ {
+"Line count" : "5"
+}, {
+"Line index" : "0",
+"Line length" : 234.724,
+"Line type" : ""
+}, {
+"Line index" : "1",
+"Line length" : 433.022,
+"Line type" : "Straight type"
+}, {
+"Line index" : "2",
+"Line length" : 242.754,
+"Line type" : "Straight type"
+}, {
+"Line index" : "3",
+"Line length" : 554.524,
+"Line type" : "Straight type"
+}, {
+"Line index" : "4",
+"Line length" : 67.2212,
+"Line type" : "Straight type"
+} ],
+"Pattern index" : "0",
+"Pattern name" : "Pattern_4025568",
+"PointList" : [ {
+"Point count" : "5"
+}, {
+"Point index" : "0",
+"Point positionX" : 2505.01,
+"Point positionY" : 677.611
+}, {
+"Point index" : "1",
+"Point positionX" : 2329.48,
+"Point positionY" : 556.11
+}, {
+"Point index" : "2",
+"Point positionX" : 2329.48,
+"Point positionY" : 123.088
+}, {
+"Point index" : "3",
+"Point positionX" : 2572.24,
+"Point positionY" : 123.088
+}, {
+"Point index" : "4",
+"Point positionX" : 2572.24,
+"Point positionY" : 677.611
+} ]
+} ]
+},
+{
+"Pattern InputInformation" : [ {
+"Children Information" : [ {
+"Children shape count" : "4"
+}, {
+"LineList" : [ {
+"Line count" : "1"
+}, {
+"Line index" : "0",
+"Line length" : 242.754,
+"Line type" : "Straight type"
+} ],
+"PointList" : [ {
+"Point count" : "2"
+}, {
+"Point index" : "0",
+"Point positionX" : 1915.36,
+"Point positionY" : 95.5117
+}, {
+"Point index" : "1",
+"Point positionX" : 2158.11,
+"Point positionY" : 95.5118
+} ],
+"Shape index" : "0",
+"Shape name" : "Pattern_4025564",
+"Shape type" : "InnerShape"
+}, {
+"LineList" : [ {
+"Line count" : "1"
+}, {
+"Line index" : "0",
+"Line length" : 242.754,
+"Line type" : "Straight type"
+} ],
+"PointList" : [ {
+"Point count" : "2"
+}, {
+"Point index" : "0",
+"Point positionX" : 1915.36,
+"Point positionY" : 95.5117
+}, {
+"Point index" : "1",
+"Point positionX" : 1672.6,
+"Point positionY" : 95.5118
+} ],
+"Shape index" : "1",
+"Shape name" : "Pattern_4025564",
+"Shape type" : "InnerShape"
+}, {
+"LineList" : [ {
+"Line count" : "1"
+}, {
+"Line index" : "0",
+"Line length" : 695.261,
+"Line type" : "Straight type"
+} ],
+"PointList" : [ {
+"Point count" : "2"
+}, {
+"Point index" : "0",
+"Point positionX" : 1915.36,
+"Point positionY" : 780.773
+}, {
+"Point index" : "1",
+"Point positionX" : 1915.36,
+"Point positionY" : 85.5118
+} ],
+"Shape index" : "2",
+"Shape name" : "Pattern_4025564",
+"Shape type" : "Base Line"
+}, {
+"LineList" : [ {
+"Line count" : "1"
+}, {
+"Line index" : "0",
+"Line length" : 695.261,
+"Line type" : "Straight type"
+} ],
+"PointList" : [ {
+"Point count" : "2"
+}, {
+"Point index" : "0",
+"Point positionX" : 1915.36,
+"Point positionY" : 780.773
+}, {
+"Point index" : "1",
+"Point positionX" : 1915.36,
+"Point positionY" : 85.5118
+} ],
+"Shape index" : "3",
+"Shape name" : "Pattern_4025564",
+"Shape type" : "Base Line"
+} ],
+"LineList" : [ {
+"Line count" : "8"
+}, {
+"Line index" : "0",
+"Line length" : 242.754,
+"Line type" : "Straight type"
+}, {
+"Line index" : "1",
+"Line length" : 433.022,
+"Line type" : "Straight type"
+}, {
+"Line index" : "2",
+"Line length" : 338.967,
+"Line type" : ""
+}, {
+"Line index" : "3",
+"Line length" : 71.5327,
+"Line type" : ""
+}, {
+"Line index" : "4",
+"Line length" : 71.5329,
+"Line type" : ""
+}, {
+"Line index" : "5",
+"Line length" : 338.967,
+"Line type" : ""
+}, {
+"Line index" : "6",
+"Line length" : 433.022,
+"Line type" : "Straight type"
+}, {
+"Line index" : "7",
+"Line length" : 242.754,
+"Line type" : "Straight type"
+} ],
+"Pattern index" : "0",
+"Pattern name" : "Pattern_4025564",
+"PointList" : [ {
+"Point count" : "8"
+}, {
+"Point index" : "0",
+"Point positionX" : 1915.36,
+"Point positionY" : 85.5117
+}, {
+"Point index" : "1",
+"Point positionX" : 2158.11,
+"Point positionY" : 85.5118
+}, {
+"Point index" : "2",
+"Point positionX" : 2158.11,
+"Point positionY" : 518.534
+}, {
+"Point index" : "3",
+"Point positionX" : 1986.75,
+"Point positionY" : 782.928
+}, {
+"Point index" : "4",
+"Point positionX" : 1915.36,
+"Point positionY" : 780.773
+}, {
+"Point index" : "5",
+"Point positionX" : 1843.96,
+"Point positionY" : 782.928
+}, {
+"Point index" : "6",
+"Point positionX" : 1672.6,
+"Point positionY" : 518.534
+}, {
+"Point index" : "7",
+"Point positionX" : 1672.6,
+"Point positionY" : 85.5117
+} ]
+} ]
+}
+]
