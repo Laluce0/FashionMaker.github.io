@@ -9,6 +9,7 @@ const { Header } = Layout;
 
 // Receive props from App.jsx
 const DesignerPage = ({ 
+  filename,
   panels, 
   onPanelsChange, 
   geometry, 
@@ -51,6 +52,7 @@ const DesignerPage = ({
           <Splitter.Panel style={{ height: '100%' }}>
             {/* Pass panels state, handlers, and threeDViewRef to PatternPanel */}
             <PatternPanel 
+              filename={filename}
               panels={panels} 
               onPanelsChange={onPanelsChange} 
               panelIdCounter={panelIdCounter}

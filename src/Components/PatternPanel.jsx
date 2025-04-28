@@ -32,6 +32,7 @@ const PatternPanel = ({
   panels, // Keep existing panels prop for potential future use or remove if fully replaced
   onPanelsChange, 
   onPanelSelect, 
+  filename,
   panelIdCounter, 
   setPanelIdCounter,
   createNewPanel, // Receive helper function
@@ -108,6 +109,7 @@ const PatternPanel = ({
 
   // 生成板片按钮点击事件
   const handleGeneratePanel = async () => {
+    //setFilename(filename);
     setSpinningGenerate(true);
     let ptg = -10;
     const interval = setInterval(() => {
@@ -119,7 +121,7 @@ const PatternPanel = ({
         setPercentGenerate(0);
         // 新增：查找并解析SVG文件
         try {
-          const modelName = 'Jacket'; // TODO: 替换为动态获取模型名
+          const modelName = filename.split('.')[0]; // TODO: 替换为动态获取模型名
           const svgFilePath = `/${modelName}.svg`;
           console.log('[调试] SVG文件路径:', svgFilePath);
           // 读取SVG文件内容

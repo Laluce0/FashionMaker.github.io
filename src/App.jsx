@@ -37,6 +37,7 @@ const BuilderPage = () => <div>Builder Page Content</div>;
 
 const App = () => {
   const location = useLocation();
+  const [filename,setFilename] = useState('jacket.glb');
   const [panels, setPanels] = useState([createNewPanel(1)]); // Lifted state for panels
   const [geometry, setGeometry] = useState(null); // Lifted state for 3D model geometry
   const [panelIdCounter, setPanelIdCounter] = useState(2); // Counter for new panels
@@ -51,7 +52,7 @@ const App = () => {
     if (!file) return;
     const reader = new FileReader();
     reader.onload = (ev) => {
-      const filename = file.name.toLowerCase();
+      setFilename(file.name.toLowerCase());
       if (filename.endsWith('.gltf') || filename.endsWith('.glb')) {
         const loader = new GLTFLoader();
         loader.parse(ev.target.result, '', (gltf) => {
@@ -132,11 +133,12 @@ const App = () => {
           <Route 
             path="/designer" 
             element={(
-              <DesignerPage 
+              <DesignerPage
                 panels={panels} 
                 onPanelsChange={handlePanelsChange} 
                 geometry={geometry} 
                 onModelLoad={handleModelLoad} 
+                filename={filename}
                 panelIdCounter={panelIdCounter}
                 setPanelIdCounter={setPanelIdCounter}
                 createNewPanel={createNewPanel} // Pass helper function if needed in PatternPanel
