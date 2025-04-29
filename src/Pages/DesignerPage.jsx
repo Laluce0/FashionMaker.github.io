@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, forwardRef, useImperativeHandle } from 'react';
 import { Layout } from 'antd';
 import Splitter from 'antd/es/splitter';
 import DesignerMenuBar from '../Components/DesignerMenuBar';
@@ -8,7 +8,8 @@ import PatternPanel from '../Components/PatternPanel';
 const { Header } = Layout;
 
 // Receive props from App.jsx
-const DesignerPage = ({ 
+// Use forwardRef to receive ref from App.jsx
+const DesignerPage = forwardRef(({ 
   filename,
   panels, 
   onPanelsChange, 
@@ -16,10 +17,12 @@ const DesignerPage = ({
   onModelLoad, 
   panelIdCounter, 
   setPanelIdCounter,
-  createNewPanel
-}) => {
+  createNewPanel,
+  onExportPatternSVG // Receive the export handler from App
+}, ref) => {
   // Add ref for ThreeDViewPanel
   const threeDViewRef = useRef(null);
+  const patternPanelRef = useRef(null); // Add ref for PatternPanel
 
   // Define handler to trigger upload in ThreeDViewPanel
   const handleClothSelect = () => {
@@ -27,6 +30,13 @@ const DesignerPage = ({
       threeDViewRef.current.triggerUpload();
     }
   };
+
+  // Expose method to App.jsx via ref
+  useImperativeHandle(ref, () => ({
+    triggerExportPatternSVG: () => {
+      patternPanelRef.current?.exportSVG(); // Call exportSVG on PatternPanel
+    }
+  }));
 
   // Remove file input handling logic, now handled in App
   // const handleImportModel = () => {
@@ -42,7 +52,8 @@ const DesignerPage = ({
   return (
     <Layout style={{ height: 'calc(100vh - 64px)' }}>
       {/* Pass handleClothSelect to DesignerMenuBar */}
-      <DesignerMenuBar onClothSelect={handleClothSelect} />
+      {/* Pass onExportPatternSVG down to DesignerMenuBar */}
+      <DesignerMenuBar onClothSelect={handleClothSelect} onExportPatternSVG={onExportPatternSVG} />
       <Layout style={{ height: 'calc(100% - 48px)' }}>
         <Splitter style={{ height: '100%' }} direction="horizontal" min={200} max={800} defaultValue={300}>
           <Splitter.Panel defaultSize="60%" min="20%" max="70%" style={{background: '#fff' }}>
@@ -59,12 +70,13 @@ const DesignerPage = ({
               setPanelIdCounter={setPanelIdCounter}
               createNewPanel={createNewPanel}
               threeDViewRef={threeDViewRef} // Pass the ref here
+              ref={patternPanelRef} // Pass ref to PatternPanel
             />
           </Splitter.Panel>
         </Splitter>
       </Layout>
     </Layout>
   );
-};
+});
 
 export default DesignerPage;

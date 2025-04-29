@@ -9,13 +9,13 @@ import PenButton from './MenuButtons/PenButton';
 import LabelButton from './MenuButtons/LabelButton';
 import CommentButton from './MenuButtons/CommentButton';
 
-const IconButtonGroup = ({ onClothSelect }) => {
+const IconButtonGroup = ({ onClothSelect, onExportPatternSVG }) => {
   return (
     <Space size="small">
       <DragDotButton />
       <FileSelectorButton />
       <AvatarButton />
-      <ClothSelectorButton onClick={onClothSelect} />
+      <ClothSelectorButton onClick={onClothSelect} onExportPatternSVG={onExportPatternSVG} />
       <TextureButton />
       <PenButton />
       <LabelButton />

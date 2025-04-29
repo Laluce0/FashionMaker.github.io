@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Layout, Menu } from 'antd';
 import { Routes, Route, Link, useLocation } from 'react-router-dom';
 import './App.css';
@@ -36,6 +36,7 @@ const HomePage = () => <div>Home Page Content</div>;
 const BuilderPage = () => <div>Builder Page Content</div>;
 
 const App = () => {
+  const designerPageRef = useRef(null); // Ref for DesignerPage
   const location = useLocation();
   const [filename,setFilename] = useState('jacket.glb');
   const [panels, setPanels] = useState([createNewPanel(1)]); // Lifted state for panels
@@ -90,6 +91,11 @@ const App = () => {
     reader.readAsArrayBuffer(file);
   };
 
+  // Handler to trigger SVG export in PatternPanel via DesignerPage
+  const handleExportPatternSVG = () => {
+    designerPageRef.current?.triggerExportPatternSVG();
+  };
+
   // Determine the selected key based on the current path
   const getSelectedKeys = () => {
     const path = location.pathname;
@@ -142,6 +148,8 @@ const App = () => {
                 panelIdCounter={panelIdCounter}
                 setPanelIdCounter={setPanelIdCounter}
                 createNewPanel={createNewPanel} // Pass helper function if needed in PatternPanel
+                ref={designerPageRef} // Pass the ref
+                onExportPatternSVG={handleExportPatternSVG} // Pass the export handler
               />
             )} 
           />

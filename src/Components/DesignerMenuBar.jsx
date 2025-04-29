@@ -7,7 +7,7 @@ import IconButtonGroup from './IconButtonGroup';
 
 const { Header } = Layout;
 
-const DesignerMenuBar = ({ onImportModel, onClothSelect }) => {
+const DesignerMenuBar = ({ onImportModel, onClothSelect, onExportPatternSVG }) => {
   // Handler for the import button/menu item (if needed for FileSelectorButton)
   const handleImportClick = () => {
     if (onImportModel) {
@@ -18,7 +18,7 @@ const DesignerMenuBar = ({ onImportModel, onClothSelect }) => {
   return (
     <Header style={{ display: 'flex', alignItems: 'center', padding: '0 10px', height: '48px', backgroundColor: '#303030', color: 'rgba(255, 255, 255, 0.65)' }}>
       {/* Left Section: Icon Buttons */}
-      <IconButtonGroup onClothSelect={onClothSelect} />
+      <IconButtonGroup onClothSelect={onClothSelect} onExportPatternSVG={onExportPatternSVG} />
 
       {/* Middle Section: Breadcrumb */}
       <div style={{ flex: 1, display: 'flex', justifyContent: 'center', color: '#fff' }}>

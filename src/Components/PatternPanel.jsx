@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, forwardRef, useImperativeHandle } from 'react';
 import { Button, Spin, Space, message } from 'antd'; // 新增 message
 
 // Remove local createNewPanel function, it's passed via props now
@@ -27,8 +27,8 @@ const generatePathData = (points, lines) => {
   return path;
 };
 
-// Receive props from DesignerPage
-const PatternPanel = ({ 
+// Receive props from DesignerPage and use forwardRef
+const PatternPanel = forwardRef(({ 
   panels, // Keep existing panels prop for potential future use or remove if fully replaced
   onPanelsChange, 
   onPanelSelect, 
@@ -37,7 +37,7 @@ const PatternPanel = ({
   setPanelIdCounter,
   createNewPanel, // Receive helper function
   threeDViewRef // Receive ref for ThreeDViewPanel
-}) => {
+}, ref) => {
   // Remove local panels state, use props instead
   // const [panels, setPanels] = useState([createNewPanel(1)]);
   const [selectedPanelId, setSelectedPanelId] = useState(null); // Updated logic below
@@ -53,6 +53,33 @@ const PatternPanel = ({
   const [isGeneratePanelEnabled, setIsGeneratePanelEnabled] = useState(false); // Control Generate Panel button state
   const [drawnPatterns, setDrawnPatterns] = useState([]); // State to hold parsed pattern data for SVG
   const [svgViewBox, setSvgViewBox] = useState("0 0 500 400"); // Default viewBox
+
+  // Expose exportSVG method via ref
+  useImperativeHandle(ref, () => ({
+    exportSVG: () => {
+      if (!svgRef.current) {
+        message.error('SVG 元素未找到，无法导出');
+        return;
+      }
+      try {
+        const svgData = new XMLSerializer().serializeToString(svgRef.current);
+        const blob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        const exportFilename = filename ? `${filename.split('.')[0]}_pattern.svg` : 'pattern.svg';
+        link.download = exportFilename;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+        message.success('SVG 导出成功');
+      } catch (error) {
+        console.error('导出 SVG 时出错:', error);
+        message.error('导出 SVG 失败');
+      }
+    }
+  }));
 
   // Update selectedPanelId based on drawnPatterns
   React.useEffect(() => {
@@ -310,6 +337,6 @@ const PatternPanel = ({
       </svg>
     </div>
   );
-};
+});
 
 export default PatternPanel;

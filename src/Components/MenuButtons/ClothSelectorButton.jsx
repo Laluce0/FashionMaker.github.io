@@ -3,13 +3,16 @@ import { Button, Dropdown } from 'antd';
 import ClothSelectorIcon from '../../assets/04_clothSelector.svg'; // Adjust path as needed
 import './MenuButtonStyles.css';
 
-const ClothSelectorButton = ({ onClick }) => {
+const ClothSelectorButton = ({ onClick, onExportPatternSVG }) => {
   // Note: The original onClick prop might need adjustment depending on how menu item clicks are handled.
   // For now, the Dropdown trigger button itself won't trigger the original onClick.
   // Menu item clicks can be handled via the Menu's onClick prop if needed.
   const handleMenuClick = ({ key }) => {
     if (key === 'import-clo3d' && onClick) {
       onClick(); // Call the passed onClick handler for the specific item
+    }
+    if (key === 'export-2d' && onExportPatternSVG) {
+      onExportPatternSVG(); // Call the passed export handler for the specific item
     }
     // Handle other menu item clicks if needed
     console.log(`Clicked on item with key: ${key}`);
