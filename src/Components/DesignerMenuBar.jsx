@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout, Button, Breadcrumb, Avatar, Space } from 'antd';
+import { Layout, Button, Breadcrumb, Avatar, Space, ConfigProvider } from 'antd';
 import { UserOutlined, SaveOutlined } from '@ant-design/icons';
 
 // Import the new icon button components
@@ -16,18 +16,32 @@ const DesignerMenuBar = ({ onImportModel, onClothSelect, onExportPatternSVG }) =
   };
 
   return (
-    <Header style={{ display: 'flex', alignItems: 'center', padding: '0 10px', height: '48px', backgroundColor: '#303030', color: 'rgba(255, 255, 255, 0.65)' }}>
+    <Header style={{ display: 'flex', alignItems: 'center', padding: '0 10px', height: '48px', backgroundColor: '#303030'}}>
       {/* Left Section: Icon Buttons */}
       <IconButtonGroup onClothSelect={onClothSelect} onExportPatternSVG={onExportPatternSVG} />
 
       {/* Middle Section: Breadcrumb */}
-      <div style={{ flex: 1, display: 'flex', justifyContent: 'center', color: '#fff' }}>
-        <Breadcrumb style={{ color: '#fff !important' }}>
-            {/* Add Breadcrumb.Item dynamically based on file path */}
-            <Breadcrumb.Item style={{ color: '#fff' }}>Folder</Breadcrumb.Item>
-            <Breadcrumb.Item style={{ color: '#fff' }}>Filename</Breadcrumb.Item>
-        </Breadcrumb>
-      </div>
+      <ConfigProvider
+        theme={{
+          components: {
+            Breadcrumb: {
+              separatorColor: 'rgba(191, 191, 191, 0.50)',
+              itemColor: 'rgba(191, 191, 191, 0.50)',
+            },
+          },
+        }}
+      >
+        <div style={{ flex: 1, display: 'flex', justifyContent: 'center'}}>
+          <Breadcrumb items={[
+            {
+              title: 'Folder',
+            },
+            {
+              title: <a href="">Filename</a>,
+            }
+          ]}/>
+        </div>
+      </ConfigProvider>
 
       {/* Right Section: User Info & Save */}
       <Space>

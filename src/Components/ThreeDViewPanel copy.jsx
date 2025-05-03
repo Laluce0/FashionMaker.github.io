@@ -1,22 +1,25 @@
+
 import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { OrbitControls, Edges, } from '@react-three/drei';
-import { Space, Button, Slider, message } from 'antd'; 
+import { OrbitControls, Edges, Wireframe } from '@react-three/drei'; // Import Wireframe
+import { Space, Button, Slider, Popover, message } from 'antd'; // Removed Upload, UploadOutlined, and Tooltip
+import { GlobalOutlined, BgColorsOutlined, EyeOutlined } from '@ant-design/icons'; // Keep if used elsewhere, remove if only for old buttons
 // Import the new menu component
 import RenderModeMenu from './RenderModeMenu';
 import * as THREE from 'three';
+// Remove unused loaders, handled in App.jsx
+// import { GLTFLoader } from 'three-stdlib';
+// import { OBJLoader } from 'three-stdlib';
 
 // 顶点色分组高亮辅助组件
 function HighlightEdges({ geometry, color, visible }) {
-  let a = null;
+  if (!geometry || !visible) return null;
+  return <Edges geometry={geometry} scale={1.01} color={color} />;
 }
 
 // 3D模型渲染组件
-function Model({ geometry, renderMode, vertexColors}) {
+function Model({ geometry, renderMode, vertexColors, highlightGroup, highlightColor, colorGroups, onGroupSelect }) {
   const meshRef = useRef();
-  const materialRef = useRef();
-  const [iTime, setITime] = useState(0.0);
-  const [highlightColor,setHighlightColor] = useState(new THREE.Color(0,0,0)); // Default highlight color
   let raycaster, camera, scene;
   try {
     ({ raycaster, camera, scene } = useThree());
@@ -26,22 +29,21 @@ function Model({ geometry, renderMode, vertexColors}) {
   }
   const [hovered, setHovered] = useState(false);
 
-  useFrame((state, delta) => {
-    setITime(prev => prev + delta);
-    
-    // 直接更新着色器材质的 uniform 值
-    if (materialRef.current && materialRef.current.uniforms) {
-      materialRef.current.uniforms.iTime.value = iTime + delta;
-      materialRef.current.uniforms.highlightColor.value = new THREE.Color(highlightColor);
+  // 设置顶点色
+  React.useEffect(() => {
+    if (geometry && vertexColors && vertexColors.length > 0) {
+      const colors = new Float32Array(vertexColors);
+      geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
     }
-  });
+  }, [geometry, vertexColors]);
 
   // 自定义shader材质（仅vertexColor模式下）
   const vertexGroupShader = React.useMemo(() => {
     return {
       uniforms: {
+        highlightGroup: { value: highlightGroup !== null ? highlightGroup : -1 },
         highlightColor: { value: new THREE.Color(highlightColor) },
-        iTime: { value: 0.0 },
+        groupCount: { value: colorGroups ? colorGroups.length : 0 },
       },
       vertexShader: `
         varying vec4 vColor;
@@ -51,26 +53,24 @@ function Model({ geometry, renderMode, vertexColors}) {
         }
       `,
       fragmentShader: `
+        uniform int highlightGroup;
         uniform vec3 highlightColor;
-        uniform float iTime;
+        uniform int groupCount;
         varying vec4 vColor;
         void main() {
+          int groupId = int(vColor.r * 255.0 + 0.5);
           vec3 baseColor = vColor.rgb;
-          
-          // 计算当前颜色与透明颜色之间的距离
-          float colorDist = distance(baseColor, highlightColor);
-          
-          if (colorDist < 0.1) {
-            gl_FragColor = vec4(fract(iTime), fract(iTime), fract(iTime), 1.0); // 高亮颜色
+          if (highlightGroup >= 0 && groupId == highlightGroup) {
+            // 高亮组
+            gl_FragColor = vec4(mix(baseColor, highlightColor, 0.7), 1.0);
           } else {
-            // 否则使用原始颜色
             gl_FragColor = vec4(baseColor, 1.0);
           }
         }
       `,
-      vertexColors: true,
+      vertexColors: true
     };
-  }, [highlightColor]); // 移除 iTime 依赖，因为我们在 useFrame 中直接更新
+  }, [highlightGroup, highlightColor, colorGroups]);
 
   // 根据渲染模式选择材质
   const material = React.useMemo(() => {
@@ -78,9 +78,7 @@ function Model({ geometry, renderMode, vertexColors}) {
       case 'wireframe':
         return new THREE.MeshBasicMaterial({ wireframe: true, color: 'black' });
       case 'vertexColor':
-        const shaderMaterial = new THREE.ShaderMaterial(vertexGroupShader);
-        materialRef.current = shaderMaterial; // 保存对材质的引用
-        return shaderMaterial;
+        return new THREE.ShaderMaterial(vertexGroupShader);
       case 'solid':
       default:
         return new THREE.MeshStandardMaterial({
@@ -91,37 +89,42 @@ function Model({ geometry, renderMode, vertexColors}) {
     }
   }, [renderMode, vertexGroupShader]);
 
-  const getFaceColor = (face, geometry) => {
-    if (!face || !geometry.attributes.color) return null;
-    
-    const colorAttr = geometry.attributes.color;
-    // 获取面片第一个顶点的颜色作为面片颜色
-    const colors = [
-      colorAttr.getX(face.a),
-      colorAttr.getY(face.a),
-      colorAttr.getZ(face.a)
-    ];
-    
-    return colors;
-  };
-
   // 处理点击事件
   const handleClick = (e) => {
     if (renderMode !== 'vertexColor') return;
     e.stopPropagation();
-    
-    // 直接使用Three Fiber提供的标准化点击位置
-    // e.point 是世界空间中的点击位置
-    // e.uv 是模型上的UV坐标
-    // e.distance 是从相机到交点的距离
-    
-    // R3F已经处理了交点,我们可以直接获取face
-    if (e.face) {
-      const faceColor = getFaceColor(e.face, meshRef.current.geometry);
-      
-      if (faceColor) {
-        console.log('Face color:', faceColor);
-        setHighlightColor(new THREE.Color(faceColor[0], faceColor[1], faceColor[2]));
+    let mouse = e.mouse;
+    if (!mouse) {
+      // 手动计算归一化设备坐标
+      const canvas = e.target instanceof HTMLCanvasElement ? e.target : (e.target && e.target.ownerDocument && e.target.ownerDocument.querySelector('canvas'));
+      if (canvas) {
+        const rect = canvas.getBoundingClientRect();
+        mouse = {
+          x: ((e.clientX - rect.left) / rect.width) * 2 - 1,
+          y: -((e.clientY - rect.top) / rect.height) * 2 + 1
+        };
+      } else {
+        // fallback，防止报错
+        mouse = { x: 0, y: 0 };
+      }
+    }
+    raycaster.setFromCamera(mouse, camera);
+    const intersects = raycaster.intersectObject(meshRef.current);
+    if (intersects.length > 0) {
+      const intersect = intersects[0];
+      const { face } = intersect;
+      if (face) {
+        const colorAttr = meshRef.current.geometry.attributes.color;
+        const colors = [
+          colorAttr.getX(face.a),
+          colorAttr.getY(face.a),
+          colorAttr.getZ(face.a),
+        ];
+        const groupId = Math.round(colors[0] * 255);
+        if (groupId >= 0 && groupId < colorGroups.length) {
+          setHovered(true);
+          if (onGroupSelect) onGroupSelect(groupId);
+        }
       }
     }
   };
@@ -138,6 +141,9 @@ function Model({ geometry, renderMode, vertexColors}) {
       >
         <ambientLight intensity={0.7} />
         <directionalLight position={[5, 5, 5]} intensity={0.7} />
+        {renderMode !== 'wireframe' && highlightGroup !== null && (
+          <HighlightEdges geometry={geometry} color={highlightColor} visible={true} />
+        )}
       </mesh>
     );
   } catch (err) {
@@ -190,7 +196,51 @@ const ThreeDViewPanel = forwardRef(({ geometry, onModelLoad }, ref) => {
       event.target.value = null;
     }
   };
+
+  // 顶点色分组与高亮逻辑（示例，需结合实际模型数据）
+  // 1. 为每个顶点组分配唯一编号，并在colorGroups数组中保存编号和颜色的对应关系
+  // 2. 点击模型表面时，通过raycaster获取点击面片的顶点色分组编号，并将该编号设置为高亮组
+  // 3. 在Model组件中，HighlightEdges组件应根据高亮组编号，仅渲染该组的轮廓
+  // 4. 在3D视图中为每个分组显示编号标签
   
+  // colorGroups结构示例：[{ id: 0, color: '#ff0000' }, { id: 1, color: '#00ff00' }, ...]
+  // 假设vertexColors编码为 [groupId/255, g, b, ...]，groupId为编号
+  
+  // 新增：渲染分组编号标签（简单实现，实际可用Sprite/Html等方式美化）
+  function GroupLabels({ geometry, colorGroups }) {
+    if (!geometry || !colorGroups || colorGroups.length === 0) return null;
+    // 计算每组的中心点
+    const positions = geometry.attributes.position.array;
+    const colors = geometry.attributes.color ? geometry.attributes.color.array : null;
+    if (!colors) return null;
+    const groupCenters = {};
+    for (let i = 0; i < positions.length; i += 3) {
+      const groupId = Math.round(colors[i] * 255);
+      if (!groupCenters[groupId]) {
+        groupCenters[groupId] = { x: 0, y: 0, z: 0, count: 0 };
+      }
+      groupCenters[groupId].x += positions[i];
+      groupCenters[groupId].y += positions[i + 1];
+      groupCenters[groupId].z += positions[i + 2];
+      groupCenters[groupId].count += 1;
+    }
+    // 生成标签
+    return Object.entries(groupCenters).map(([groupId, center]) => {
+      const { x, y, z, count } = center;
+      if (count === 0) return null;
+      return (
+        <group key={groupId} position={[x / count, y / count, z / count]}>
+          <mesh>
+            <sphereGeometry args={[0.5, 8, 8]} />
+            <meshBasicMaterial color={colorGroups[groupId]?.color || '#fff'} />
+          </mesh>
+          <Html center style={{ color: '#222', background: '#fff', borderRadius: '4px', padding: '2px 4px', fontSize: '12px', opacity: 0.85 }}>
+            {groupId}
+          </Html>
+        </group>
+      );
+    });
+  }
   const handleGroupSelect = (groupIdx) => {
     setHighlightGroup(groupIdx);
     setHighlightColor(colorGroups[groupIdx]?.color || '#00ff00');
@@ -268,9 +318,9 @@ const ThreeDViewPanel = forwardRef(({ geometry, onModelLoad }, ref) => {
               renderMode={renderMode}
               vertexColors={vertexColors}
               highlightGroup={highlightGroup}
-              //highlightColor={highlightColor}
-              //colorGroups={colorGroups}
-              //onGroupSelect={handleModelGroupSelect}
+              highlightColor={highlightColor}
+              colorGroups={colorGroups}
+              onGroupSelect={handleModelGroupSelect}
             />
           )}
           <OrbitControls enablePan={true} enableZoom={true} enableRotate={true} panSpeed={1.2} rotateSpeed={1.1} zoomSpeed={1.1} />
@@ -289,3 +339,23 @@ const ThreeDViewPanel = forwardRef(({ geometry, onModelLoad }, ref) => {
 });
 
 export default ThreeDViewPanel;
+
+// 错误边界组件
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+  static getDerivedStateFromError(error) {
+    return { hasError: true, error };
+  }
+  componentDidCatch(error, errorInfo) {
+    console.error('Canvas Error Boundary:', error, errorInfo);
+  }
+  render() {
+    if (this.state.hasError) {
+      return <div style={{ color: 'red', padding: 16 }}>3D渲染出错: {this.state.error?.message || '未知错误'}</div>;
+    }
+    return this.props.children;
+  }
+}
