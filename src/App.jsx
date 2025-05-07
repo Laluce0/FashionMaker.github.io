@@ -42,6 +42,8 @@ const App = () => {
   const [panels, setPanels] = useState([createNewPanel(1)]); // Lifted state for panels
   const [geometry, setGeometry] = useState(null); // Lifted state for 3D model geometry
   const [panelIdCounter, setPanelIdCounter] = useState(2); // Counter for new panels
+  // 新增：统一管理selectedPanelId
+  const [selectedPanelId, setSelectedPanelId] = useState(null);
 
   // Handler to update panels state
   const handlePanelsChange = (newPanels) => {
@@ -53,7 +55,7 @@ const App = () => {
     if (!file) return;
     const reader = new FileReader();
     reader.onload = (ev) => {
-      setFilename(file.name.toLowerCase());
+      setFilename(file.name);
       if (filename.endsWith('.gltf') || filename.endsWith('.glb')) {
         const loader = new GLTFLoader();
         loader.parse(ev.target.result, '', (gltf) => {
@@ -138,18 +140,19 @@ const App = () => {
           {/* Pass state and handlers to DesignerPage */}
           <Route 
             path="/designer" 
-            element={(
+            element={( 
               <DesignerPage
                 panels={panels} 
                 onPanelsChange={handlePanelsChange} 
                 geometry={geometry} 
                 onModelLoad={handleModelLoad} 
                 filename={filename}
-                panelIdCounter={panelIdCounter}
-                setPanelIdCounter={setPanelIdCounter}
                 createNewPanel={createNewPanel} // Pass helper function if needed in PatternPanel
                 ref={designerPageRef} // Pass the ref
                 onExportPatternSVG={handleExportPatternSVG} // Pass the export handler
+                //传递selectedPanelId和setSelectedPanelId
+                selectedPanelId={selectedPanelId}
+                setSelectedPanelId={setSelectedPanelId}
               />
             )} 
           />

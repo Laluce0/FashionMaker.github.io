@@ -227,7 +227,7 @@ const PatternPanel = forwardRef(({
   // 渲染生成的板片
   const renderGeneratedPanels = () => (
     drawnPatterns.map((pattern, idx) => {
-      const color = PANEL_COLORS[idx % PANEL_COLORS.length];
+      const color = pattern.color;
       const isSelected = pattern.id === selectedPanelId;
       return (
         <g key={pattern.id} onClick={() => handlePanelClick(pattern.id)} style={{ cursor: 'pointer' }}>

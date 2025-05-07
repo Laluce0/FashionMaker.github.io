@@ -197,16 +197,6 @@ const ThreeDViewPanel = forwardRef(({ geometry, onModelLoad }, ref) => {
     }
   };
 
-  // 顶点色分组与高亮逻辑（示例，需结合实际模型数据）
-  // 1. 为每个顶点组分配唯一编号，并在colorGroups数组中保存编号和颜色的对应关系
-  // 2. 点击模型表面时，通过raycaster获取点击面片的顶点色分组编号，并将该编号设置为高亮组
-  // 3. 在Model组件中，HighlightEdges组件应根据高亮组编号，仅渲染该组的轮廓
-  // 4. 在3D视图中为每个分组显示编号标签
-  
-  // colorGroups结构示例：[{ id: 0, color: '#ff0000' }, { id: 1, color: '#00ff00' }, ...]
-  // 假设vertexColors编码为 [groupId/255, g, b, ...]，groupId为编号
-  
-  // 新增：渲染分组编号标签（简单实现，实际可用Sprite/Html等方式美化）
   function GroupLabels({ geometry, colorGroups }) {
     if (!geometry || !colorGroups || colorGroups.length === 0) return null;
     // 计算每组的中心点
@@ -340,22 +330,3 @@ const ThreeDViewPanel = forwardRef(({ geometry, onModelLoad }, ref) => {
 
 export default ThreeDViewPanel;
 
-// 错误边界组件
-class ErrorBoundary extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { hasError: false, error: null };
-  }
-  static getDerivedStateFromError(error) {
-    return { hasError: true, error };
-  }
-  componentDidCatch(error, errorInfo) {
-    console.error('Canvas Error Boundary:', error, errorInfo);
-  }
-  render() {
-    if (this.state.hasError) {
-      return <div style={{ color: 'red', padding: 16 }}>3D渲染出错: {this.state.error?.message || '未知错误'}</div>;
-    }
-    return this.props.children;
-  }
-}

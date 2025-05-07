@@ -15,10 +15,11 @@ const DesignerPage = forwardRef(({
   onPanelsChange, 
   geometry, 
   onModelLoad, 
-  panelIdCounter, 
-  setPanelIdCounter,
   createNewPanel,
-  onExportPatternSVG // Receive the export handler from App
+  onExportPatternSVG,
+  // 新增：接收selectedPanelId和setSelectedPanelId
+  selectedPanelId,
+  setSelectedPanelId
 }, ref) => {
   // Add ref for ThreeDViewPanel
   const threeDViewRef = useRef(null);
@@ -66,11 +67,12 @@ const DesignerPage = forwardRef(({
               filename={filename}
               panels={panels} 
               onPanelsChange={onPanelsChange} 
-              panelIdCounter={panelIdCounter}
-              setPanelIdCounter={setPanelIdCounter}
               createNewPanel={createNewPanel}
               threeDViewRef={threeDViewRef} // Pass the ref here
               ref={patternPanelRef} // Pass ref to PatternPanel
+              // 新增：传递selectedPanelId和setSelectedPanelId
+              selectedPanelId={selectedPanelId}
+              setSelectedPanelId={setSelectedPanelId}
             />
           </Splitter.Panel>
         </Splitter>
