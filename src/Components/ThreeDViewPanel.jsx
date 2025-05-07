@@ -107,20 +107,13 @@ function Model({ geometry, renderMode, activeHighlightColor, setActiveHighlightC
   const handleClick = (e) => {
     if (renderMode !== 'vertexColor') return;
     e.stopPropagation();
-    
-    // 直接使用Three Fiber提供的标准化点击位置
-    // e.point 是世界空间中的点击位置
-    // e.uv 是模型上的UV坐标
-    // e.distance 是从相机到交点的距离
-    
-    // R3F已经处理了交点,我们可以直接获取face
     if (e.face) {
       const faceColor = getFaceColor(e.face, meshRef.current.geometry);
       
       if (faceColor) {
         const color = new THREE.Color(faceColor[0], faceColor[1], faceColor[2]);
-        const colorHex = `#${color.getHexString()}`;
-        console.log('Face color clicked:', colorHex);
+        const colorHex = `#${color.getHexString().toUpperCase()}`;
+        // console.log('Face color clicked:', colorHex);
         // setHighlightColor(color); // Removed
         setActiveHighlightColor(colorHex); // Update shared state
       }
@@ -176,6 +169,14 @@ const ThreeDViewPanel = forwardRef(({
       setIsVertexColorEnabled(true);
       setRenderMode('vertexColor');
       message.info('顶点色模式已启用');
+    },
+    // New method to disable vertex color mode
+    disableVertexColorMode: () => {
+      setRenderMode('solid'); // Reset to default render mode
+      setIsVertexColorEnabled(false); // Disable vertex color mode selection
+      // Optionally, reset activeHighlightColor if it's tied to vertex coloring
+      // setActiveHighlightColor(null); 
+      message.info('顶点色模式已禁用');
     }
   }));
 

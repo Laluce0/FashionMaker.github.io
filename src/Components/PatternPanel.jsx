@@ -55,10 +55,13 @@ const PatternPanel = forwardRef(({
   const [isGeneratePanelEnabled, setIsGeneratePanelEnabled] = useState(false); // Control Generate Panel button state
   const [drawnPatterns, setDrawnPatterns] = useState([]); // State to hold parsed pattern data for SVG
   const [svgViewBox, setSvgViewBox] = useState("0 0 500 400"); // Default viewBox
+  const [canvasOffset, setCanvasOffset] = useState({ x: 0, y: 0 });
+  const [isPanning, setIsPanning] = useState(false);
+  const [panStart, setPanStart] = useState({ x: 0, y: 0 });
 
-  // Expose exportSVG method via ref
+  // Expose methods via ref
   useImperativeHandle(ref, () => ({
-    exportSVG: () => {
+    exportSVG: () => { // Keep existing exportSVG method
       if (!svgRef.current) {
         message.error('SVG 元素未找到，无法导出');
         return;
@@ -80,42 +83,59 @@ const PatternPanel = forwardRef(({
         console.error('导出 SVG 时出错:', error);
         message.error('导出 SVG 失败');
       }
+    },
+    // New method to reset Generate Panel button state
+    resetGenerateButtonState: () => {
+      setIsGeneratePanelEnabled(false);
+      // Optionally, also reset other related states if needed
+      setDrawnPatterns([]); 
+      setActiveHighlightColor(null); 
     }
   }));
 
-  // React.useEffect(() => { // Removed, selection is now based on activeHighlightColor
-  //   if (!drawnPatterns.find(p => p.id === selectedPanelId) && drawnPatterns.length > 0) {
-  //     setSelectedPanelId(drawnPatterns[0].id);
-  //   }
-  //   if (drawnPatterns.length === 0) {
-  //     setSelectedPanelId(null);
-  //   }
-  // }, [drawnPatterns, selectedPanelId]);
-
   // 选中板片并更新全局高亮颜色
   const handlePanelClick = (color) => {
-    // setSelectedPanelId(panelId); // Removed
-    console.log("Pattern Color clicked:", color);
+    // console.log("Pattern Color clicked:", color);
     setActiveHighlightColor(color); // Update the shared state
-    // if (onPanelSelect) onPanelSelect(panelId); // No longer needed
   };
   
-  const handleMouseMove = useCallback((e) => {
-    // Disabled for generated panels
-    // if (!dragVertex) return;
+  const handleCanvasMouseDown = (e) => {
+    // Prevent dragging if clicking on a pattern element itself
+    if (e.target.closest('g[onClick]')) {
+      return;
+    }
+    setIsPanning(true);
+    setPanStart({ x: e.clientX - canvasOffset.x, y: e.clientY - canvasOffset.y });
+  };
+
+  const handleCanvasMouseMove = useCallback((e) => {
+    if (!isPanning) return;
+    setCanvasOffset({
+      x: e.clientX - panStart.x,
+      y: e.clientY - panStart.y,
+    });
+  }, [isPanning, panStart]);
+
+  const handleCanvasMouseUp = () => {
+    setIsPanning(false);
+  };
+
+  // Vertex dragging logic (kept for potential future use, but separate from canvas panning)
+  const handleVertexMouseMove = useCallback((e) => {
+    if (!dragVertex) return;
     const svgRect = svgRef.current.getBoundingClientRect();
-    const x = e.clientX - svgRect.left;
-    const y = e.clientY - svgRect.top;
-    // Use onPanelsChange to update state in App.jsx
+    // Adjust for canvas offset when calculating vertex position
+    const x = e.clientX - svgRect.left - canvasOffset.x;
+    const y = e.clientY - svgRect.top - canvasOffset.y;
     const updatedPanels = panels.map(panel => {
       if (panel.id !== dragVertex.panelId) return panel;
       const newVertices = panel.vertices.map((v, idx) => idx === dragVertex.vertexIdx ? { x, y } : v);
       return { ...panel, vertices: newVertices };
     });
     onPanelsChange(updatedPanels);
-  }, [dragVertex, panels, onPanelsChange]); // Add dependencies
+  }, [dragVertex, panels, onPanelsChange, canvasOffset]);
 
-  const handleMouseUp = () => {
+  const handleVertexMouseUp = () => {
     setDragVertex(null);
   };
 
@@ -277,17 +297,29 @@ const PatternPanel = forwardRef(({
     })
   );
 
-  // 监听全局鼠标事件 (Keep as is, but functionality is disabled)
+  // Global mouse event listeners for canvas panning
   React.useEffect(() => {
-    if (dragVertex) {
-      window.addEventListener('mousemove', handleMouseMove);
-      window.addEventListener('mouseup', handleMouseUp);
+    if (isPanning) {
+      window.addEventListener('mousemove', handleCanvasMouseMove);
+      window.addEventListener('mouseup', handleCanvasMouseUp);
       return () => {
-        window.removeEventListener('mousemove', handleMouseMove);
-        window.removeEventListener('mouseup', handleMouseUp);
+        window.removeEventListener('mousemove', handleCanvasMouseMove);
+        window.removeEventListener('mouseup', handleCanvasMouseUp);
       };
     }
-  }, [dragVertex, handleMouseMove]);
+  }, [isPanning, handleCanvasMouseMove, handleCanvasMouseUp]);
+
+  // Global mouse event listeners for vertex dragging (if re-enabled)
+  React.useEffect(() => {
+    if (dragVertex) {
+      window.addEventListener('mousemove', handleVertexMouseMove);
+      window.addEventListener('mouseup', handleVertexMouseUp);
+      return () => {
+        window.removeEventListener('mousemove', handleVertexMouseMove);
+        window.removeEventListener('mouseup', handleVertexMouseUp);
+      };
+    }
+  }, [dragVertex, handleVertexMouseMove, handleVertexMouseUp]);
 
   return (
     <div style={{
@@ -326,17 +358,21 @@ const PatternPanel = forwardRef(({
         //height="400" // 设置固定高度
         viewBox={svgViewBox} // Use dynamic viewBox
         preserveAspectRatio="xMidYMid meet" // Adjust aspect ratio handling
-        style={{ 
-          border: '3px solid #ccc', 
-          background: '#fafafa', 
-          width: '100%', 
-          height: '92%', // Remove fixed height
-          // maxHeight: '100%', // 移除maxHeight，防止受容器影响
-          cursor: 'default' // Changed from grabbing
+        style={{
+          border: '3px solid #ccc',
+          background: '#fafafa',
+          width: '100%',
+          height: '92%',
+          cursor: isPanning ? 'grabbing' : 'grab',
+          userSelect: 'none', // Prevent text selection during pan
         }}
+        onMouseDown={handleCanvasMouseDown}
+        // onMouseMove and onMouseUp are handled globally when isPanning is true
       >
-        {renderGeneratedPanels()} {/* Render generated panels */}
-        {/* {renderPanels()} */}{/* Keep or remove original renderPanels based on needs */}
+        <g transform={`translate(${canvasOffset.x}, ${canvasOffset.y})`}>
+          {renderGeneratedPanels()} {/* Render generated panels */}
+          {/* {renderPanels()} */}{/* Keep or remove original renderPanels based on needs */}
+        </g>
       </svg>
     </div>
   );

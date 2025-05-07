@@ -39,6 +39,15 @@ const DesignerPage = forwardRef(({
     }
   }));
 
+  // Add useEffect to handle model re-import logic
+  React.useEffect(() => {
+    if (geometry) { // Check if geometry is not null or undefined
+      console.log('New model loaded, disabling vertex color mode and Generate Panel button.');
+      threeDViewRef.current?.disableVertexColorMode();
+      patternPanelRef.current?.resetGenerateButtonState();
+    }
+  }, [geometry]); // Run effect when geometry changes
+
   // Remove file input handling logic, now handled in App
   // const handleImportModel = () => {
   //   fileInputRef.current?.click();
