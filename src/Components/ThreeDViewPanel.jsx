@@ -6,17 +6,13 @@ import { Space, Button, Slider, message } from 'antd';
 import RenderModeMenu from './RenderModeMenu';
 import * as THREE from 'three';
 
-// 顶点色分组高亮辅助组件
-function HighlightEdges({ geometry, color, visible }) {
-  let a = null;
-}
 
 // 3D模型渲染组件
-function Model({ geometry, renderMode, vertexColors}) {
+function Model({ geometry, renderMode, activeHighlightColor, setActiveHighlightColor }) {
   const meshRef = useRef();
   const materialRef = useRef();
   const [iTime, setITime] = useState(0.0);
-  const [highlightColor,setHighlightColor] = useState(new THREE.Color(0,0,0)); // Default highlight color
+  // const [highlightColor,setHighlightColor] = useState(new THREE.Color(0,0,0)); // Removed, using activeHighlightColor prop
   let raycaster, camera, scene;
   try {
     ({ raycaster, camera, scene } = useThree());
@@ -24,7 +20,7 @@ function Model({ geometry, renderMode, vertexColors}) {
     console.error('useThree hook error:', err);
     return null;
   }
-  const [hovered, setHovered] = useState(false);
+  //const [hovered, setHovered] = useState(false);
 
   useFrame((state, delta) => {
     setITime(prev => prev + delta);
@@ -32,7 +28,8 @@ function Model({ geometry, renderMode, vertexColors}) {
     // 直接更新着色器材质的 uniform 值
     if (materialRef.current && materialRef.current.uniforms) {
       materialRef.current.uniforms.iTime.value = iTime + delta;
-      materialRef.current.uniforms.highlightColor.value = new THREE.Color(highlightColor);
+      // Use activeHighlightColor prop for the shader
+      materialRef.current.uniforms.highlightColor.value = activeHighlightColor ? new THREE.Color(activeHighlightColor) : new THREE.Color(0,0,0);
     }
   });
 
@@ -40,7 +37,8 @@ function Model({ geometry, renderMode, vertexColors}) {
   const vertexGroupShader = React.useMemo(() => {
     return {
       uniforms: {
-        highlightColor: { value: new THREE.Color(highlightColor) },
+        // Use activeHighlightColor prop for the shader uniform
+        highlightColor: { value: activeHighlightColor ? new THREE.Color(activeHighlightColor) : new THREE.Color(0,0,0) },
         iTime: { value: 0.0 },
       },
       vertexShader: `
@@ -70,7 +68,7 @@ function Model({ geometry, renderMode, vertexColors}) {
       `,
       vertexColors: true,
     };
-  }, [highlightColor]); // 移除 iTime 依赖，因为我们在 useFrame 中直接更新
+  }, [activeHighlightColor]); // Depend on activeHighlightColor
 
   // 根据渲染模式选择材质
   const material = React.useMemo(() => {
@@ -120,8 +118,11 @@ function Model({ geometry, renderMode, vertexColors}) {
       const faceColor = getFaceColor(e.face, meshRef.current.geometry);
       
       if (faceColor) {
-        console.log('Face color:', faceColor);
-        setHighlightColor(new THREE.Color(faceColor[0], faceColor[1], faceColor[2]));
+        const color = new THREE.Color(faceColor[0], faceColor[1], faceColor[2]);
+        const colorHex = `#${color.getHexString()}`;
+        console.log('Face color clicked:', colorHex);
+        // setHighlightColor(color); // Removed
+        setActiveHighlightColor(colorHex); // Update shared state
       }
     }
   };
@@ -133,8 +134,8 @@ function Model({ geometry, renderMode, vertexColors}) {
         geometry={geometry}
         material={material}
         onClick={handleClick}
-        onPointerOver={() => setHovered(true)}
-        onPointerOut={() => setHovered(false)}
+        //onPointerOver={() => setHovered(true)}
+        //onPointerOut={() => setHovered(false)}
       >
         <ambientLight intensity={0.7} />
         <directionalLight position={[5, 5, 5]} intensity={0.7} />
@@ -149,13 +150,18 @@ function Model({ geometry, renderMode, vertexColors}) {
 const defaultBrushColor = '#ff0000';
 
 // Receive props from DesignerPage
-const ThreeDViewPanel = forwardRef(({ geometry, onModelLoad }, ref) => {
+const ThreeDViewPanel = forwardRef(({ 
+  geometry, 
+  onModelLoad, 
+  activeHighlightColor, // New prop for shared highlight state
+  setActiveHighlightColor // New prop for updating shared highlight state
+}, ref) => {
   const [renderMode, setRenderMode] = useState('solid'); // 'wireframe', 'solid', 'vertexColor'
   const [isVertexColorEnabled, setIsVertexColorEnabled] = useState(false); // Controls if vertex color mode can be selected
   const [vertexColors, setVertexColors] = useState([]); // Keep local UI state
   const [colorGroups, setColorGroups] = useState([]); // Keep local UI state
   const [highlightGroup, setHighlightGroup] = useState(null); // Keep local UI state
-  const [highlightColor, setHighlightColor] = useState('#00ff00'); // Keep local UI state
+  // const [highlightColor, setHighlightColor] = useState('#00ff00'); // Removed, highlight is now managed by activeHighlightColor in Model component
   const [brushColor, setBrushColor] = useState(defaultBrushColor); // Keep local UI state
   const [brushSize, setBrushSize] = useState(10); // Keep local UI state
   const fileInputRef = useRef(null); // Ref for the hidden file input
@@ -193,7 +199,7 @@ const ThreeDViewPanel = forwardRef(({ geometry, onModelLoad }, ref) => {
   
   const handleGroupSelect = (groupIdx) => {
     setHighlightGroup(groupIdx);
-    setHighlightColor(colorGroups[groupIdx]?.color || '#00ff00');
+    // setHighlightColor(colorGroups[groupIdx]?.color || '#00ff00'); // Removed, Model will use activeHighlightColor
   };
   // 供Model组件点击面片时调用，实现高亮
   const handleModelGroupSelect = (groupIdx) => {
@@ -268,7 +274,8 @@ const ThreeDViewPanel = forwardRef(({ geometry, onModelLoad }, ref) => {
               renderMode={renderMode}
               vertexColors={vertexColors}
               highlightGroup={highlightGroup}
-              //highlightColor={highlightColor}
+              activeHighlightColor={activeHighlightColor} // Pass down activeHighlightColor
+              setActiveHighlightColor={setActiveHighlightColor} // Pass down setActiveHighlightColor
               //colorGroups={colorGroups}
               //onGroupSelect={handleModelGroupSelect}
             />

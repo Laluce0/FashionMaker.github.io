@@ -17,9 +17,9 @@ const DesignerPage = forwardRef(({
   onModelLoad, 
   createNewPanel,
   onExportPatternSVG,
-  // 新增：接收selectedPanelId和setSelectedPanelId
-  selectedPanelId,
-  setSelectedPanelId
+  // 新增：接收activeHighlightColor和setActiveHighlightColor
+  activeHighlightColor,
+  setActiveHighlightColor
 }, ref) => {
   // Add ref for ThreeDViewPanel
   const threeDViewRef = useRef(null);
@@ -58,8 +58,14 @@ const DesignerPage = forwardRef(({
       <Layout style={{ height: 'calc(100% - 48px)' }}>
         <Splitter style={{ height: '100%' }} direction="horizontal" min={200} max={800} defaultValue={300}>
           <Splitter.Panel defaultSize="60%" min="20%" max="70%" style={{background: '#fff' }}>
-            {/* Pass geometry, onModelLoad, and ref to ThreeDViewPanel */}
-            <ThreeDViewPanel ref={threeDViewRef} geometry={geometry} onModelLoad={onModelLoad} />
+            {/* Pass geometry, onModelLoad, ref, activeHighlightColor, and setActiveHighlightColor to ThreeDViewPanel */}
+            <ThreeDViewPanel 
+              ref={threeDViewRef} 
+              geometry={geometry} 
+              onModelLoad={onModelLoad} 
+              activeHighlightColor={activeHighlightColor} 
+              setActiveHighlightColor={setActiveHighlightColor} 
+            />
           </Splitter.Panel>
           <Splitter.Panel style={{ height: '100%' }}>
             {/* Pass panels state, handlers, and threeDViewRef to PatternPanel */}
@@ -70,9 +76,9 @@ const DesignerPage = forwardRef(({
               createNewPanel={createNewPanel}
               threeDViewRef={threeDViewRef} // Pass the ref here
               ref={patternPanelRef} // Pass ref to PatternPanel
-              // 新增：传递selectedPanelId和setSelectedPanelId
-              selectedPanelId={selectedPanelId}
-              setSelectedPanelId={setSelectedPanelId}
+              // 新增：传递activeHighlightColor和setActiveHighlightColor
+              activeHighlightColor={activeHighlightColor}
+              setActiveHighlightColor={setActiveHighlightColor}
             />
           </Splitter.Panel>
         </Splitter>

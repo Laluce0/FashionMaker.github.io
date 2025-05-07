@@ -41,9 +41,7 @@ const App = () => {
   const [filename,setFilename] = useState('jacket.glb');
   const [panels, setPanels] = useState([createNewPanel(1)]); // Lifted state for panels
   const [geometry, setGeometry] = useState(null); // Lifted state for 3D model geometry
-  const [panelIdCounter, setPanelIdCounter] = useState(2); // Counter for new panels
-  // 新增：统一管理selectedPanelId
-  const [selectedPanelId, setSelectedPanelId] = useState(null);
+  const [activeHighlightColor, setActiveHighlightColor] = useState(null);
 
   // Handler to update panels state
   const handlePanelsChange = (newPanels) => {
@@ -150,9 +148,9 @@ const App = () => {
                 createNewPanel={createNewPanel} // Pass helper function if needed in PatternPanel
                 ref={designerPageRef} // Pass the ref
                 onExportPatternSVG={handleExportPatternSVG} // Pass the export handler
-                //传递selectedPanelId和setSelectedPanelId
-                selectedPanelId={selectedPanelId}
-                setSelectedPanelId={setSelectedPanelId}
+                //传递activeHighlightColor和setActiveHighlightColor
+                activeHighlightColor={activeHighlightColor}
+                setActiveHighlightColor={setActiveHighlightColor}
               />
             )} 
           />

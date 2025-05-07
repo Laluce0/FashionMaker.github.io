@@ -31,16 +31,18 @@ const generatePathData = (points, lines) => {
 const PatternPanel = forwardRef(({ 
   panels, // Keep existing panels prop for potential future use or remove if fully replaced
   onPanelsChange, 
-  onPanelSelect, 
+  // onPanelSelect, // No longer needed, selection handled by activeHighlightColor
   filename,
   panelIdCounter, 
   setPanelIdCounter,
   createNewPanel, // Receive helper function
-  threeDViewRef // Receive ref for ThreeDViewPanel
+  threeDViewRef, // Receive ref for ThreeDViewPanel
+  activeHighlightColor, // New prop for shared highlight state
+  setActiveHighlightColor // New prop for updating shared highlight state
 }, ref) => {
   // Remove local panels state, use props instead
   // const [panels, setPanels] = useState([createNewPanel(1)]);
-  const [selectedPanelId, setSelectedPanelId] = useState(null); // Updated logic below
+  // const [selectedPanelId, setSelectedPanelId] = useState(null); // Removed, replaced by activeHighlightColor
   const [dragVertex, setDragVertex] = useState(null); // {panelId, vertexIdx} - Keep for potential future interaction
   const svgRef = useRef(null);
   // Remove local panelIdCounter state, use props instead
@@ -81,20 +83,21 @@ const PatternPanel = forwardRef(({
     }
   }));
 
-  // Update selectedPanelId based on drawnPatterns
-  React.useEffect(() => {
-    if (!drawnPatterns.find(p => p.id === selectedPanelId) && drawnPatterns.length > 0) {
-      setSelectedPanelId(drawnPatterns[0].id);
-    }
-    if (drawnPatterns.length === 0) {
-      setSelectedPanelId(null);
-    }
-  }, [drawnPatterns, selectedPanelId]);
+  // React.useEffect(() => { // Removed, selection is now based on activeHighlightColor
+  //   if (!drawnPatterns.find(p => p.id === selectedPanelId) && drawnPatterns.length > 0) {
+  //     setSelectedPanelId(drawnPatterns[0].id);
+  //   }
+  //   if (drawnPatterns.length === 0) {
+  //     setSelectedPanelId(null);
+  //   }
+  // }, [drawnPatterns, selectedPanelId]);
 
-  // 选中板片并通知3D视图 (Update to use drawn pattern ID)
-  const handlePanelClick = (panelId) => {
-    setSelectedPanelId(panelId);
-    if (onPanelSelect) onPanelSelect(panelId); // Notify 3D view if needed
+  // 选中板片并更新全局高亮颜色
+  const handlePanelClick = (color) => {
+    // setSelectedPanelId(panelId); // Removed
+    console.log("Pattern Color clicked:", color);
+    setActiveHighlightColor(color); // Update the shared state
+    // if (onPanelSelect) onPanelSelect(panelId); // No longer needed
   };
   
   const handleMouseMove = useCallback((e) => {
@@ -208,9 +211,9 @@ const PatternPanel = forwardRef(({
                 setSvgViewBox(`${minX - padding} ${minY - padding} ${width} ${height}`);
               }
               setDrawnPatterns(parsedPatterns);
-              if (parsedPatterns.length > 0) {
-                setSelectedPanelId(parsedPatterns[0].id);
-              }
+              // if (parsedPatterns.length > 0) { // Selection is now based on activeHighlightColor
+              //   setSelectedPanelId(parsedPatterns[0].id);
+              // }
               message.success('SVG板片生成成功');
             })
             .catch(err => {
@@ -226,11 +229,11 @@ const PatternPanel = forwardRef(({
 
   // 渲染生成的板片
   const renderGeneratedPanels = () => (
-    drawnPatterns.map((pattern, idx) => {
-      const color = pattern.color;
-      const isSelected = pattern.id === selectedPanelId;
+    drawnPatterns.map((pattern) => {
+      const color = pattern.stroke; // Assuming stroke color is the unique identifier for highlighting
+      const isSelected = color === activeHighlightColor;
       return (
-        <g key={pattern.id} onClick={() => handlePanelClick(pattern.id)} style={{ cursor: 'pointer' }}>
+        <g key={pattern.id} onClick={() => handlePanelClick(color)} style={{ cursor: 'pointer' }}>
           {/* Main Outline */}
           <path 
             d={pattern.path}
