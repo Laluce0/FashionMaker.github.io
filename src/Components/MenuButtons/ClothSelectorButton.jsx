@@ -14,52 +14,51 @@ const ClothSelectorButton = ({ onClick, onExportPatternSVG }) => {
     if (key === 'export-2d' && onExportPatternSVG) {
       onExportPatternSVG(); // Call the passed export handler for the specific item
     }
-    // Handle other menu item clicks if needed
-    console.log(`Clicked on item with key: ${key}`);
   };
 
   const items = [
     {
       key: 'import-group',
-      label: 'import',
+      label: 'Import',
       type: 'group',
       children: [
-        { key: 'import-2d', label: '2D Pattern' },
+        { key: 'import-2d', label: '2D Pattern', disabled: true },
         { key: 'import-clo3d', label: '3D Cloth' },
       ],
     },
     { type: 'divider' }, // Divider
     {
       key: 'construction-group',
-      label: 'construction',
+      label: 'Construction',
       type: 'group',
       children: [
-        { key: 'construction-mesh', label: 'Mesh' },
-        { key: 'construction-pointcloud', label: 'Point Cloud' },
-        { key: 'construction-images', label: 'Images' },
+        { key: 'construction-mesh', label: 'Mesh', disabled: true },
+        { key: 'construction-pointcloud', label: 'Point Cloud', disabled: true },
+        { key: 'construction-images', label: 'Images', disabled: true },
       ],
     },
     { type: 'divider' }, // Divider
     {
       key: 'export-group',
-      label: 'export',
+      label: 'Export',
       type: 'group',
       children: [
         { key: 'export-2d', label: '2D Pattern' },
-        { key: 'export-clo3d', label: 'CLO 3D Cloth' },
-        { key: 'export-mesh', label: 'Mesh' },
+        { key: 'export-clo3d', label: 'CLO 3D Cloth' , disabled: true },
+        { key: 'export-mesh', label: 'Mesh' , disabled: true },
       ],
     },
   ];
 
   return (
-    <Dropdown menu={{ items, onClick: handleMenuClick }} trigger={['click']}>
-      <Button 
-        type="text" 
-        icon={<img src={ClothSelectorIcon} alt="Cloth Selector" />} 
-        className="menu-button"
-        // onClick={onClick} // Removed original onClick from Button, handled by Dropdown trigger
-      />
+    <Dropdown menu={{ items, onClick: handleMenuClick }} trigger={['click']} placement='bottomLeft' arrow>
+      <a onClick={e => e.preventDefault()}>
+        <Button 
+          type="text" 
+          icon={<img src={ClothSelectorIcon} alt="Cloth Selector" />} 
+          className="menu-button"
+        />
+      </a>
     </Dropdown>
   );
 };

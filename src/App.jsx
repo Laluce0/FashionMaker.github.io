@@ -63,12 +63,12 @@ const App = () => {
           });
           if (mesh) {
             setGeometry(mesh.geometry);
-            message.success('GLTF模型加载成功');
+            //message.success('GLTF模型加载成功');
           } else {
-            message.error('未找到可用Mesh');
+            //message.error('未找到可用Mesh');
           }
         }, (err) => {
-          message.error('GLTF解析失败: ' + err.message);
+          //message.error('GLTF解析失败: ' + err.message);
         });
       } else if (filename.endsWith('.obj')) {
         const loader = new OBJLoader();
@@ -80,12 +80,12 @@ const App = () => {
         });
         if (mesh) {
           setGeometry(mesh.geometry);
-          message.success('OBJ模型加载成功');
+          //message.success('OBJ模型加载成功');
         } else {
-          message.error('未找到可用Mesh');
+          //message.error('未找到可用Mesh');
         }
       } else {
-        message.error('仅支持OBJ/GLTF/GLB格式');
+        //message.error('仅支持OBJ/GLTF/GLB格式');
       }
     };
     reader.readAsArrayBuffer(file);

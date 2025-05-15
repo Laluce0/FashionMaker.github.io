@@ -9,7 +9,10 @@ const AvatarButton = () => {
       icon={<img src={AvatarIcon} alt="Avatar" />} 
       className="menu-button"
     />
+
   );
 };
+
+
 
 export default AvatarButton;

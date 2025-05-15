@@ -2,6 +2,7 @@ import React from 'react';
 import { Tooltip } from 'antd'; // Removed unused Space
 import WireframeButton from './RenderModeButtons/WireframeButton';
 import WhiteModelButton from './RenderModeButtons/WhiteModelButton';
+import VertexColorEditButton from './RenderModeButtons/VertexColorEditButton.jsx';
 import VertexColorButton from './RenderModeButtons/VertexColorButton';
 
 const RenderModeMenu = ({ currentMode, onModeChange, isVertexColorEnabled }) => {
@@ -15,11 +16,9 @@ const RenderModeMenu = ({ currentMode, onModeChange, isVertexColorEnabled }) => 
 
   // Style for the wrapper div around each button to handle spacing/borders
   const buttonWrapperStyle = {
-    // Remove default margins/paddings if any from Tooltip or Button
     margin: 0,
     padding: 0,
     lineHeight: 'normal', // Ensure buttons align vertically
-    // Add a border between items, except for the last one
     borderRight: '0px solid rgba(255, 255, 255, 0)', // Adjust color as needed
   };
 
@@ -47,8 +46,17 @@ const RenderModeMenu = ({ currentMode, onModeChange, isVertexColorEnabled }) => 
           />
         </Tooltip>
       </div>
+      <div style={buttonWrapperStyle}>
+        <Tooltip title="顶点色编辑模式" placement="bottom" mouseEnterDelay={0.5}>
+          <VertexColorEditButton 
+            isActive={currentMode === 'vertexColorEdit'} 
+            disabled={!isVertexColorEnabled} 
+            onClick={() => !isVertexColorEnabled ? null : onModeChange('vertexColorEdit')} 
+          />
+        </Tooltip>
+      </div>
       <div style={lastButtonWrapperStyle}> {/* Apply style without right border */} 
-        <Tooltip title="顶点色模式" placement="bottom" mouseEnterDelay={0.5}>
+        <Tooltip title="顶点色预览模式" placement="bottom" mouseEnterDelay={0.5}>
           <VertexColorButton 
             isActive={currentMode === 'vertexColor'} 
             disabled={!isVertexColorEnabled} 

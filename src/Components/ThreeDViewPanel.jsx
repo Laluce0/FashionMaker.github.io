@@ -1,8 +1,8 @@
 import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { OrbitControls, Edges, } from '@react-three/drei';
-import { Space, Button, Slider, message } from 'antd'; 
-// Import the new menu component
+import { OrbitControls } from '@react-three/drei';
+import CustomOrbitControls from './CustomOrbitControls'; // Changed from OrbitControls to CustomOrbitControls
+import { message } from 'antd'; 
 import RenderModeMenu from './RenderModeMenu';
 import * as THREE from 'three';
 
@@ -40,6 +40,8 @@ function Model({ geometry, renderMode, activeHighlightColor, setActiveHighlightC
         // Use activeHighlightColor prop for the shader uniform
         highlightColor: { value: activeHighlightColor ? new THREE.Color(activeHighlightColor) : new THREE.Color(0,0,0) },
         iTime: { value: 0.0 },
+        iResolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
+        edgeColor: { value: new THREE.Color(1,1,0) },
       },
       vertexShader: `
         varying vec4 vColor;
@@ -59,7 +61,8 @@ function Model({ geometry, renderMode, activeHighlightColor, setActiveHighlightC
           float colorDist = distance(baseColor, highlightColor);
           
           if (colorDist < 0.1) {
-            gl_FragColor = vec4(fract(iTime), fract(iTime), fract(iTime), 1.0); // 高亮颜色
+            float t = sin(iTime * 2.0) * 0.5 + 0.5;
+            gl_FragColor = vec4(t, t, t, 1.0); // 高亮颜色
           } else {
             // 否则使用原始颜色
             gl_FragColor = vec4(baseColor, 1.0);
@@ -79,6 +82,9 @@ function Model({ geometry, renderMode, activeHighlightColor, setActiveHighlightC
         const shaderMaterial = new THREE.ShaderMaterial(vertexGroupShader);
         materialRef.current = shaderMaterial; // 保存对材质的引用
         return shaderMaterial;
+      case 'vertexColorEdit': // 新增顶点色编辑模式的处理
+        // 使用 MeshBasicMaterial 并启用顶点色，直接显示原始顶点颜色
+        return new THREE.MeshBasicMaterial({ vertexColors: true, side:THREE.DoubleSide, });
       case 'solid':
       default:
         return new THREE.MeshStandardMaterial({
@@ -140,8 +146,6 @@ function Model({ geometry, renderMode, activeHighlightColor, setActiveHighlightC
   }
 }
 
-const defaultBrushColor = '#ff0000';
-
 // Receive props from DesignerPage
 const ThreeDViewPanel = forwardRef(({ 
   geometry, 
@@ -151,12 +155,7 @@ const ThreeDViewPanel = forwardRef(({
 }, ref) => {
   const [renderMode, setRenderMode] = useState('solid'); // 'wireframe', 'solid', 'vertexColor'
   const [isVertexColorEnabled, setIsVertexColorEnabled] = useState(false); // Controls if vertex color mode can be selected
-  const [vertexColors, setVertexColors] = useState([]); // Keep local UI state
-  const [colorGroups, setColorGroups] = useState([]); // Keep local UI state
-  const [highlightGroup, setHighlightGroup] = useState(null); // Keep local UI state
   // const [highlightColor, setHighlightColor] = useState('#00ff00'); // Removed, highlight is now managed by activeHighlightColor in Model component
-  const [brushColor, setBrushColor] = useState(defaultBrushColor); // Keep local UI state
-  const [brushSize, setBrushSize] = useState(10); // Keep local UI state
   const fileInputRef = useRef(null); // Ref for the hidden file input
 
   // Expose functions via ref
@@ -168,7 +167,7 @@ const ThreeDViewPanel = forwardRef(({
     enableVertexColorMode: () => {
       setIsVertexColorEnabled(true);
       setRenderMode('vertexColor');
-      message.info('顶点色模式已启用');
+      //message.info('顶点色模式已启用');
     },
     // New method to disable vertex color mode
     disableVertexColorMode: () => {
@@ -176,7 +175,7 @@ const ThreeDViewPanel = forwardRef(({
       setIsVertexColorEnabled(false); // Disable vertex color mode selection
       // Optionally, reset activeHighlightColor if it's tied to vertex coloring
       // setActiveHighlightColor(null); 
-      message.info('顶点色模式已禁用');
+      //message.info('顶点色模式已禁用');
     }
   }));
 
@@ -188,83 +187,32 @@ const ThreeDViewPanel = forwardRef(({
       // Reset states on new model load
       setRenderMode('solid');
       setIsVertexColorEnabled(false);
-      setVertexColors([]);
-      setColorGroups([]);
-      setHighlightGroup(null);
     }
     // Reset the input value to allow uploading the same file again
     if (event.target) {
       event.target.value = null;
     }
   };
-  
-  const handleGroupSelect = (groupIdx) => {
-    setHighlightGroup(groupIdx);
-    // setHighlightColor(colorGroups[groupIdx]?.color || '#00ff00'); // Removed, Model will use activeHighlightColor
-  };
-  // 供Model组件点击面片时调用，实现高亮
-  const handleModelGroupSelect = (groupIdx) => {
-    handleGroupSelect(groupIdx);
-  };
 
-  // 笔刷颜色选择
-  const handleBrushColorChange = (e) => {
-    setBrushColor(e.target.value);
-  };
+  // 保留handleGroupSelect函数用于潜在的未来功能
 
-  // 笔刷大小调整
-  const handleBrushSizeChange = (value) => {
-    setBrushSize(value);
-  };
-
-  // 顶点色编辑（点击/拖拽修改，需结合实际模型数据实现）
-  const handleVertexPaint = (e) => {
-    if (renderMode !== 'vertexColor') return; // Only allow painting in vertex color mode
-    // TODO: 结合raycaster和brushSize修改vertexColors
-    message.info('顶点色编辑功能待实现');
-  };
-
-  // 侧边交互面板 (Keep as is for now)
-  const renderControlPanel = () => (
-    <div style={{ position: 'absolute', left: 10, top: 10, background: 'rgba(255,255,255,0.9)', padding: 12, borderRadius: 8, zIndex: 2 }}>
-      {/* Hidden file input for model upload */}
-      <input 
-        ref={fileInputRef} 
-        type="file" 
-        accept=".obj,.gltf,.glb" 
-        style={{ display: 'none' }} 
-        onChange={handleFileChange} 
-      />
-      {/* Button to trigger the hidden input (optional, as triggering is done via ref) */}
-      {/* <Button onClick={() => fileInputRef.current?.click()}>上传3D模型</Button> */}
-      
-      <div style={{ marginTop: 16 }}>
-        <span>笔刷颜色：</span>
-        <input type="color" value={brushColor} onChange={handleBrushColorChange} style={{ width: 32, height: 32, border: 'none', background: 'none' }} />
-      </div>
-      <div style={{ marginTop: 12 }}>
-        <span>笔刷大小：</span>
-        <Slider min={1} max={50} value={brushSize} onChange={handleBrushSizeChange} style={{ width: 120 }} />
-      </div>
-      <div style={{ marginTop: 12 }}>
-        <span>顶点色分组：</span>
-        <Space direction="vertical">
-          {colorGroups.map((group, idx) => (
-            <Button key={idx} style={{ background: group.color, color: '#fff', border: highlightGroup === idx ? '2px solid #333' : 'none' }} onClick={() => handleGroupSelect(idx)}>
-              分组{idx+1}
-            </Button>
-          ))}
-        </Space>
-      </div>
-    </div>
+  // 隐藏文件输入（仅保留文件上传功能，移除笔刷面板）
+  const renderHiddenInput = () => (
+    <input 
+      ref={fileInputRef} 
+      type="file" 
+      accept=".obj,.gltf,.glb" 
+      style={{ display: 'none' }} 
+      onChange={handleFileChange} 
+    />
   );
 
   // Removed iconStyle and disabledIconStyle as they are handled within button components
 
   return (
     <div style={{ flex: 3, backgroundColor: '#e0e0e0', display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'relative', height: '100%', width: '100%' }}>
-      {renderControlPanel()}
-      <div style={{ width: '100%', height: '100%' }} onClick={handleVertexPaint}>
+      {renderHiddenInput()}
+      <div style={{ width: '100%', height: '100%' }}>
         <Canvas camera={{ position: [0, 0, 5], fov: 60 }} style={{ width: '100%', height: '100%' }}>
           <axesHelper args={[1]} />
           <ambientLight intensity={0.7} />
@@ -273,15 +221,11 @@ const ThreeDViewPanel = forwardRef(({
             <Model
               geometry={geometry}
               renderMode={renderMode}
-              vertexColors={vertexColors}
-              highlightGroup={highlightGroup}
               activeHighlightColor={activeHighlightColor} // Pass down activeHighlightColor
               setActiveHighlightColor={setActiveHighlightColor} // Pass down setActiveHighlightColor
-              //colorGroups={colorGroups}
-              //onGroupSelect={handleModelGroupSelect}
             />
           )}
-          <OrbitControls enablePan={true} enableZoom={true} enableRotate={true} panSpeed={1.2} rotateSpeed={1.1} zoomSpeed={1.1} />
+          <CustomOrbitControls enableDamping />
         </Canvas>
       </div>
       {/* 右上角渲染模式菜单 */} 

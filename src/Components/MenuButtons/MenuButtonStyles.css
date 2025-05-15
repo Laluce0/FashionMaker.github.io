@@ -89,3 +89,27 @@
 .vertex-color-button.active {
   background: var(--Active, #4772B3); /* Active background */
 }
+
+/* Vertex Color Edit Button Styles */
+.vertex-color-edit-button {
+  display: flex;
+  height: 30px;
+  /* width is likely determined by content or container */
+  align-items: center;
+  border-radius: 0px 0px 0px 0px;
+  border: 1px solid #3D3D3D;
+  background: var(--Button, #545454);
+  box-shadow: 0px 1px 0px 0px rgba(0, 0, 0, 0.16);
+  padding: 0 8px; /* Add some padding for text */
+}
+
+.vertex-color-edit-button img {
+  width: auto; /* Adjust if icon size needs control */
+  height: auto; /* Adjust if icon size needs control */
+  margin-right: 0px; /* Space between icon and text if needed */
+  padding-top: 4px;
+}
+
+.vertex-color-edit-button.active {
+  background: var(--Active, #4772B3); /* Active background */
+}

@@ -4,38 +4,12 @@ import { Button, Spin, Space, message } from 'antd'; // 新增 message
 // Remove local createNewPanel function, it's passed via props now
 // function createNewPanel(id) { ... }
 
-const PANEL_COLORS = ['#6ec1e4', '#f7b267', '#b5e48c', '#f28482', '#b5838d'];
-
-// Helper function to generate SVG path data from points and lines
-const generatePathData = (points, lines) => {
-  if (!points || points.length < 2 || !lines) return '';
-  let path = `M ${points[0].Point.positionX} ${-points[0].Point.positionY}`;
-  for (let i = 1; i < lines.length; i++) {
-    const lineInfo = lines[i];
-    const endPointIndex = lineInfo.Line.index; // Assuming Line index corresponds to the end point index
-    const endPoint = points.find(p => p.Point.index === endPointIndex + 1); // Find the next point
-    if (endPoint) {
-      // Simple straight line for now, ignoring Line type
-      path += ` L ${endPoint.Point.positionX} ${-endPoint.Point.positionY}`;
-    }
-  }
-  // Check if the path should be closed (connect last point to first)
-  // This logic might need refinement based on actual data structure
-  if (points.length > 2) { // Basic check for closed shape
-     path += ' Z';
-  }
-  return path;
-};
-
 // Receive props from DesignerPage and use forwardRef
 const PatternPanel = forwardRef(({ 
   panels, // Keep existing panels prop for potential future use or remove if fully replaced
   onPanelsChange, 
   // onPanelSelect, // No longer needed, selection handled by activeHighlightColor
   filename,
-  panelIdCounter, 
-  setPanelIdCounter,
-  createNewPanel, // Receive helper function
   threeDViewRef, // Receive ref for ThreeDViewPanel
   activeHighlightColor, // New prop for shared highlight state
   setActiveHighlightColor // New prop for updating shared highlight state
@@ -257,9 +231,11 @@ const PatternPanel = forwardRef(({
           {/* Main Outline */}
           <path 
             d={pattern.path}
-            fill={isSelected ? `${color}40` : `${color}20`} // Lighter fill, slightly darker if selected
-            stroke={isSelected ? '#1976d2' : color}
-            strokeWidth={isSelected ? 2 : 1.5}
+            //fill={isSelected ? `${color}40` : `${color}20`} // Lighter fill, slightly darker if selected
+            fill={isSelected ? '#B8D6E6' : '#FFFFFF'}
+            stroke={isSelected ? '#C686FF' : '#000000'}
+            strokeWidth={isSelected ? 3 : 2}
+            filter={isSelected ? "url(#shadow)" : "none"}
             // fillRule="evenodd" // Use if holes are part of the main path
           />
           {/* Children Shapes (Inner, Hole, Base) */}
@@ -273,7 +249,7 @@ const PatternPanel = forwardRef(({
               fill = '#fafafa'; // Match background to simulate hole
               strokeColor = isSelected ? '#1976d2' : color;
             } else if (child.type === "Base Line") {
-              strokeColor = isSelected ? '#1976d2' : '#aaa'; // Grey for base lines
+              strokeColor = isSelected ? '#1976d2' : '#AAA'; // Grey for base lines
               strokeDasharray = "5,5";
             } else if (child.type === "InnerShape") {
                strokeColor = isSelected ? '#1976d2' : color;
@@ -290,8 +266,6 @@ const PatternPanel = forwardRef(({
               />
             );
           })}
-          {/* Add ID text if needed */}
-           {/* <text x={center.x} y={center.y} ... /> */}
         </g>
       );
     })
@@ -369,9 +343,18 @@ const PatternPanel = forwardRef(({
         onMouseDown={handleCanvasMouseDown}
         // onMouseMove and onMouseUp are handled globally when isPanning is true
       >
+        <defs>
+          <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="3" result="blur" />
+            <feOffset dx="2" dy="2" result="offsetBlur" />
+            <feMerge>
+              <feMergeNode in="offsetBlur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+        </defs>
         <g transform={`translate(${canvasOffset.x}, ${canvasOffset.y})`}>
           {renderGeneratedPanels()} {/* Render generated panels */}
-          {/* {renderPanels()} */}{/* Keep or remove original renderPanels based on needs */}
         </g>
       </svg>
     </div>
