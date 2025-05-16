@@ -39,7 +39,6 @@ export default function CustomOrbitControls({ enableDamping = true, dampingFacto
   useEffect(() => {
     const handleMouseDown = (e) => {
       if (e.button === 2 || e.buttons === 2) {
-        console.log('🖱️ Mouse Right Button Down')
         e.preventDefault()
         e.stopPropagation()
 
@@ -49,20 +48,6 @@ export default function CustomOrbitControls({ enableDamping = true, dampingFacto
     }
 
     const handleMouseMove = (e) => {
-      console.log(`Move Raw: ${e.movementX}, ${e.movementY} | Mode: ${modeRef.current}`)
-
-      if (!controlsRef.current) {
-        console.warn('⚠️ controlsRef.current is null!')
-        return
-      }
-
-      if (!isRightMouseDownRef.current) {
-        console.warn('⚠️ isRightMouseDown is false!')
-        return
-      }
-
-      console.log(`Proceeding with mode: ${modeRef.current}`)
-
       if (modeRef.current === 'rotate') {
         rotateCamera(e)
       } else if (modeRef.current === 'pan') {
@@ -72,7 +57,6 @@ export default function CustomOrbitControls({ enableDamping = true, dampingFacto
 
     const handleMouseUp = (e) => {
       if (e.button === 2 || e.buttons === 2) {
-        console.log('mouseup triggered')
         isRightMouseDownRef.current = false
         modeRef.current = null
       }

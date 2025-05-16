@@ -4,10 +4,22 @@ import { UserOutlined, SaveOutlined } from '@ant-design/icons';
 
 // Import the new icon button components
 import IconButtonGroup from './IconButtonGroup';
+import BrushStatusBar from './BrushStatusBar';
 
 const { Header } = Layout;
 
-const DesignerMenuBar = ({ onImportModel, onClothSelect, onExportPatternSVG }) => {
+const DesignerMenuBar = ({ 
+  onImportModel, 
+  onClothSelect, 
+  onExportPatternSVG,
+  brushSize,
+  setBrushSize,
+  brushColor,
+  setBrushColor,
+  onColorPickerClick,
+  onAddNewColor,
+  onToolSelect
+ }) => {
   // Handler for the import button/menu item (if needed for FileSelectorButton)
   const handleImportClick = () => {
     if (onImportModel) {
@@ -18,7 +30,17 @@ const DesignerMenuBar = ({ onImportModel, onClothSelect, onExportPatternSVG }) =
   return (
     <Header style={{ display: 'flex', alignItems: 'center', padding: '0 10px', height: '48px', backgroundColor: '#303030'}}>
       {/* Left Section: Icon Buttons */}
-      <IconButtonGroup onClothSelect={onClothSelect} onExportPatternSVG={onExportPatternSVG} />
+      <IconButtonGroup onClothSelect={onClothSelect} onExportPatternSVG={onExportPatternSVG} onToolSelect={onToolSelect} />
+
+      {/* 笔刷状态栏 */}
+      <BrushStatusBar 
+        brushSize={brushSize}
+        setBrushSize={setBrushSize}
+        brushColor={brushColor}
+        setBrushColor={setBrushColor}
+        onColorPickerClick={onColorPickerClick}
+        onAddNewColor={onAddNewColor}
+      />
 
       {/* Middle Section: Breadcrumb */}
       <ConfigProvider

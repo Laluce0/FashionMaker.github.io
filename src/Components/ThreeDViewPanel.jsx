@@ -1,6 +1,5 @@
-import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react';
+import React, { forwardRef, useImperativeHandle, useRef, useState, useEffect } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { OrbitControls } from '@react-three/drei';
 import CustomOrbitControls from './CustomOrbitControls'; // Changed from OrbitControls to CustomOrbitControls
 import { message } from 'antd'; 
 import RenderModeMenu from './RenderModeMenu';
@@ -8,10 +7,11 @@ import * as THREE from 'three';
 
 
 // 3D模型渲染组件
-function Model({ geometry, renderMode, activeHighlightColor, setActiveHighlightColor }) {
+function Model({ geometry, renderMode, activeHighlightColor, setActiveHighlightColor, brushSize, brushColor, brushEnabled }) {
   const meshRef = useRef();
   const materialRef = useRef();
   const [iTime, setITime] = useState(0.0);
+  const [isDrawing, setIsDrawing] = useState(false);
   // const [highlightColor,setHighlightColor] = useState(new THREE.Color(0,0,0)); // Removed, using activeHighlightColor prop
   let raycaster, camera, scene;
   try {
@@ -111,19 +111,91 @@ function Model({ geometry, renderMode, activeHighlightColor, setActiveHighlightC
 
   // 处理点击事件
   const handleClick = (e) => {
-    if (renderMode !== 'vertexColor') return;
     e.stopPropagation();
-    if (e.face) {
-      const faceColor = getFaceColor(e.face, meshRef.current.geometry);
+    if (!e.face || !meshRef.current?.geometry) return;
+
+    const faceColor = getFaceColor(e.face, meshRef.current.geometry);
+    if (!faceColor) return;
+
+    const color = new THREE.Color(faceColor[0], faceColor[1], faceColor[2]);
+    const colorHex = `#${color.getHexString().toUpperCase()}`;
+
+    // If in color picker mode AND vertexColorEdit mode, pick color for brush
+    if (isColorPickerMode && renderMode === 'vertexColorEdit') {
+      // Dispatch an event with the picked color for the brush
+      const event = new CustomEvent('brushColorChange', { detail: { color: colorHex } });
+      window.dispatchEvent(event);
+      message.success(`画笔颜色已选择: ${colorHex}`);
+      // setColorPickerMode(false); // This will be handled by DesignerPage listening to brushColorChange
+    } 
+    // If in vertexColor (preview) mode AND NOT in color picker mode, set highlight color
+    else if (renderMode === 'vertexColor' && !isColorPickerMode) {
+      setActiveHighlightColor(colorHex); // Update shared state for highlighting panels
+    }
+    // Other modes or states (e.g. solid, wireframe, or vertexColorEdit without picker) do nothing on click here
+  };
+  
+  // 处理笔刷绘制
+  const handlePointerDown = (e) => {
+    if (!brushEnabled || renderMode !== 'vertexColorEdit') return;
+    e.stopPropagation();
+    setIsDrawing(true);
+    applyBrush(e);
+  };
+  
+  const handlePointerMove = (e) => {
+    if (!isDrawing || !brushEnabled || renderMode !== 'vertexColorEdit') return;
+    e.stopPropagation();
+    applyBrush(e);
+  };
+  
+  const handlePointerUp = () => {
+    setIsDrawing(false);
+  };
+  
+  // 应用笔刷效果
+  const applyBrush = (e) => {
+    if (!meshRef.current || !e.face) return;
+    
+    const geometry = meshRef.current.geometry;
+    const position = geometry.attributes.position;
+    const color = geometry.attributes.color;
+    
+    if (!color) {
+      console.error('No color attribute found in geometry');
+      return;
+    }
+    
+    // 获取点击位置
+    const point = e.point.clone();
+    // 转换为模型局部坐标
+    meshRef.current.worldToLocal(point);
+    
+    // 笔刷颜色
+    const brushColorObj = new THREE.Color(brushColor);
+    
+    // 遍历所有顶点，计算与点击位置的距离，在笔刷范围内的顶点应用颜色
+    const vertexCount = position.count;
+    // 使用传入的brushSize，已经在外部应用了brushScaleFactor
+    const brushSizeSquared = brushSize * brushSize; // brushSize已经是调整后的实际大小
+    
+    for (let i = 0; i < vertexCount; i++) {
+      const vertexPosition = new THREE.Vector3(
+        position.getX(i),
+        position.getY(i),
+        position.getZ(i)
+      );
       
-      if (faceColor) {
-        const color = new THREE.Color(faceColor[0], faceColor[1], faceColor[2]);
-        const colorHex = `#${color.getHexString().toUpperCase()}`;
-        // console.log('Face color clicked:', colorHex);
-        // setHighlightColor(color); // Removed
-        setActiveHighlightColor(colorHex); // Update shared state
+      const distanceSquared = point.distanceToSquared(vertexPosition);
+      
+      // 如果顶点在笔刷范围内，应用颜色
+      if (distanceSquared < brushSizeSquared) {
+        color.setXYZ(i, brushColorObj.r, brushColorObj.g, brushColorObj.b);
       }
     }
+    
+    // 更新颜色属性
+    color.needsUpdate = true;
   };
 
   try {
@@ -133,6 +205,10 @@ function Model({ geometry, renderMode, activeHighlightColor, setActiveHighlightC
         geometry={geometry}
         material={material}
         onClick={handleClick}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerLeave={handlePointerUp}
         //onPointerOver={() => setHovered(true)}
         //onPointerOut={() => setHovered(false)}
       >
@@ -151,31 +227,99 @@ const ThreeDViewPanel = forwardRef(({
   geometry, 
   onModelLoad, 
   activeHighlightColor, // New prop for shared highlight state
-  setActiveHighlightColor // New prop for updating shared highlight state
+  setActiveHighlightColor, // New prop for updating shared highlight state
+  brushSize,
+  brushColor,
+  brushEnabled
 }, ref) => {
-  const [renderMode, setRenderMode] = useState('solid'); // 'wireframe', 'solid', 'vertexColor'
+  const [renderMode, _setRenderMode] = useState('solid'); // 'wireframe', 'solid', 'vertexColor', 'vertexColorEdit'
+  const renderModeRef = useRef(renderMode); // Ref to keep track of renderMode for callbacks
   const [isVertexColorEnabled, setIsVertexColorEnabled] = useState(false); // Controls if vertex color mode can be selected
-  // const [highlightColor, setHighlightColor] = useState('#00ff00'); // Removed, highlight is now managed by activeHighlightColor in Model component
+  const [isColorPickerMode, setIsColorPickerMode] = useState(false); // 颜色选择器模式状态
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 }); // 新增：鼠标位置
+  const [brushScaleFactor, setBrushScaleFactor] = useState(0.001); // 新增：笔刷比例系数
   const fileInputRef = useRef(null); // Ref for the hidden file input
+  const canvasContainerRef = useRef(null); // 新增：Canvas容器引用
+
+  // 当笔刷启用状态改变时，切换到顶点色编辑模式
+  useEffect(() => {
+    if (brushEnabled) {
+      setIsVertexColorEnabled(true);
+      setRenderMode('vertexColorEdit');
+    }
+  }, [brushEnabled]);
+
+  // 处理鼠标移动，更新鼠标位置状态
+  const handleMouseMove = (e) => {
+    if (canvasContainerRef.current) {
+      const rect = canvasContainerRef.current.getBoundingClientRect();
+      setMousePosition({
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top
+      });
+    }
+  };
+
+  // Synchronize renderModeRef with renderMode state
+  useEffect(() => {
+    renderModeRef.current = renderMode;
+  }, [renderMode]);
+
+  const setRenderMode = (newMode) => {
+    _setRenderMode(newMode);
+    if (newMode === 'vertexColorEdit') {
+      setIsVertexColorEnabled(true);
+    } else if (newMode === 'vertexColor') {
+      setIsVertexColorEnabled(true);
+    } else {
+      // If switching to a mode that's not vertexColor or vertexColorEdit,
+      // and color picker is active, deactivate it.
+      if (isColorPickerMode) {
+        setIsColorPickerMode(false);
+        // Optionally notify DesignerPage if it needs to update its state too
+        // window.dispatchEvent(new CustomEvent('colorPickerDeactivated'));
+      }
+    }
+  };
 
   // Expose functions via ref
   useImperativeHandle(ref, () => ({
     triggerUpload: () => {
       fileInputRef.current?.click();
     },
-    // Function to enable vertex color mode and switch to it
-    enableVertexColorMode: () => {
+    enableVertexColorMode: () => { // This now sets to 'vertexColor' (preview)
       setIsVertexColorEnabled(true);
-      setRenderMode('vertexColor');
-      //message.info('顶点色模式已启用');
+      setRenderMode('vertexColor'); 
     },
-    // New method to disable vertex color mode
     disableVertexColorMode: () => {
-      setRenderMode('solid'); // Reset to default render mode
-      setIsVertexColorEnabled(false); // Disable vertex color mode selection
-      // Optionally, reset activeHighlightColor if it's tied to vertex coloring
-      // setActiveHighlightColor(null); 
-      //message.info('顶点色模式已禁用');
+      setRenderMode('solid'); 
+      setIsVertexColorEnabled(false); 
+    },
+    setColorPickerMode: (active) => {
+      if (active) {
+        // Only activate color picker if in vertexColorEdit mode
+        if (renderModeRef.current === 'vertexColorEdit') {
+          setIsColorPickerMode(true);
+          //message.info('颜色选择器已启用，点击模型选择颜色');
+        } else {
+          //message.warn('请先切换到顶点颜色编辑模式以使用颜色拾取器。');
+          // Dispatch an event so DesignerPage can revert its state if needed
+          window.dispatchEvent(new CustomEvent('colorPickerActivationFailed'));
+          return; // Do not activate if not in correct mode
+        }
+      } else {
+        setIsColorPickerMode(false);
+        if (renderModeRef.current === 'vertexColorEdit') { // Only show disabled message if it was relevant
+          //message.info('颜色选择器已禁用');
+        }
+      }
+    },
+    // Expose setRenderMode and getCurrentRenderMode
+    setRenderMode: (mode) => {
+        setRenderMode(mode);
+    },
+    getCurrentRenderMode: () => {
+        return renderModeRef.current;
     }
   }));
 
@@ -209,8 +353,19 @@ const ThreeDViewPanel = forwardRef(({
 
   // Removed iconStyle and disabledIconStyle as they are handled within button components
 
+  // Removed window.isColorPickerMode and window.setBrushColorFromPicker logic
+  // State is managed internally and events are used for communication
+  // Event listener for brushColorChange is now in DesignerPage.jsx
+
+  // 修改笔刷大小的实际影响范围
+  const actualBrushSize = brushSize * brushScaleFactor;
+
   return (
-    <div style={{ flex: 3, backgroundColor: '#e0e0e0', display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'relative', height: '100%', width: '100%' }}>
+    <div 
+      ref={canvasContainerRef}
+      style={{ flex: 3, backgroundColor: '#e0e0e0', display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'relative', height: '100%', width: '100%' }}
+      onMouseMove={handleMouseMove}
+    >
       {renderHiddenInput()}
       <div style={{ width: '100%', height: '100%' }}>
         <Canvas camera={{ position: [0, 0, 5], fov: 60 }} style={{ width: '100%', height: '100%' }}>
@@ -223,6 +378,9 @@ const ThreeDViewPanel = forwardRef(({
               renderMode={renderMode}
               activeHighlightColor={activeHighlightColor} // Pass down activeHighlightColor
               setActiveHighlightColor={setActiveHighlightColor} // Pass down setActiveHighlightColor
+              brushSize={actualBrushSize} // 使用调整后的笔刷大小
+              brushColor={brushColor}
+              brushEnabled={brushEnabled}
             />
           )}
           <CustomOrbitControls enableDamping />
@@ -236,6 +394,32 @@ const ThreeDViewPanel = forwardRef(({
           isVertexColorEnabled={isVertexColorEnabled} 
         />
       </div>
+
+      {/* 笔刷指示器 */}
+      {(brushEnabled || isColorPickerMode) && (
+        <div 
+          style={{
+            position: 'absolute',
+            left: `${mousePosition.x}px`,
+            top: `${mousePosition.y}px`,
+            width: `${brushSize}px`,
+            height: `${brushSize}px`,
+            borderRadius: '50%',
+            border: `2px solid ${isColorPickerMode ? '#ff0000' : brushColor}`,
+            backgroundColor: `${brushColor}40`, // 添加透明度
+            transform: 'translate(-50%, -50%)',
+            pointerEvents: 'none', // 确保鼠标事件可以穿透
+            zIndex: 10
+          }}
+        />
+      )}
+
+      {/* 颜色选择器模式提示 */}
+      {isColorPickerMode && (
+        <div style={{ position: 'absolute', top: '50px', left: '50%', transform: 'translateX(-50%)', backgroundColor: 'rgba(0,0,0,0.7)', color: 'white', padding: '8px 16px', borderRadius: '4px', zIndex: 10 }}>
+          点击模型选择颜色
+        </div>
+      )}
     </div>
   );
 });

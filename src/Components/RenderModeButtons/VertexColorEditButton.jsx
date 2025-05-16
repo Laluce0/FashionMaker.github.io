@@ -10,7 +10,7 @@ const VertexColorEditButton = ({ onClick, isActive, disabled }) => {
       className={`vertex-color-edit-button ${isActive ? 'active' : ''} ${disabled ? 'disabled' : ''}`}
       onClick={onClick}
       disabled={disabled} // Pass the disabled prop
-      title="VertexColorEditButton"
+      title="Vertex Color Edit Mode"
     />
   );
 };

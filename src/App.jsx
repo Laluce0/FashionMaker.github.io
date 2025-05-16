@@ -4,30 +4,6 @@ import { Routes, Route, Link, useLocation } from 'react-router-dom';
 import './App.css';
 // Placeholder components for pages - will be created later or kept simple
 import DesignerPage from './Pages/DesignerPage'; // Assuming DesignerPage will be in src/Pages/
-import * as THREE from 'three'; // Import THREE
-import { GLTFLoader } from 'three-stdlib'; // Import loaders
-import { OBJLoader } from 'three-stdlib';
-import { message } from 'antd'; // Import message for feedback
-
-// Initial panel data structure helper
-function createNewPanel(id) {
-  // Default square
-  return {
-    id,
-    vertices: [
-      { x: 80, y: 80 },
-      { x: 180, y: 80 },
-      { x: 180, y: 180 },
-      { x: 80, y: 180 }
-    ],
-    edges: [
-      [0, 1],
-      [1, 2],
-      [2, 3],
-      [3, 0]
-    ]
-  };
-}
 
 const { Header, Content } = Layout;
 
@@ -38,60 +14,12 @@ const BuilderPage = () => <div>Builder Page Content</div>;
 const App = () => {
   const designerPageRef = useRef(null); // Ref for DesignerPage
   const location = useLocation();
-  const [filename,setFilename] = useState('jacket.glb');
-  const [panels, setPanels] = useState([createNewPanel(1)]); // Lifted state for panels
-  const [geometry, setGeometry] = useState(null); // Lifted state for 3D model geometry
-  const [activeHighlightColor, setActiveHighlightColor] = useState(null);
-
-  // Handler to update panels state
-  const handlePanelsChange = (newPanels) => {
-    setPanels(newPanels);
-  };
-
-  // Handler to load and set geometry from file
-  const handleModelLoad = (file) => {
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (ev) => {
-      setFilename(file.name);
-      if (filename.endsWith('.gltf') || filename.endsWith('.glb')) {
-        const loader = new GLTFLoader();
-        loader.parse(ev.target.result, '', (gltf) => {
-          let mesh = null;
-          gltf.scene.traverse((child) => {
-            if (child.isMesh && !mesh) mesh = child;
-          });
-          if (mesh) {
-            setGeometry(mesh.geometry);
-            //message.success('GLTF模型加载成功');
-          } else {
-            //message.error('未找到可用Mesh');
-          }
-        }, (err) => {
-          //message.error('GLTF解析失败: ' + err.message);
-        });
-      } else if (filename.endsWith('.obj')) {
-        const loader = new OBJLoader();
-        const text = new TextDecoder().decode(ev.target.result);
-        const obj = loader.parse(text);
-        let mesh = null;
-        obj.traverse((child) => {
-          if (child.isMesh && !mesh) mesh = child;
-        });
-        if (mesh) {
-          setGeometry(mesh.geometry);
-          //message.success('OBJ模型加载成功');
-        } else {
-          //message.error('未找到可用Mesh');
-        }
-      } else {
-        //message.error('仅支持OBJ/GLTF/GLB格式');
-      }
-    };
-    reader.readAsArrayBuffer(file);
-  };
+  // State and handlers like filename, panels, geometry, activeHighlightColor, 
+  // handlePanelsChange, handleModelLoad are now moved to DesignerPage.jsx
 
   // Handler to trigger SVG export in PatternPanel via DesignerPage
+  // This remains if App.jsx still needs to initiate the export, 
+  // otherwise, it can be removed if export is only triggered from within DesignerPage or its children.
   const handleExportPatternSVG = () => {
     designerPageRef.current?.triggerExportPatternSVG();
   };
@@ -140,17 +68,10 @@ const App = () => {
             path="/designer" 
             element={( 
               <DesignerPage
-                panels={panels} 
-                onPanelsChange={handlePanelsChange} 
-                geometry={geometry} 
-                onModelLoad={handleModelLoad} 
-                filename={filename}
-                createNewPanel={createNewPanel} // Pass helper function if needed in PatternPanel
-                ref={designerPageRef} // Pass the ref
-                onExportPatternSVG={handleExportPatternSVG} // Pass the export handler
-                //传递activeHighlightColor和setActiveHighlightColor
-                activeHighlightColor={activeHighlightColor}
-                setActiveHighlightColor={setActiveHighlightColor}
+                ref={designerPageRef} // Pass the ref if App needs to call methods on DesignerPage
+                // onExportPatternSVG={handleExportPatternSVG} // Only pass if App still triggers export
+                // Other props (panels, onPanelsChange, geometry, onModelLoad, filename, activeHighlightColor, setActiveHighlightColor)
+                // are now managed within DesignerPage itself.
               />
             )} 
           />

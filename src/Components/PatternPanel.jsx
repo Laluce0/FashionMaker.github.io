@@ -1,22 +1,15 @@
 import React, { useState, useRef, useCallback, forwardRef, useImperativeHandle } from 'react';
 import { Button, Spin, Space, message } from 'antd'; // 新增 message
 
-// Remove local createNewPanel function, it's passed via props now
-// function createNewPanel(id) { ... }
-
 // Receive props from DesignerPage and use forwardRef
 const PatternPanel = forwardRef(({ 
   panels, // Keep existing panels prop for potential future use or remove if fully replaced
   onPanelsChange, 
-  // onPanelSelect, // No longer needed, selection handled by activeHighlightColor
   filename,
   threeDViewRef, // Receive ref for ThreeDViewPanel
   activeHighlightColor, // New prop for shared highlight state
   setActiveHighlightColor // New prop for updating shared highlight state
 }, ref) => {
-  // Remove local panels state, use props instead
-  // const [panels, setPanels] = useState([createNewPanel(1)]);
-  // const [selectedPanelId, setSelectedPanelId] = useState(null); // Removed, replaced by activeHighlightColor
   const [dragVertex, setDragVertex] = useState(null); // {panelId, vertexIdx} - Keep for potential future interaction
   const svgRef = useRef(null);
   // Remove local panelIdCounter state, use props instead
@@ -158,7 +151,7 @@ const PatternPanel = forwardRef(({
             .then(svgText => {
               console.log('[调试] SVG文件内容长度:', svgText.length);
               if (!svgText || svgText.trim().length === 0) {
-                message.error('SVG文件内容为空，无法解析');
+                //message.error('SVG文件内容为空，无法解析');
                 return;
               }
               // 解析SVG内容
@@ -166,7 +159,7 @@ const PatternPanel = forwardRef(({
               const svgDoc = parser.parseFromString(svgText, 'image/svg+xml');
               const pathNodes = Array.from(svgDoc.querySelectorAll('path'));
               if (pathNodes.length === 0) {
-                message.error('SVG中未找到path元素');
+                //message.error('SVG中未找到path元素');
                 return;
               }
               // 提取path数据
@@ -208,11 +201,11 @@ const PatternPanel = forwardRef(({
               // if (parsedPatterns.length > 0) { // Selection is now based on activeHighlightColor
               //   setSelectedPanelId(parsedPatterns[0].id);
               // }
-              message.success('SVG板片生成成功');
+              //message.success('SVG板片生成成功');
             })
             .catch(err => {
               console.error('[调试] SVG文件读取或解析异常:', err);
-              message.error('SVG文件读取失败: ' + err.message);
+              //message.error('SVG文件读取失败: ' + err.message);
             });
         } catch (error) {
           console.error('[调试] 外层异常:', error);
