@@ -79,14 +79,26 @@ const DesignerPage = forwardRef(({ /* Props from App.jsx are reduced */ }, ref) 
   };
   
   // 处理颜色选择器点击
-  const [isColorPickerActive, setIsColorPickerActive] = useState(false); // 添加颜色选择器激活状态
+  const [isColorPickerActive, setIsColorPickerActive] = useState(false); // 颜色选择器激活状态
 
   const handleColorPickerClick = () => {
     if (threeDViewRef.current) {
       const newPickerState = !isColorPickerActive;
-      // The check for renderMode will be handled inside ThreeDViewPanel's setColorPickerMode
-      // We optimistically set our state, and listen for an event if it fails.
+      
+      // 如果激活颜色选择器，确保先切换到顶点颜色编辑模式
+      if (newPickerState) {
+        // 获取当前渲染模式
+        const currentRenderMode = threeDViewRef.current.getCurrentRenderMode?.();
+        
+        // 如果当前不是顶点颜色编辑模式，先切换到该模式
+        if (currentRenderMode !== 'vertexColorEdit') {
+          threeDViewRef.current.setRenderMode('vertexColorEdit');
+        }
+      }
+      
+      // 设置本地状态
       setIsColorPickerActive(newPickerState);
+      // 设置ThreeDViewPanel中的颜色选择器模式
       threeDViewRef.current.setColorPickerMode(newPickerState);
     }
   };
@@ -140,39 +152,51 @@ const DesignerPage = forwardRef(({ /* Props from App.jsx are reduced */ }, ref) 
   }, [geometry]); // Run effect when geometry changes
 
   // 监听颜色选择器选择的颜色
-  React.useEffect(() => {
+  useEffect(() => {
+    // 处理从ThreeDViewPanel获取的顶点颜色
     const handleBrushColorChange = (e) => {
+      // 设置笔刷颜色为选中的颜色
       setBrushColor(e.detail.color);
-      setBrushEnabled(true); // Ensure brush is enabled after picking a color
+      // 确保笔刷功能启用
+      setBrushEnabled(true);
       
-      // Deactivate color picker mode after color is selected
-      if (isColorPickerActive) { // Check if it was active before changing
-          setIsColorPickerActive(false);
-          if (threeDViewRef.current) {
-            threeDViewRef.current.setColorPickerMode(false);
-          }
-      }
-      // Ensure render mode is vertexColorEdit if a brush color is set
-      if (threeDViewRef.current?.getCurrentRenderMode && threeDViewRef.current.getCurrentRenderMode() !== 'vertexColorEdit') {
-          threeDViewRef.current?.setRenderMode('vertexColorEdit');
-      }
-    };
-    window.addEventListener('brushColorChange', handleBrushColorChange);
-
-    const handleColorPickerActivationFailed = () => {
-        // If ThreeDViewPanel couldn't activate color picker (e.g., wrong mode),
-        // revert our local state for isColorPickerActive.
-        if (isColorPickerActive) { // Only revert if we thought it was active
-            setIsColorPickerActive(false);
+      // 颜色选择后自动关闭颜色选择器模式
+      if (isColorPickerActive) {
+        setIsColorPickerActive(false);
+        if (threeDViewRef.current) {
+          threeDViewRef.current.setColorPickerMode(false);
         }
+      }
+      
+      // 确保渲染模式为顶点颜色编辑模式
+      if (threeDViewRef.current?.getCurrentRenderMode && 
+          threeDViewRef.current.getCurrentRenderMode() !== 'vertexColorEdit') {
+        threeDViewRef.current.setRenderMode('vertexColorEdit');
+      }
+      
+      // 自动选择Region_Brush工具
+      handleToolSelect('Region_Brush');
     };
+    
+    // 处理颜色选择器激活失败的情况
+    const handleColorPickerActivationFailed = () => {
+      // 如果ThreeDViewPanel无法激活颜色选择器（例如，错误的模式），
+      // 恢复本地isColorPickerActive状态
+      if (isColorPickerActive) {
+        setIsColorPickerActive(false);
+      }
+    };
+    
+    // 添加事件监听器
+    window.addEventListener('brushColorChange', handleBrushColorChange);
     window.addEventListener('colorPickerActivationFailed', handleColorPickerActivationFailed);
 
+    // 清理函数
     return () => {
       window.removeEventListener('brushColorChange', handleBrushColorChange);
       window.removeEventListener('colorPickerActivationFailed', handleColorPickerActivationFailed);
     };
-  }, [isColorPickerActive, brushColor]); // Added brushColor to dependencies
+  }, [isColorPickerActive]); // 移除brushColor依赖，避免不必要的重新订阅
 
   return (
     <Layout style={{ height: 'calc(100vh - 64px)' }}>

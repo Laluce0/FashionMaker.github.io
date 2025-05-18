@@ -1,13 +1,22 @@
 import React, { forwardRef, useImperativeHandle, useRef, useState, useEffect } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import CustomOrbitControls from './CustomOrbitControls'; // Changed from OrbitControls to CustomOrbitControls
-import { message } from 'antd'; 
+//import { message } from 'antd'; 
 import RenderModeMenu from './RenderModeMenu';
 import * as THREE from 'three';
 
 
 // 3D模型渲染组件
-function Model({ geometry, renderMode, activeHighlightColor, setActiveHighlightColor, brushSize, brushColor, brushEnabled }) {
+function Model({ 
+    geometry, 
+    renderMode, 
+    activeHighlightColor, 
+    setActiveHighlightColor, 
+    brushSize, 
+    brushColor, 
+    brushEnabled, 
+    isColorPickerMode,
+  }) {
   const meshRef = useRef();
   const materialRef = useRef();
   const [iTime, setITime] = useState(0.0);
@@ -79,18 +88,20 @@ function Model({ geometry, renderMode, activeHighlightColor, setActiveHighlightC
       case 'wireframe':
         return new THREE.MeshBasicMaterial({ wireframe: true, color: 'black' });
       case 'vertexColor':
-        const shaderMaterial = new THREE.ShaderMaterial(vertexGroupShader);
-        materialRef.current = shaderMaterial; // 保存对材质的引用
+        const shaderMaterial = new THREE.ShaderMaterial(vertexGroupShader, {side:THREE.DoubleSide});
+        materialRef.current = shaderMaterial; 
         return shaderMaterial;
-      case 'vertexColorEdit': // 新增顶点色编辑模式的处理
-        // 使用 MeshBasicMaterial 并启用顶点色，直接显示原始顶点颜色
-        return new THREE.MeshBasicMaterial({ vertexColors: true, side:THREE.DoubleSide, });
+      case 'vertexColorEdit': 
+        return new THREE.MeshBasicMaterial({ 
+          vertexColors: true, 
+          side:THREE.DoubleSide, });
       case 'solid':
       default:
         return new THREE.MeshStandardMaterial({
           color: 'white',
           roughness: 0.5,
           metalness: 0.1,
+          side:THREE.DoubleSide,
         });
     }
   }, [renderMode, vertexGroupShader]);
@@ -120,24 +131,26 @@ function Model({ geometry, renderMode, activeHighlightColor, setActiveHighlightC
     const color = new THREE.Color(faceColor[0], faceColor[1], faceColor[2]);
     const colorHex = `#${color.getHexString().toUpperCase()}`;
 
-    // If in color picker mode AND vertexColorEdit mode, pick color for brush
-    if (isColorPickerMode && renderMode === 'vertexColorEdit') {
-      // Dispatch an event with the picked color for the brush
+    // 如果在颜色选择器模式下，无论当前渲染模式如何，都获取顶点颜色
+    if (isColorPickerMode) {
+      // 派发事件，将选中的颜色传递给DesignerPage
       const event = new CustomEvent('brushColorChange', { detail: { color: colorHex } });
       window.dispatchEvent(event);
-      message.success(`画笔颜色已选择: ${colorHex}`);
-      // setColorPickerMode(false); // This will be handled by DesignerPage listening to brushColorChange
+      //message.success(`画笔颜色已选择: ${colorHex}`);
+      //setColorPickerMode(false); // 这将由DesignerPage监听brushColorChange事件处理
     } 
-    // If in vertexColor (preview) mode AND NOT in color picker mode, set highlight color
+    // 如果在顶点颜色预览模式下且不在颜色选择器模式，设置高亮颜色
     else if (renderMode === 'vertexColor' && !isColorPickerMode) {
-      setActiveHighlightColor(colorHex); // Update shared state for highlighting panels
+      setActiveHighlightColor(colorHex); // 更新共享状态以高亮面板
     }
-    // Other modes or states (e.g. solid, wireframe, or vertexColorEdit without picker) do nothing on click here
+    // 其他模式或状态（例如solid、wireframe或没有选择器的vertexColorEdit）在这里不执行任何操作
   };
   
   // 处理笔刷绘制
   const handlePointerDown = (e) => {
     if (!brushEnabled || renderMode !== 'vertexColorEdit') return;
+    // 只在左键单击时触发（button为0表示左键）
+    if (e.button !== 0 || e.shiftKey) return;
     e.stopPropagation();
     setIsDrawing(true);
     applyBrush(e);
@@ -145,6 +158,8 @@ function Model({ geometry, renderMode, activeHighlightColor, setActiveHighlightC
   
   const handlePointerMove = (e) => {
     if (!isDrawing || !brushEnabled || renderMode !== 'vertexColorEdit') return;
+    // 确保只在左键拖拽时触发（不检查e.button，因为move事件中可能不准确）
+    if (e.shiftKey) return;
     e.stopPropagation();
     applyBrush(e);
   };
@@ -226,8 +241,8 @@ function Model({ geometry, renderMode, activeHighlightColor, setActiveHighlightC
 const ThreeDViewPanel = forwardRef(({ 
   geometry, 
   onModelLoad, 
-  activeHighlightColor, // New prop for shared highlight state
-  setActiveHighlightColor, // New prop for updating shared highlight state
+  activeHighlightColor,
+  setActiveHighlightColor, 
   brushSize,
   brushColor,
   brushEnabled
@@ -260,7 +275,7 @@ const ThreeDViewPanel = forwardRef(({
     }
   };
 
-  // Synchronize renderModeRef with renderMode state
+  // 设置渲染模式
   useEffect(() => {
     renderModeRef.current = renderMode;
   }, [renderMode]);
@@ -297,21 +312,28 @@ const ThreeDViewPanel = forwardRef(({
     },
     setColorPickerMode: (active) => {
       if (active) {
-        // Only activate color picker if in vertexColorEdit mode
-        if (renderModeRef.current === 'vertexColorEdit') {
+        // 检查当前是否有顶点颜色模式（vertexColor或vertexColorEdit）
+        const hasVertexColors = renderModeRef.current === 'vertexColor' || renderModeRef.current === 'vertexColorEdit';
+        
+        if (hasVertexColors) {
+          // 如果当前模式支持顶点颜色，直接激活颜色选择器
           setIsColorPickerMode(true);
           //message.info('颜色选择器已启用，点击模型选择颜色');
         } else {
-          //message.warn('请先切换到顶点颜色编辑模式以使用颜色拾取器。');
-          // Dispatch an event so DesignerPage can revert its state if needed
-          window.dispatchEvent(new CustomEvent('colorPickerActivationFailed'));
-          return; // Do not activate if not in correct mode
+          // 如果当前模式不支持顶点颜色，先尝试切换到vertexColorEdit模式
+          try {
+            setRenderMode('vertexColorEdit');
+            setIsVertexColorEnabled(true);
+            setIsColorPickerMode(true);
+          } catch (error) {
+            // 如果切换失败，通知DesignerPage激活失败
+            window.dispatchEvent(new CustomEvent('colorPickerActivationFailed'));
+            return;
+          }
         }
       } else {
+        // 关闭颜色选择器模式
         setIsColorPickerMode(false);
-        if (renderModeRef.current === 'vertexColorEdit') { // Only show disabled message if it was relevant
-          //message.info('颜色选择器已禁用');
-        }
       }
     },
     // Expose setRenderMode and getCurrentRenderMode
@@ -381,6 +403,7 @@ const ThreeDViewPanel = forwardRef(({
               brushSize={actualBrushSize} // 使用调整后的笔刷大小
               brushColor={brushColor}
               brushEnabled={brushEnabled}
+              isColorPickerMode={isColorPickerMode}
             />
           )}
           <CustomOrbitControls enableDamping />
