@@ -4,11 +4,12 @@ import { Routes, Route, Link, useLocation } from 'react-router-dom';
 import './App.css';
 // Placeholder components for pages - will be created later or kept simple
 import DesignerPage from './Pages/DesignerPage'; // Assuming DesignerPage will be in src/Pages/
+import HomePage from './Pages/HomePage';
 
 const { Header, Content } = Layout;
 
 // Placeholder Pages
-const HomePage = () => <div>Home Page Content</div>;
+//const HomePage = () => <div>Home Page Content</div>;
 const BuilderPage = () => <div>Builder Page Content</div>;
 
 const App = () => {

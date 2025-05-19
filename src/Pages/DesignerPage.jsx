@@ -6,6 +6,7 @@ import ThreeDViewPanel from '../Components/ThreeDViewPanel';
 import PatternPanel from '../Components/PatternPanel';
 import { GLTFLoader } from 'three-stdlib'; // Import loaders
 import { OBJLoader } from 'three-stdlib';
+import useVertexColorEvents from '../hooks/useVertexColorEvents';
 
 // Use forwardRef to receive ref from App.jsx (if still needed for external calls like export)
 const DesignerPage = forwardRef(({ /* Props from App.jsx are reduced */ }, ref) => {
@@ -56,10 +57,7 @@ const DesignerPage = forwardRef(({ /* Props from App.jsx are reduced */ }, ref) 
     };
     reader.readAsArrayBuffer(file);
   };
-  // 添加笔刷状态
-  const [brushSize, setBrushSize] = useState(10); // 默认笔刷大小为10
-  const [brushColor, setBrushColor] = useState('#000000'); // 默认笔刷颜色为白色
-  const [brushEnabled, setBrushEnabled] = useState(false); // 默认笔刷功能禁用
+  // 引用对象
   // Add ref for ThreeDViewPanel
   const threeDViewRef = useRef(null);
   const patternPanelRef = useRef(null); // Add ref for PatternPanel
@@ -78,36 +76,45 @@ const DesignerPage = forwardRef(({ /* Props from App.jsx are reduced */ }, ref) 
     patternPanelRef.current?.exportSVG();
   };
   
-  // 处理颜色选择器点击
+  // 处理颜色选择器点击状态
   const [isColorPickerActive, setIsColorPickerActive] = useState(false); // 颜色选择器激活状态
-  const [isVertexColorModeEnabled, setIsVertexColorModeEnabled] = useState(false); // 顶点色渲染模式是否已激活
-
-  // 在组件挂载时检查顶点色渲染模式状态
-  useEffect(() => {
-    // 当Divide按钮被点击后，PatternPanel会调用threeDViewRef.current.enableVertexColorMode()
-    // 我们需要监听这个状态变化
-    const checkVertexColorMode = () => {
-      if (threeDViewRef.current) {
-        const currentRenderMode = threeDViewRef.current.getCurrentRenderMode?.();
-        const isEnabled = currentRenderMode === 'vertexColor' || currentRenderMode === 'vertexColorEdit';
-        setIsVertexColorModeEnabled(isEnabled);
+  
+  // 处理笔刷工具选择
+  const handleToolSelect = (toolKey) => {
+    if (toolKey === 'Region_Brush') {
+      setBrushEnabled(true);
+      // Ensure brushColor is not white if it was previously eraser
+      if (brushColor === '#FFFFFF') {
+        setBrushColor('#000000'); // Default to black or last used color
       }
-    };
-    
-    // 初始检查
-    checkVertexColorMode();
-    
-    // 监听Divide按钮点击后的状态变化
-    const handleVertexModeEnabled = () => {
-      setIsVertexColorModeEnabled(true);
-    };
-    
-    window.addEventListener('vertexColorModeEnabled', handleVertexModeEnabled);
-    
-    return () => {
-      window.removeEventListener('vertexColorModeEnabled', handleVertexModeEnabled);
-    };
-  }, []);
+      threeDViewRef.current?.setRenderMode('vertexColorEdit');
+    } else if (toolKey === 'Region_Eraser') {
+      setBrushEnabled(true);
+      setBrushColor('#FFFFFF'); // Eraser is white
+      threeDViewRef.current?.setRenderMode('vertexColorEdit');
+    } else if (toolKey === 'Move') {
+      setBrushEnabled(false);
+      // Optionally switch back to a default viewing mode, e.g., 'solid' or 'vertexColor'
+      // threeDViewRef.current?.setRenderMode('solid'); 
+    }
+
+    // If any tool other than brush/eraser is selected, and color picker was active, deactivate it.
+    if (toolKey !== 'Region_Brush' && toolKey !== 'Region_Eraser' && isColorPickerActive) {
+        setIsColorPickerActive(false);
+        threeDViewRef.current?.setColorPickerMode(false);
+    }
+  };
+  
+  // 使用自定义Hook管理顶点颜色相关事件和状态
+  const {
+    isVertexColorModeEnabled,
+    brushColor,
+    setBrushColor,
+    brushEnabled,
+    setBrushEnabled,
+    brushSize,
+    setBrushSize
+  } = useVertexColorEvents(threeDViewRef, handleToolSelect, isColorPickerActive, setIsColorPickerActive);
 
   const handleColorPickerClick = () => {
     // 如果顶点色渲染模式未激活，不执行任何操作
@@ -147,93 +154,20 @@ const DesignerPage = forwardRef(({ /* Props from App.jsx are reduced */ }, ref) 
     const randomColor = '#' + Math.floor(Math.random()*16777215).toString(16);
     setBrushColor(randomColor);
   };
-  
-  // 处理笔刷工具选择
-  const handleToolSelect = (toolKey) => {
-    if (toolKey === 'Region_Brush') {
-      setBrushEnabled(true);
-      // Ensure brushColor is not white if it was previously eraser
-      if (brushColor === '#FFFFFF') {
-        setBrushColor('#000000'); // Default to black or last used color
-      }
-      threeDViewRef.current?.setRenderMode('vertexColorEdit');
-    } else if (toolKey === 'Region_Eraser') {
-      setBrushEnabled(true);
-      setBrushColor('#FFFFFF'); // Eraser is white
-      threeDViewRef.current?.setRenderMode('vertexColorEdit');
-    } else if (toolKey === 'Move') {
-      setBrushEnabled(false);
-      // Optionally switch back to a default viewing mode, e.g., 'solid' or 'vertexColor'
-      // threeDViewRef.current?.setRenderMode('solid'); 
-    }
-
-    // If any tool other than brush/eraser is selected, and color picker was active, deactivate it.
-    if (toolKey !== 'Region_Brush' && toolKey !== 'Region_Eraser' && isColorPickerActive) {
-        setIsColorPickerActive(false);
-        threeDViewRef.current?.setColorPickerMode(false);
-    }
-  };
 
   // Expose method to App.jsx via ref (e.g., if App needs to trigger export)
   useImperativeHandle(ref, () => ({
     triggerExportPatternSVG: handleExportPatternSVG // Expose the local handler
   }));
 
-  // 监听颜色选择器选择的颜色
-  useEffect(() => { // Changed React.useEffect to useEffect
+  // 监听几何体变化
+  useEffect(() => {
     if (geometry) { // Check if geometry is not null or undefined
       console.log('New model loaded, disabling vertex color mode and Generate Panel button.');
       threeDViewRef.current?.disableVertexColorMode();
       patternPanelRef.current?.resetGenerateButtonState();
     }
   }, [geometry]); // Run effect when geometry changes
-
-  // 监听颜色选择器选择的颜色
-  useEffect(() => {
-    // 处理从ThreeDViewPanel获取的顶点颜色
-    const handleBrushColorChange = (e) => {
-      // 设置笔刷颜色为选中的颜色
-      setBrushColor(e.detail.color);
-      // 确保笔刷功能启用
-      setBrushEnabled(true);
-      
-      // 颜色选择后自动关闭颜色选择器模式
-      if (isColorPickerActive) {
-        setIsColorPickerActive(false);
-        if (threeDViewRef.current) {
-          threeDViewRef.current.setColorPickerMode(false);
-        }
-      }
-      
-      // 确保渲染模式为顶点颜色编辑模式
-      if (threeDViewRef.current?.getCurrentRenderMode && 
-          threeDViewRef.current.getCurrentRenderMode() !== 'vertexColorEdit') {
-        threeDViewRef.current.setRenderMode('vertexColorEdit');
-      }
-      
-      // 自动选择Region_Brush工具
-      handleToolSelect('Region_Brush');
-    };
-    
-    // 处理颜色选择器激活失败的情况
-    const handleColorPickerActivationFailed = () => {
-      // 如果ThreeDViewPanel无法激活颜色选择器（例如，错误的模式），
-      // 恢复本地isColorPickerActive状态
-      if (isColorPickerActive) {
-        setIsColorPickerActive(false);
-      }
-    };
-    
-    // 添加事件监听器
-    window.addEventListener('brushColorChange', handleBrushColorChange);
-    window.addEventListener('colorPickerActivationFailed', handleColorPickerActivationFailed);
-
-    // 清理函数
-    return () => {
-      window.removeEventListener('brushColorChange', handleBrushColorChange);
-      window.removeEventListener('colorPickerActivationFailed', handleColorPickerActivationFailed);
-    };
-  }, [isColorPickerActive]); // 移除brushColor依赖，避免不必要的重新订阅
 
   return (
     <Layout style={{ height: 'calc(100vh - 64px)' }}>
