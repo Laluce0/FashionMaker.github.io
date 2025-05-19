@@ -18,7 +18,8 @@ const DesignerMenuBar = ({
   setBrushColor,
   onColorPickerClick,
   onAddNewColor,
-  onToolSelect
+  onToolSelect,
+  isVertexColorModeEnabled
  }) => {
   // Handler for the import button/menu item (if needed for FileSelectorButton)
   const handleImportClick = () => {
@@ -40,6 +41,7 @@ const DesignerMenuBar = ({
         setBrushColor={setBrushColor}
         onColorPickerClick={onColorPickerClick}
         onAddNewColor={onAddNewColor}
+        isVertexColorModeEnabled={isVertexColorModeEnabled}
       />
 
       {/* Middle Section: Breadcrumb */}

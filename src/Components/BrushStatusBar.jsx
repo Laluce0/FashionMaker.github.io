@@ -10,7 +10,8 @@ const BrushStatusBar = ({
   brushColor, 
   setBrushColor,
   onColorPickerClick,
-  onAddNewColor
+  onAddNewColor,
+  isVertexColorModeEnabled
 }) => {
   // 处理笔刷大小变化
   const handleBrushSizeChange = (value) => {
@@ -19,7 +20,7 @@ const BrushStatusBar = ({
 
   // 处理颜色选择器点击
   const handleColorPickerClick = () => {
-    if (onColorPickerClick) {
+    if (onColorPickerClick && isVertexColorModeEnabled) {
       onColorPickerClick();
     }
   };
@@ -57,10 +58,11 @@ const BrushStatusBar = ({
           display: 'flex', 
           flexDirection: 'column', 
           alignItems: 'center', 
-          cursor: 'pointer',
+          cursor: isVertexColorModeEnabled ? 'pointer' : 'not-allowed',
           position: 'relative',
           width: 26,   // 固定宽度以匹配内容大小
           height: 26,  // 固定高度以方便定位内部元素
+          opacity: isVertexColorModeEnabled ? 1 : 0.5, // 未激活时降低透明度
         }}
       >
         <img 

@@ -80,27 +80,64 @@ const DesignerPage = forwardRef(({ /* Props from App.jsx are reduced */ }, ref) 
   
   // 处理颜色选择器点击
   const [isColorPickerActive, setIsColorPickerActive] = useState(false); // 颜色选择器激活状态
+  const [isVertexColorModeEnabled, setIsVertexColorModeEnabled] = useState(false); // 顶点色渲染模式是否已激活
+
+  // 在组件挂载时检查顶点色渲染模式状态
+  useEffect(() => {
+    // 当Divide按钮被点击后，PatternPanel会调用threeDViewRef.current.enableVertexColorMode()
+    // 我们需要监听这个状态变化
+    const checkVertexColorMode = () => {
+      if (threeDViewRef.current) {
+        const currentRenderMode = threeDViewRef.current.getCurrentRenderMode?.();
+        const isEnabled = currentRenderMode === 'vertexColor' || currentRenderMode === 'vertexColorEdit';
+        setIsVertexColorModeEnabled(isEnabled);
+      }
+    };
+    
+    // 初始检查
+    checkVertexColorMode();
+    
+    // 监听Divide按钮点击后的状态变化
+    const handleVertexModeEnabled = () => {
+      setIsVertexColorModeEnabled(true);
+    };
+    
+    window.addEventListener('vertexColorModeEnabled', handleVertexModeEnabled);
+    
+    return () => {
+      window.removeEventListener('vertexColorModeEnabled', handleVertexModeEnabled);
+    };
+  }, []);
 
   const handleColorPickerClick = () => {
-    if (threeDViewRef.current) {
-      const newPickerState = !isColorPickerActive;
-      
-      // 如果激活颜色选择器，确保先切换到顶点颜色编辑模式
-      if (newPickerState) {
-        // 获取当前渲染模式
-        const currentRenderMode = threeDViewRef.current.getCurrentRenderMode?.();
-        
-        // 如果当前不是顶点颜色编辑模式，先切换到该模式
-        if (currentRenderMode !== 'vertexColorEdit') {
-          threeDViewRef.current.setRenderMode('vertexColorEdit');
-        }
-      }
-      
-      // 设置本地状态
-      setIsColorPickerActive(newPickerState);
-      // 设置ThreeDViewPanel中的颜色选择器模式
-      threeDViewRef.current.setColorPickerMode(newPickerState);
+    // 如果顶点色渲染模式未激活，不执行任何操作
+    if (!isVertexColorModeEnabled || !threeDViewRef.current) {
+      message.warning('请先点击Divide按钮激活顶点色渲染模式');
+      return;
     }
+    
+    // 如果当前正在使用笔刷工具，先关闭笔刷模式
+    if (brushEnabled) {
+      setBrushEnabled(false);
+    }
+    
+    const newPickerState = !isColorPickerActive;
+    
+    // 如果激活颜色选择器，确保先切换到顶点颜色编辑模式
+    if (newPickerState) {
+      // 获取当前渲染模式
+      const currentRenderMode = threeDViewRef.current.getCurrentRenderMode?.();
+      
+      // 如果当前不是顶点颜色编辑模式，先切换到该模式
+      if (currentRenderMode !== 'vertexColorEdit') {
+        threeDViewRef.current.setRenderMode('vertexColorEdit');
+      }
+    }
+    
+    // 设置本地状态
+    setIsColorPickerActive(newPickerState);
+    // 设置ThreeDViewPanel中的颜色选择器模式
+    threeDViewRef.current.setColorPickerMode(newPickerState);
   };
   
   // 处理添加新颜色
@@ -210,6 +247,7 @@ const DesignerPage = forwardRef(({ /* Props from App.jsx are reduced */ }, ref) 
         onColorPickerClick={handleColorPickerClick}
         onAddNewColor={handleAddNewColor}
         onToolSelect={handleToolSelect}
+        isVertexColorModeEnabled={isVertexColorModeEnabled} // 传递顶点色渲染模式状态
       />
       <Layout style={{ height: 'calc(100% - 48px)' }}>
         <Splitter style={{ height: '100%' }} direction="horizontal" min={200} max={800} defaultValue={300}>

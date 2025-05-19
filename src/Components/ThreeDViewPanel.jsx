@@ -148,6 +148,8 @@ function Model({
   
   // 处理笔刷绘制
   const handlePointerDown = (e) => {
+    // 如果在颜色选择器模式下，完全禁用笔刷功能
+    if (isColorPickerMode) return;
     if (!brushEnabled || renderMode !== 'vertexColorEdit') return;
     // 只在左键单击时触发（button为0表示左键）
     if (e.button !== 0 || e.shiftKey) return;
@@ -157,6 +159,8 @@ function Model({
   };
   
   const handlePointerMove = (e) => {
+    // 如果在颜色选择器模式下，完全禁用笔刷功能
+    if (isColorPickerMode) return;
     if (!isDrawing || !brushEnabled || renderMode !== 'vertexColorEdit') return;
     // 确保只在左键拖拽时触发（不检查e.button，因为move事件中可能不准确）
     if (e.shiftKey) return;
@@ -165,6 +169,7 @@ function Model({
   };
   
   const handlePointerUp = () => {
+    // 即使在颜色选择器模式下，也需要重置绘制状态
     setIsDrawing(false);
   };
   
@@ -261,8 +266,12 @@ const ThreeDViewPanel = forwardRef(({
     if (brushEnabled) {
       setIsVertexColorEnabled(true);
       setRenderMode('vertexColorEdit');
+      // 如果笔刷启用，确保颜色选择器模式被禁用
+      if (isColorPickerMode) {
+        setIsColorPickerMode(false);
+      }
     }
-  }, [brushEnabled]);
+  }, [brushEnabled, isColorPickerMode]);
 
   // 处理鼠标移动，更新鼠标位置状态
   const handleMouseMove = (e) => {
@@ -305,6 +314,8 @@ const ThreeDViewPanel = forwardRef(({
     enableVertexColorMode: () => { // This now sets to 'vertexColor' (preview)
       setIsVertexColorEnabled(true);
       setRenderMode('vertexColor'); 
+      // 派发自定义事件，通知顶点色渲染模式已激活
+      window.dispatchEvent(new CustomEvent('vertexColorModeEnabled'));
     },
     disableVertexColorMode: () => {
       setRenderMode('solid'); 
@@ -350,9 +361,20 @@ const ThreeDViewPanel = forwardRef(({
     const file = event.target.files[0];
     if (file) {
       onModelLoad(file); // Call the handler passed from App/DesignerPage
-      // Reset states on new model load
+      
+      // 完整重置所有状态
       setRenderMode('solid');
       setIsVertexColorEnabled(false);
+      setIsColorPickerMode(false);
+      setIsDrawing(false); // 确保绘制状态被重置
+      
+      // 通知DesignerPage重置工具状态为Move
+      window.dispatchEvent(new CustomEvent('modelLoaded', { 
+        detail: { resetToMove: true } 
+      }));
+      
+      // 显示加载成功提示
+      // message.success(`模型 ${file.name} 已加载，工具已重置为移动模式`);
     }
     // Reset the input value to allow uploading the same file again
     if (event.target) {

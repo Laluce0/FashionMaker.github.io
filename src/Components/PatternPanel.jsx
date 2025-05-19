@@ -1,5 +1,5 @@
 import React, { useState, useRef, useCallback, forwardRef, useImperativeHandle } from 'react';
-import { Button, Spin, Space, message } from 'antd'; // 新增 message
+import { Button, Spin, Space, message, Alert } from 'antd'; // 新增 message 和 Alert
 
 // Receive props from DesignerPage and use forwardRef
 const PatternPanel = forwardRef(({ 
@@ -25,6 +25,7 @@ const PatternPanel = forwardRef(({
   const [canvasOffset, setCanvasOffset] = useState({ x: 0, y: 0 });
   const [isPanning, setIsPanning] = useState(false);
   const [panStart, setPanStart] = useState({ x: 0, y: 0 });
+  const [generateFailed, setGenerateFailed] = useState(false); // 新增：生成失败状态
 
   // Expose methods via ref
   useImperativeHandle(ref, () => ({
@@ -128,6 +129,7 @@ const PatternPanel = forwardRef(({
   const handleGeneratePanel = async () => {
     //setFilename(filename);
     setSpinningGenerate(true);
+    setGenerateFailed(false); // 重置生成失败状态
     let ptg = -10;
     const interval = setInterval(() => {
       ptg += 5;
@@ -206,6 +208,7 @@ const PatternPanel = forwardRef(({
             .catch(err => {
               console.error('[调试] SVG文件读取或解析异常:', err);
               //message.error('SVG文件读取失败: ' + err.message);
+              setGenerateFailed(true); // 设置生成失败状态
             });
         } catch (error) {
           console.error('[调试] 外层异常:', error);
@@ -319,6 +322,12 @@ const PatternPanel = forwardRef(({
       <Spin spinning={isDividing} percent={percentDivide} fullscreen tip="Dividing..." />
       <Spin spinning={spinningGenerate} percent={percentGenerate} fullscreen tip="Generating Panel..." />
       {/* 板片编辑区 */} 
+      {/* 生成失败提示 */}
+      {generateFailed && (
+        <div style={{ marginBottom: '10px' }}>
+          <Alert message="Generate Failed" type="error" showIcon />
+        </div>
+      )}
       <svg 
         ref={svgRef} 
         width="100%" 
@@ -329,7 +338,7 @@ const PatternPanel = forwardRef(({
           border: '3px solid #ccc',
           background: '#fafafa',
           width: '100%',
-          height: '92%',
+          height: generateFailed ? '85%' : '92%', // 如果生成失败，调整高度以适应错误提示
           cursor: isPanning ? 'grabbing' : 'grab',
           userSelect: 'none', // Prevent text selection during pan
         }}
