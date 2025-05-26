@@ -11,7 +11,7 @@ import CommentButton from './MenuButtons/CommentButton';
 
 const IconButtonGroup = ({ onClothSelect, onExportPatternSVG, onToolSelect }) => {
   return (
-    <Space size="small">
+    <Space size="middle">
       <DragDotButton />
       <FileSelectorButton />
       <AvatarButton />

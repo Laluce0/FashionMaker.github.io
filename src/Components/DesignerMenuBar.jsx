@@ -55,7 +55,7 @@ const DesignerMenuBar = ({
           },
         }}
       >
-        <div style={{ flex: 1, display: 'flex', justifyContent: 'center'}}>
+        <div style={{ position: 'relative', left: '200 px', paddingLeft:'20 px' }}>
           <Breadcrumb items={[
             {
               title: 'Folder',
@@ -68,7 +68,7 @@ const DesignerMenuBar = ({
       </ConfigProvider>
 
       {/* Right Section: User Info & Save */}
-      <Space>
+      <Space style={{position: 'absolute', right: '20px'}}>
         {/* Render mode icons moved to ThreeDViewPanel */}
         <Avatar style={{ backgroundColor: '#87d068' }} icon={<UserOutlined />} />
         <span style={{ color: '#fff' }}>User</span>

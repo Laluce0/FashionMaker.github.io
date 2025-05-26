@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Dropdown, Space } from 'antd';
-import PenIcon from '../../assets/06_pen.svg'; // Adjust path as needed
+import PenIcon from '../../assets/MenuIcons/06_pen.svg'; // Adjust path as needed
 import './MenuButtonStyles.css';
 
 const items = [

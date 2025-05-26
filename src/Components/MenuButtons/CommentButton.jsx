@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from 'antd';
-import CommentIcon from '../../assets/08_comment.svg'; // Adjust path as needed
+import CommentIcon from '../../assets/MenuIcons/08_comment.svg'; // Adjust path as needed
 
 const CommentButton = () => {
   return (

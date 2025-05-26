@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Space, InputNumber, Button, Tooltip } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import BrushThicknessIcon from '../assets/brushThickness.svg';
-import ColorPickerIcon from '../assets/colorPicker.svg';
+import BrushThicknessIcon from '../assets/MenuIcons/brushThickness.svg';
+import ColorPickerIcon from '../assets/MenuIcons/colorPicker.svg';
 
 const BrushStatusBar = ({ 
   brushSize, 

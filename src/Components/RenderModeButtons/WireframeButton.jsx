@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from 'antd';
-import WireframeIcon from '../../assets/Wireframe.svg'; // Adjust path if needed
+import WireframeIcon from '../../assets/RenderModeIcons/Wireframe.svg'; // Adjust path if needed
 
 const WireframeButton = ({ onClick, isActive }) => {
   return (

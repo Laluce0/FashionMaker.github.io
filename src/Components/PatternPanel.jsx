@@ -120,6 +120,7 @@ const PatternPanel = forwardRef(({
         setPercentDivide(0);
         // Enable vertex color mode in 3D view and enable Generate Panel button
         threeDViewRef.current?.enableVertexColorMode();
+        threeDViewRef.current?.setRenderMode('vertexColorEdit');
         setIsGeneratePanelEnabled(true);
       }
     }, 100);
@@ -204,6 +205,7 @@ const PatternPanel = forwardRef(({
               //   setSelectedPanelId(parsedPatterns[0].id);
               // }
               //message.success('SVG板片生成成功');
+              threeDViewRef.current?.enableVertexColorMode();
             })
             .catch(err => {
               console.error('[调试] SVG文件读取或解析异常:', err);

@@ -1,5 +1,5 @@
 import React from "react";
-import HomePageTemp from "../assets/HomePageTemp.jpg"
+import HomePageTemp from "../assets/newHomePageTemp.jpg"
 import './HomePage.css';
 
 const HomePage = () => (

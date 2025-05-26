@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from 'antd';
-import FileSelectorIcon from '../../assets/02_fileSelector.svg'; // Adjust path as needed
+import FileSelectorIcon from '../../assets/MenuIcons/02_fileSelector.svg'; // Adjust path as needed
 import './MenuButtonStyles.css';
 
 const FileSelectorButton = () => {

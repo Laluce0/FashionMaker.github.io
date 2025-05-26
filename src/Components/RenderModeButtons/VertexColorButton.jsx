@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from 'antd';
-import VertexColorIcon from '../../assets/VertexColorPreview.svg'; // Adjust path if needed
+import VertexColorIcon from '../../assets/RenderModeIcons/VertexColorPreview.svg'; // Adjust path if needed
 
 const VertexColorButton = ({ onClick, isActive, disabled }) => {
   return (

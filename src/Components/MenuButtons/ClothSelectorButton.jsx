@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Dropdown } from 'antd';
-import ClothSelectorIcon from '../../assets/04_clothSelector.svg'; // Adjust path as needed
+import ClothSelectorIcon from '../../assets/MenuIcons/04_clothSelector.svg'; // Adjust path as needed
 import './MenuButtonStyles.css';
 
 const ClothSelectorButton = ({ onClick, onExportPatternSVG }) => {

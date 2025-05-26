@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from 'antd';
-import DragDotIcon from '../../assets/01_dragDot.svg'; // Adjust path as needed
+import DragDotIcon from '../../assets/MenuIcons/01_dragDot.svg'; // Adjust path as needed
 import './MenuButtonStyles.css';
 
 const DragDotButton = () => {

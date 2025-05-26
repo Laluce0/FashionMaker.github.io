@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from 'antd';
-import TextureIcon from '../../assets/05_texture.svg'; // Adjust path as needed
+import TextureIcon from '../../assets/MenuIcons/05_texture.svg'; // Adjust path as needed
 import './MenuButtonStyles.css';
 
 const TextureButton = () => {

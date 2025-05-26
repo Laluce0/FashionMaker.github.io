@@ -35,7 +35,7 @@ const App = () => {
 
   return (
     <Layout style={{ minHeight: '100vh' }}> {/* Ensure layout takes full height */}
-      <Header style={{ display: 'flex', alignItems: 'center', padding: '0 20px', backgroundColor: '#fff', borderBottom: '1px solid #f0f0f0' }}>
+      <Header style={{ position: 'sticky', top: 0, zIndex: 100, display: 'flex', alignItems: 'center', padding: '0 20px', backgroundColor: '#fff', borderBottom: '1px solid #f0f0f0' }}>
         {/* Simple Logo/Title Placeholder */}
         <div style={{ fontSize: '20px', fontWeight: 'bold', marginRight: '30px' }}>FashionMaker</div>
         <Menu
@@ -61,7 +61,7 @@ const App = () => {
         {/* Placeholder for Search Bar if needed */}
         {/* <Input.Search placeholder="Search" style={{ width: 200, marginLeft: 'auto' }} /> */}
       </Header>
-      <Content style={{ padding: '0', margin: 0, flex: 1, display: 'flex', flexDirection: 'column' }}> {/* Adjust Content style */}
+      <Content style={{ padding: '0', margin: 0, flex: 1, display: 'flex', flexDirection: 'column', overflow: location.pathname === '/' ? 'auto' : 'visible', height: location.pathname === '/' ? 'calc(100vh - 64px)' : 'auto' }}> {/* Adjust Content style */}
         <Routes>
           <Route path="/" element={<HomePage />} />
           {/* Pass state and handlers to DesignerPage */}

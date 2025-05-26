@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from 'antd';
-import WhiteModelIcon from '../../assets/Solid.svg'; // Adjust path if needed
+import WhiteModelIcon from '../../assets/RenderModeIcons/Solid.svg'; // Adjust path if needed
 
 const WhiteModelButton = ({ onClick, isActive }) => {
   return (
