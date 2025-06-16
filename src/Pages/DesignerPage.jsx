@@ -15,47 +15,73 @@ const DesignerPage = forwardRef(({ /* Props from App.jsx are reduced */ }, ref) 
   const [activeHighlightColor, setActiveHighlightColor] = useState(null);
 
   // Handler to load and set geometry from file (moved from App.jsx)
-  const handleModelLoad = (file) => {
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (ev) => {
-      const currentFilename = file.name; // Use a local variable for the current file's name
-      setFilename(currentFilename); // Set filename state
-      if (currentFilename.endsWith('.gltf') || currentFilename.endsWith('.glb')) {
-        const loader = new GLTFLoader();
-        loader.parse(ev.target.result, '', (gltf) => {
+  // Modified to also accept a direct path or a Blob for demo loading
+  const handleModelLoad = (fileOrPath) => {
+    if (!fileOrPath) return;
+
+    const processFile = (file) => {
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        const currentFilename = file.name; // Use a local variable for the current file's name
+        setFilename(currentFilename); // Set filename state
+        if (currentFilename.endsWith('.gltf') || currentFilename.endsWith('.glb')) {
+          const loader = new GLTFLoader();
+          loader.parse(ev.target.result, '', (gltf) => {
+            let mesh = null;
+            gltf.scene.traverse((child) => {
+              if (child.isMesh && !mesh) mesh = child;
+            });
+            if (mesh) {
+              setGeometry(mesh.geometry);
+              //message.success('GLTF model loaded successfully');
+            } else {
+              //message.error('No usable Mesh found in GLTF');
+            }
+          }, (err) => {
+            //message.error('GLTF parsing failed: ' + err.message);
+          });
+        } else if (currentFilename.endsWith('.obj')) {
+          const loader = new OBJLoader();
+          const text = new TextDecoder().decode(ev.target.result);
+          const obj = loader.parse(text);
           let mesh = null;
-          gltf.scene.traverse((child) => {
+          obj.traverse((child) => {
             if (child.isMesh && !mesh) mesh = child;
           });
           if (mesh) {
             setGeometry(mesh.geometry);
-            //message.success('GLTF model loaded successfully');
+            //message.success('OBJ model loaded successfully');
           } else {
-            //message.error('No usable Mesh found in GLTF');
+            //message.error('No usable Mesh found in OBJ');
           }
-        }, (err) => {
-          //message.error('GLTF parsing failed: ' + err.message);
-        });
-      } else if (currentFilename.endsWith('.obj')) {
-        const loader = new OBJLoader();
-        const text = new TextDecoder().decode(ev.target.result);
-        const obj = loader.parse(text);
-        let mesh = null;
-        obj.traverse((child) => {
-          if (child.isMesh && !mesh) mesh = child;
-        });
-        if (mesh) {
-          setGeometry(mesh.geometry);
-          //message.success('OBJ model loaded successfully');
         } else {
-          //message.error('No usable Mesh found in OBJ');
+          //message.error('Only OBJ/GLTF/GLB formats are supported');
         }
-      } else {
-        //message.error('Only OBJ/GLTF/GLB formats are supported');
-      }
+      };
+      reader.readAsArrayBuffer(file);
     };
-    reader.readAsArrayBuffer(file);
+
+    if (typeof fileOrPath === 'string') {
+      // If it's a path (for demo)
+      const modelPath = fileOrPath;
+      const modelName = modelPath.split('/').pop(); // Get filename from path
+      fetch(modelPath)
+        .then(res => {
+          if (!res.ok) throw new Error(`Failed to fetch ${modelName}`);
+          return res.arrayBuffer();
+        })
+        .then(arrayBuffer => {
+          const file = new File([arrayBuffer], modelName, { type: modelName.endsWith('.glb') ? 'model/gltf-binary' : 'model/gltf+json' });
+          processFile(file);
+        })
+        .catch(err => {
+          message.error(`Error loading demo model ${modelName}: ${err.message}`);
+          console.error(`Error loading demo model ${modelName}:`, err);
+        });
+    } else {
+      // If it's a File object (from input)
+      processFile(fileOrPath);
+    }
   };
   // 引用对象
   // Add ref for ThreeDViewPanel
@@ -74,6 +100,21 @@ const DesignerPage = forwardRef(({ /* Props from App.jsx are reduced */ }, ref) 
   // Handler to trigger SVG export in PatternPanel
   const handleExportPatternSVG = () => {
     patternPanelRef.current?.exportSVG();
+  };
+
+  // New handler for loading demo content
+  const handleLoadDemo = () => {
+    message.info('Loading Demo Model and Pattern...');
+    // Load GLB model
+    handleModelLoad('/FashionMaker/Jacket.glb'); // Public path with base
+
+    // Trigger SVG loading in PatternPanel
+    if (patternPanelRef.current && patternPanelRef.current.loadSvgPattern) {
+      patternPanelRef.current.loadSvgPattern('/FashionMaker/Jacket.svg'); // Public path with base
+    } else {
+      message.error('PatternPanel is not ready to load SVG.');
+      console.error('PatternPanel ref or loadSvgPattern method not found.');
+    }
   };
   
   // 处理颜色选择器点击状态
@@ -163,9 +204,9 @@ const DesignerPage = forwardRef(({ /* Props from App.jsx are reduced */ }, ref) 
   // 监听几何体变化
   useEffect(() => {
     if (geometry) { // Check if geometry is not null or undefined
-      console.log('New model loaded, disabling vertex color mode and Generate Panel button.');
-      threeDViewRef.current?.disableVertexColorMode();
-      patternPanelRef.current?.resetGenerateButtonState();
+      // console.log('New model loaded, disabling vertex color mode and Generate Panel button.');
+      // threeDViewRef.current?.disableVertexColorMode(); // Keep this if it's general logic
+      // patternPanelRef.current?.resetGenerateButtonState(); // Keep this if it's general logic
     }
   }, [geometry]); // Run effect when geometry changes
 
@@ -174,6 +215,7 @@ const DesignerPage = forwardRef(({ /* Props from App.jsx are reduced */ }, ref) 
       <DesignerMenuBar 
         onClothSelect={handleClothSelect} // For importing cloth, triggers file input in ThreeDViewPanel
         onExportPatternSVG={handleExportPatternSVG} // For exporting SVG from PatternPanel
+        onLoadDemo={handleLoadDemo} // Pass the new handler
         brushSize={brushSize}
         setBrushSize={setBrushSize}
         brushColor={brushColor}

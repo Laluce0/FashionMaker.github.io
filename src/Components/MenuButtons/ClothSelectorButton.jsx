@@ -3,7 +3,7 @@ import { Button, Dropdown } from 'antd';
 import ClothSelectorIcon from '../../assets/MenuIcons/04_clothSelector.svg'; // Adjust path as needed
 import './MenuButtonStyles.css';
 
-const ClothSelectorButton = ({ onClick, onExportPatternSVG }) => {
+const ClothSelectorButton = ({ onClick, onExportPatternSVG, onLoadDemo }) => {
   // Note: The original onClick prop might need adjustment depending on how menu item clicks are handled.
   // For now, the Dropdown trigger button itself won't trigger the original onClick.
   // Menu item clicks can be handled via the Menu's onClick prop if needed.
@@ -13,6 +13,9 @@ const ClothSelectorButton = ({ onClick, onExportPatternSVG }) => {
     }
     if (key === 'export-2d' && onExportPatternSVG) {
       onExportPatternSVG(); // Call the passed export handler for the specific item
+    }
+    if (key === 'demo' && onLoadDemo) {
+      onLoadDemo(); // Call the passed onLoadDemo handler for the demo item
     }
   };
 
@@ -24,6 +27,7 @@ const ClothSelectorButton = ({ onClick, onExportPatternSVG }) => {
       children: [
         { key: 'import-2d', label: '2D Pattern', disabled: true },
         { key: 'import-clo3d', label: '3D Cloth' },
+        { key: 'demo', label: 'Demo' },
       ],
     },
     { type: 'divider' }, // Divider

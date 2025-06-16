@@ -12,6 +12,7 @@ const DesignerMenuBar = ({
   onImportModel, 
   onClothSelect, 
   onExportPatternSVG,
+  onLoadDemo, // Add onLoadDemo prop
   brushSize,
   setBrushSize,
   brushColor,
@@ -31,7 +32,12 @@ const DesignerMenuBar = ({
   return (
     <Header style={{ display: 'flex', alignItems: 'center', padding: '0 10px', height: '48px', backgroundColor: '#303030'}}>
       {/* Left Section: Icon Buttons */}
-      <IconButtonGroup onClothSelect={onClothSelect} onExportPatternSVG={onExportPatternSVG} onToolSelect={onToolSelect} />
+      <IconButtonGroup 
+        onClothSelect={onClothSelect} 
+        onExportPatternSVG={onExportPatternSVG} 
+        onLoadDemo={onLoadDemo} // Pass onLoadDemo to IconButtonGroup
+        onToolSelect={onToolSelect} 
+      />
 
       {/* 笔刷状态栏 */}
       <BrushStatusBar 
