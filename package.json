@@ -1,14 +1,14 @@
 {
   "name": "fashionmaker",
   "private": true,
+  "homepage": "https://laluce0.github.io/FashionMaker/",
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://laluce0.github.io/FashionMaker.github.io/",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "predeploy" : "npm run build",
-    "deploy" : "gh-pages-d build",
+    "deploy" : "gh-pages -d dist",
     "lint": "eslint .",
     "preview": "vite preview"
   },
