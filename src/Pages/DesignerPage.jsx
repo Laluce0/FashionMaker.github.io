@@ -19,6 +19,9 @@ const DesignerPage = forwardRef(({ /* Props from App.jsx are reduced */ }, ref) 
   const handleModelLoad = (fileOrPath) => {
     if (!fileOrPath) return;
 
+    // Disable Generate Panel button and clear existing patterns
+    patternPanelRef.current?.resetGenerateButtonState();
+
     const processFile = (file) => {
       const reader = new FileReader();
       reader.onload = (ev) => {
@@ -33,6 +36,7 @@ const DesignerPage = forwardRef(({ /* Props from App.jsx are reduced */ }, ref) 
             });
             if (mesh) {
               setGeometry(mesh.geometry);
+              //patternPanelRef.current?.loadSvgPattern('/FashionMaker/Jacket.svg'); // Load SVG after model
               //message.success('GLTF model loaded successfully');
             } else {
               //message.error('No usable Mesh found in GLTF');
@@ -50,6 +54,7 @@ const DesignerPage = forwardRef(({ /* Props from App.jsx are reduced */ }, ref) 
           });
           if (mesh) {
             setGeometry(mesh.geometry);
+            //patternPanelRef.current?.loadSvgPattern('/FashionMaker/Jacket.svg'); // Load SVG after model
             //message.success('OBJ model loaded successfully');
           } else {
             //message.error('No usable Mesh found in OBJ');
@@ -105,16 +110,8 @@ const DesignerPage = forwardRef(({ /* Props from App.jsx are reduced */ }, ref) 
   // New handler for loading demo content
   const handleLoadDemo = () => {
     message.info('Loading Demo Model and Pattern...');
-    // Load GLB model
+    // Load GLB model, which will also trigger SVG loading in PatternPanel
     handleModelLoad('/FashionMaker/Jacket.glb'); // Public path with base
-
-    // Trigger SVG loading in PatternPanel
-    if (patternPanelRef.current && patternPanelRef.current.loadSvgPattern) {
-      patternPanelRef.current.loadSvgPattern('/FashionMaker/Jacket.svg'); // Public path with base
-    } else {
-      message.error('PatternPanel is not ready to load SVG.');
-      console.error('PatternPanel ref or loadSvgPattern method not found.');
-    }
   };
   
   // 处理颜色选择器点击状态

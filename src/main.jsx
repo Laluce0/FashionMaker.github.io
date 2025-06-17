@@ -7,7 +7,7 @@ import App from './App.jsx';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <BrowserRouter> {/* 使用 BrowserRouter 包裹 App */}
+    <BrowserRouter basename="/FashionMaker"> {/* 使用 BrowserRouter 包裹 App 并设置 basename */}
       <App />
     </BrowserRouter>
   </StrictMode>,

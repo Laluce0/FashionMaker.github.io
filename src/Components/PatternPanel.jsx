@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback, forwardRef, useImperativeHandle } from 'react';
+import React, { useState, useRef, useCallback, forwardRef, useImperativeHandle, useEffect } from 'react';
 import { Button, Spin, Space, message, Alert } from 'antd'; // 新增 message 和 Alert
 
 // Receive props from DesignerPage and use forwardRef
@@ -8,7 +8,8 @@ const PatternPanel = forwardRef(({
   filename,
   threeDViewRef, // Receive ref for ThreeDViewPanel
   activeHighlightColor, // New prop for shared highlight state
-  setActiveHighlightColor // New prop for updating shared highlight state
+  setActiveHighlightColor, // New prop for updating shared highlight state
+  initialSvgPath = '/FashionMaker/Jacket.svg' // Default SVG path
 }, ref) => {
   const [dragVertex, setDragVertex] = useState(null); // {panelId, vertexIdx} - Keep for potential future interaction
   const svgRef = useRef(null);
@@ -26,6 +27,127 @@ const PatternPanel = forwardRef(({
   const [isPanning, setIsPanning] = useState(false);
   const [panStart, setPanStart] = useState({ x: 0, y: 0 });
   const [generateFailed, setGenerateFailed] = useState(false); // 新增：生成失败状态
+
+  // Method to load SVG pattern from a given path
+  const loadSvgPattern = useCallback((svgFilePath) => {
+    setSpinningGenerate(true); // Reuse existing spinner for loading indication
+    setGenerateFailed(false);
+    fetch(svgFilePath)
+      .then(res => {
+        if (!res.ok) throw new Error(`SVG file not found at ${svgFilePath}`);
+        return res.text();
+      })
+      .then(svgText => {
+        if (!svgText || svgText.trim().length === 0) {
+          message.error('SVG file content is empty.');
+          setGenerateFailed(true);
+          return;
+        }
+        const parser = new window.DOMParser();
+        const svgDoc = parser.parseFromString(svgText, 'image/svg+xml');
+        const pathNodes = Array.from(svgDoc.querySelectorAll('path'));
+        if (pathNodes.length === 0) {
+          message.error('No path elements found in SVG.');
+          setGenerateFailed(true);
+          return;
+        }
+        const parsedPatterns = pathNodes.map((pathNode, idx) => {
+          const d = pathNode.getAttribute('d');
+          const fill = pathNode.getAttribute('fill') || 'none';
+          const stroke = pathNode.getAttribute('stroke') || '#000';
+          const id = pathNode.getAttribute('id') || `svg-path-${idx}`;
+          return {
+            id: id,
+            path: d,
+            children: [],
+            originalPoints: [],
+            fill,
+            stroke,
+            color: stroke, // Use stroke as the default color for highlighting
+          };
+        });
+
+        let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+        parsedPatterns.forEach(p => {
+          const regex = /[MLHVCSQTAZmlhvcsqtaz]\s*(-?\d*\.?\d+)[, ]*(-?\d*\.?\d+)*/gi;
+          let match;
+          const tempPath = p.path.replace(/([a-zA-Z])/g, ' $1 '); // Add spaces around commands
+          const segments = tempPath.trim().split(/\s+/);
+          let currentX = 0, currentY = 0;
+
+          for (let i = 0; i < segments.length; ) {
+            const command = segments[i];
+            let params = [];
+            let k = i + 1;
+            while (k < segments.length && !isNaN(parseFloat(segments[k]))) {
+              params.push(parseFloat(segments[k]));
+              k++;
+            }
+
+            const updateBounds = (x, y) => {
+              if (x < minX) minX = x;
+              if (y < minY) minY = y;
+              if (x > maxX) maxX = x;
+              if (y > maxY) maxY = y;
+            };
+
+            switch (command) {
+              case 'M':
+              case 'L':
+                for (let j = 0; j < params.length; j += 2) {
+                  currentX = params[j];
+                  currentY = params[j+1];
+                  updateBounds(currentX, currentY);
+                }
+                break;
+              case 'm':
+              case 'l':
+                for (let j = 0; j < params.length; j += 2) {
+                  currentX += params[j];
+                  currentY += params[j+1];
+                  updateBounds(currentX, currentY);
+                }
+                break;
+              // Add more cases for H, V, C, S, Q, T, A, Z if needed for accurate bounding box
+              // For simplicity, this example only processes M and L for bounds.
+              // A more robust SVG path parser would be needed for complex paths.
+            }
+            i = k;
+          }
+        });
+
+        const padding = 20; // Reduced padding for tighter fit
+        const width = (maxX === -Infinity || minX === Infinity) ? 500 : maxX - minX + 2 * padding;
+        const height = (maxY === -Infinity || minY === Infinity) ? 400 : maxY - minY + 2 * padding;
+        const vbX = (minX === Infinity) ? 0 : minX - padding;
+        const vbY = (minY === Infinity) ? 0 : minY - padding;
+
+        if (width > 0 && height > 0) {
+          setSvgViewBox(`${vbX} ${vbY} ${width} ${height}`);
+        } else {
+          // Fallback if no valid points found or SVG is empty
+          setSvgViewBox("0 0 500 400");
+        }
+        setDrawnPatterns(parsedPatterns);
+        setActiveHighlightColor(null); // Reset highlight
+        setIsGeneratePanelEnabled(true); // Enable generate panel button (or similar logic)
+        message.success('SVG pattern loaded successfully.');
+      })
+      .catch(err => {
+        console.error('Error loading or parsing SVG:', err);
+        message.error(`Failed to load SVG: ${err.message}`);
+        setGenerateFailed(true);
+      })
+      .finally(() => {
+        setSpinningGenerate(false);
+      });
+  }, [filename, setActiveHighlightColor, setDrawnPatterns, setGenerateFailed, setIsGeneratePanelEnabled, setSpinningGenerate, setSvgViewBox]); // Added dependencies for useCallback
+
+  // useEffect(() => {
+  //   if (initialSvgPath) {
+  //     loadSvgPattern(initialSvgPath);
+  //   }
+  // }, [initialSvgPath, loadSvgPattern]); // Run when initialSvgPath changes or loadSvgPattern is redefined
 
   // Expose methods via ref
   useImperativeHandle(ref, () => ({
@@ -59,120 +181,7 @@ const PatternPanel = forwardRef(({
       setDrawnPatterns([]); 
       setActiveHighlightColor(null); 
     },
-    // New method to load SVG pattern from a given path
-    loadSvgPattern: (svgFilePath) => {
-      setSpinningGenerate(true); // Reuse existing spinner for loading indication
-      setGenerateFailed(false);
-      fetch(svgFilePath)
-        .then(res => {
-          if (!res.ok) throw new Error(`SVG file not found at ${svgFilePath}`);
-          return res.text();
-        })
-        .then(svgText => {
-          if (!svgText || svgText.trim().length === 0) {
-            message.error('SVG file content is empty.');
-            setGenerateFailed(true);
-            return;
-          }
-          const parser = new window.DOMParser();
-          const svgDoc = parser.parseFromString(svgText, 'image/svg+xml');
-          const pathNodes = Array.from(svgDoc.querySelectorAll('path'));
-          if (pathNodes.length === 0) {
-            message.error('No path elements found in SVG.');
-            setGenerateFailed(true);
-            return;
-          }
-          const parsedPatterns = pathNodes.map((pathNode, idx) => {
-            const d = pathNode.getAttribute('d');
-            const fill = pathNode.getAttribute('fill') || 'none';
-            const stroke = pathNode.getAttribute('stroke') || '#000';
-            const id = pathNode.getAttribute('id') || `svg-path-${idx}`;
-            return {
-              id: id,
-              path: d,
-              children: [],
-              originalPoints: [],
-              fill,
-              stroke,
-              color: stroke, // Use stroke as the default color for highlighting
-            };
-          });
-
-          let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
-          parsedPatterns.forEach(p => {
-            const regex = /[MLHVCSQTAZmlhvcsqtaz]\s*(-?\d*\.?\d+)[, ]*(-?\d*\.?\d+)*/gi;
-            let match;
-            const tempPath = p.path.replace(/([a-zA-Z])/g, ' $1 '); // Add spaces around commands
-            const segments = tempPath.trim().split(/\s+/);
-            let currentX = 0, currentY = 0;
-
-            for (let i = 0; i < segments.length; ) {
-              const command = segments[i];
-              let params = [];
-              let k = i + 1;
-              while (k < segments.length && !isNaN(parseFloat(segments[k]))) {
-                params.push(parseFloat(segments[k]));
-                k++;
-              }
-
-              const updateBounds = (x, y) => {
-                if (x < minX) minX = x;
-                if (y < minY) minY = y;
-                if (x > maxX) maxX = x;
-                if (y > maxY) maxY = y;
-              };
-
-              switch (command) {
-                case 'M':
-                case 'L':
-                  for (let j = 0; j < params.length; j += 2) {
-                    currentX = params[j];
-                    currentY = params[j+1];
-                    updateBounds(currentX, currentY);
-                  }
-                  break;
-                case 'm':
-                case 'l':
-                  for (let j = 0; j < params.length; j += 2) {
-                    currentX += params[j];
-                    currentY += params[j+1];
-                    updateBounds(currentX, currentY);
-                  }
-                  break;
-                // Add more cases for H, V, C, S, Q, T, A, Z if needed for accurate bounding box
-                // For simplicity, this example only processes M and L for bounds.
-                // A more robust SVG path parser would be needed for complex paths.
-              }
-              i = k;
-            }
-          });
-
-          const padding = 20; // Reduced padding for tighter fit
-          const width = (maxX === -Infinity || minX === Infinity) ? 500 : maxX - minX + 2 * padding;
-          const height = (maxY === -Infinity || minY === Infinity) ? 400 : maxY - minY + 2 * padding;
-          const vbX = (minX === Infinity) ? 0 : minX - padding;
-          const vbY = (minY === Infinity) ? 0 : minY - padding;
-
-          if (width > 0 && height > 0) {
-            setSvgViewBox(`${vbX} ${vbY} ${width} ${height}`);
-          } else {
-            // Fallback if no valid points found or SVG is empty
-            setSvgViewBox("0 0 500 400");
-          }
-          setDrawnPatterns(parsedPatterns);
-          setActiveHighlightColor(null); // Reset highlight
-          setIsGeneratePanelEnabled(true); // Enable generate panel button (or similar logic)
-          message.success('SVG pattern loaded successfully.');
-        })
-        .catch(err => {
-          console.error('Error loading or parsing SVG:', err);
-          message.error(`Failed to load SVG: ${err.message}`);
-          setGenerateFailed(true);
-        })
-        .finally(() => {
-          setSpinningGenerate(false);
-        });
-    }
+    loadSvgPattern // Expose the loadSvgPattern function
   }));
 
   // 选中板片并更新全局高亮颜色
@@ -256,7 +265,7 @@ const PatternPanel = forwardRef(({
         // 新增：查找并解析SVG文件
         try {
           const modelName = filename.split('.')[0]; // TODO: 替换为动态获取模型名
-          const svgFilePath = `/${modelName}.svg`;
+          const svgFilePath = `/FashionMaker/${modelName}.svg`;
           console.log('[调试] SVG文件路径:', svgFilePath);
           // 读取SVG文件内容
           fetch(svgFilePath)

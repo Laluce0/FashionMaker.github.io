@@ -28,9 +28,11 @@ const App = () => {
   // Determine the selected key based on the current path
   const getSelectedKeys = () => {
     const path = location.pathname;
-    if (path.startsWith('/designer')) return ['designer'];
-    if (path.startsWith('/builder')) return ['builder'];
-    return ['home']; // Default to home
+    // Adjust for the base path /FashionMaker
+    if (path.startsWith('/FashionMaker/designer')) return ['designer'];
+    if (path.startsWith('/FashionMaker/builder')) return ['builder'];
+    if (path === '/FashionMaker' || path === '/') return ['home']; // Default to home
+    return ['home']; // Fallback
   };
 
   return (
@@ -46,27 +48,28 @@ const App = () => {
           items={[
             {
               key: 'home',
-              label: <Link to="/">Home</Link>
+              label: <Link to="/FashionMaker/">Home</Link>
             },
             {
               key: 'designer',
-              label: <Link to="/designer">Designer</Link>
+              label: <Link to="/FashionMaker/designer">Designer</Link>
             },
             {
               key: 'builder',
-              label: <Link to="/builder">Builder</Link>
+              label: <Link to="/FashionMaker/builder">Builder</Link>
             }
           ]}
         />
         {/* Placeholder for Search Bar if needed */}
         {/* <Input.Search placeholder="Search" style={{ width: 200, marginLeft: 'auto' }} /> */}
       </Header>
-      <Content style={{ padding: '0', margin: 0, flex: 1, display: 'flex', flexDirection: 'column', overflow: location.pathname === '/' ? 'auto' : 'visible', height: location.pathname === '/' ? 'calc(100vh - 64px)' : 'auto' }}> {/* Adjust Content style */}
+      <Content style={{ padding: '0', margin: 0, flex: 1, display: 'flex', flexDirection: 'column', overflow: location.pathname === '/FashionMaker/' || location.pathname === '/' ? 'auto' : 'visible', height: location.pathname === '/FashionMaker/' || location.pathname === '/' ? 'calc(100vh - 64px)' : 'auto' }}> {/* Adjust Content style */}
         <Routes>
-          <Route path="/" element={<HomePage />} />
+          <Route path="/FashionMaker/" element={<HomePage />} />
+          <Route path="/" element={<HomePage />} /> {/* Fallback for root if needed, or redirect */} 
           {/* Pass state and handlers to DesignerPage */}
           <Route 
-            path="/designer" 
+            path="/FashionMaker/designer" 
             element={( 
               <DesignerPage
                 ref={designerPageRef} // Pass the ref if App needs to call methods on DesignerPage
@@ -76,7 +79,7 @@ const App = () => {
               />
             )} 
           />
-          <Route path="/builder" element={<BuilderPage />} />
+          <Route path="/FashionMaker/builder" element={<BuilderPage />} />
         </Routes>
       </Content>
     </Layout>
